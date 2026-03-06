@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ipecconsulting.netlify.app"><img src="https://img.shields.io/badge/Live%20Demo-ipecconsulting.netlify.app-10b981?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" /></a>
+  <a href="https://i.fouralpha.org/"><img src="https://img.shields.io/badge/Live%20Demo-ipecconsulting.netlify.app-10b981?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" /></a>
   <img src="https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA Ready" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License" />
 </p>
