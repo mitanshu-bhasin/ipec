@@ -1,3 +1,6 @@
+# ── Environment Variables ────────────────────────
+js/env.js
+
 # ── IDE / Editor ─────────────────────────────────
 .vscode/
 *.code-workspace
