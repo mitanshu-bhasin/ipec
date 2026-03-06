@@ -1,0 +1,21 @@
+{
+    "name": "ipec-expense-manager",
+    "version": "1.0.0",
+    "description": "Enterprise Expense Management System",
+    "main": "index.html",
+    "scripts": {
+        "start": "npx serve .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "expense",
+        "tracker",
+        "admin",
+        "enterprise"
+    ],
+    "author": "Mitanshu Bhasin",
+    "license": "ISC",
+    "dependencies": {
+        "serve": "^14.2.0"
+    }
+}
