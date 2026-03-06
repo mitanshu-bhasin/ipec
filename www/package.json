@@ -22,6 +22,6 @@
         "serve": "^14.2.0"
     },
     "devDependencies": {
-        "@capacitor/cli": "^6.1.2"
+        "@capacitor/cli": "^8.2.0"
     }
 }
