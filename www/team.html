@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Optimization -->
+    <meta name="description"
+        content="Meet the distinguished leadership team behind IPEC. Dedicated professionals driving excellence in process management, certifications, and global standards.">
+    <meta name="keywords"
+        content="IPEC Team, Col. Raj Kalra, Brajesh Kumar Singh, Uttam Biswas, Sangeet Malhotra, Ramanathan Kumar, Cdr. Lingesh, Deepak Dwivedi, Process Excellence Leaders">
+    <meta name="author" content="International Process Excellence Council">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ipecconsulting.netlify.app/team.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ipecconsulting.netlify.app/team.html">
+    <meta property="og:title" content="Leadership Team - IPEC Consulting">
+    <meta property="og:description"
+        content="Meet the IPEC leadership team driving global process excellence and innovation.">
+    <meta property="og:image" content="https://ipecconsulting.org/wp-content/uploads/2025/09/244013.jpg">
+
+    <title>Leadership Team | IPEC Consulting</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: {
+                            red: '#D93025',
+                            green: '#1E8E3E',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/theme.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Distinct Gradient Background */
+        .hero-bg {
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #fff7ed 100%);
+        }
+
+        .dark .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        /* Custom Scrollbar for Modal */
+        .modal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .dark .modal-scroll::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+
+        /* Glass Effect for Navbar */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .dark .glass-effect {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased flex flex-col min-h-screen transition-colors duration-300 hero-bg">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-500 glass-effect border-b border-white/40 dark:border-slate-700/50 shadow-sm backdrop-blur-xl bg-white/60 dark:bg-slate-900/60"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-green-600 shadow-lg overflow-hidden border border-green-100">
+                        <img src="assets/images/cropped-ipec-logo-32x32.png" alt="IPEC Logo"
+                            class="w-8 h-8 object-contain">
+                    </div>
+                    <div>
+                        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">IPEC</span>
+                        <span
+                            class="block text-[10px] font-bold text-green-600 uppercase tracking-wider relative -top-1">Expense
+                            Manager</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition text-sm">Home</a>
+                    <a href="team.html" class="text-green-600 dark:text-green-400 font-bold transition text-sm">Leadership
+                        Team</a>
+                    <a href="help.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition text-sm">Help
+                        Center</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="help.html"
+                        class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition md:hidden">
+                        <i class="fa-regular fa-circle-question text-lg"></i>
+                    </a>
+                    <button onclick="toggleTheme()"
+                        class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
+                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                    </button>
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()"
+                        class="md:hidden text-slate-600 dark:text-slate-300 hover:text-green-600 transition">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"
+        onclick="toggleMobileMenu()"></div>
+
+    <!-- Mobile Sidebar Menu -->
+    <div id="mobile-menu"
+        class="fixed top-0 right-0 w-[280px] h-full bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col md:hidden">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-green-50 dark:bg-green-900/30 rounded flex items-center justify-center">
+                    <img src="assets/images/cropped-ipec-logo-32x32.png" alt="Logo" class="w-6 h-6 object-contain">
+                </div>
+                <span class="font-bold text-slate-800 dark:text-white">IPEC Menu</span>
+            </div>
+            <button onclick="toggleMobileMenu()"
+                class="text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-8">
+            <nav class="space-y-6">
+                <a href="index.html"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-bold text-lg transition">Home</a>
+                <a href="team.html"
+                    class="block text-green-600 dark:text-green-400 font-bold text-lg transition">Leadership Team</a>
+                <a href="help.html"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-bold text-lg transition">Help
+                    Center</a>
+            </nav>
+
+            <hr class="border-slate-100 dark:border-slate-800">
+
+            <div class="space-y-4">
+                <a href="https://ipecconsulting.org" target="_blank"
+                    class="flex items-center gap-3 text-slate-500 hover:text-green-600 transition">
+                    <i class="fa-solid fa-globe opacity-70"></i>
+                    <span>Official Website</span>
+                </a>
+                <a href="support.html" class="flex items-center gap-3 text-slate-500 hover:text-green-600 transition">
+                    <i class="fa-solid fa-headset opacity-70"></i>
+                    <span>Support Center</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <div class="flex flex-col gap-3">
+                <a href="emp.html"
+                    class="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl text-center text-sm font-bold shadow-lg shadow-green-500/20 transition-all active:scale-95">Employee
+                    Portal</a>
+                <a href="admin.html"
+                    class="px-4 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl text-center text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95">Admin
+                    Console</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-20">
+        <!-- Hero Section -->
+        <div class="text-center py-16 px-4">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold mb-4 border border-green-100 dark:border-green-800">
+                Visionaries & Experts
+            </span>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Meet the <span
+                    class="text-green-600 dark:text-green-400">Leadership</span></h1>
+            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Stewards of India’s Industry Certification Standards and leaders in global process excellence.
+            </p>
+        </div>
+
+        <!-- Team Grid -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+                <!-- Col. Raj Kalra -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-10-300x278.png"
+                            alt="Col. Raj Kalra"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Col. Raj Kalra</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Founder
+                        Chairman</p>
+                    <button onclick="openBio('bio-kalra')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Brajesh Kumar Singh -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-12-300x282.png"
+                            alt="Brajesh Kumar Singh"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Brajesh Kumar Singh</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">
+                        Co-Founder</p>
+                    <button onclick="openBio('bio-singh')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Uttam Biswas -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-14-1-300x278.png"
+                            alt="Uttam Biswas"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Uttam Biswas</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
+                        Executive Officer</p>
+                    <button onclick="openBio('bio-biswas')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Sangeet Malhotra -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-16-1-300x278.png"
+                            alt="Sangeet Malhotra"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Sangeet Malhotra</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
+                        Operating Officer</p>
+                    <button onclick="openBio('bio-malhotra')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Cdr. M. Ramanathan Kumar -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-15-1-300x282.png"
+                            alt="Cdr. M. Ramanathan Kumar"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Cdr. M. Ramanathan Kumar</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                        Intl. Certifications</p>
+                    <button onclick="openBio('bio-kumar')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Cdr. Lingesh -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-19-300x278.png"
+                            alt="Cdr. Lingesh"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Cdr. Lingesh</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                        Cybersecurity</p>
+                    <button onclick="openBio('bio-lingesh')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Deepak Dwivedi -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-18-300x278.png"
+                            alt="Deepak Dwivedi"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Deepak Dwivedi</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                        Education Policy</p>
+                    <button onclick="openBio('bio-dwivedi')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Mitanshu Bhasin -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://mitanshubhasin.netlify.app/mitanshu.jpg" alt="Mitanshu Bhasin"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Mitanshu Bhasin</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">
+                        Developer & Tech Associate</p>
+                    <button onclick="openBio('bio-mitanshu')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Developer Footer & Legal -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs border border-slate-700">
+                        IPEC</div>
+                    <span class="font-semibold text-sm">© 2026 IPEC Expense Manager</span>
+                </div>
+                <div class="flex gap-6 text-xs font-medium text-slate-400">
+                    <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                    <a href="help.html" class="hover:text-white transition">Help Center</a>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 text-center relative overflow-hidden group">
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMTAwLCAxMTYsIDEzOSwgMC4xKSIvPjwvc3ZnPg==')] opacity-20">
+                </div>
+
+                <p class="text-[10px] text-slate-500 tracking-[0.2em] uppercase mb-4 font-mono">
+                    <span class="text-green-500">&lt;</span> ARCHITECTED & DEPLOYED <span
+                        class="text-green-500">/&gt;</span>
+                </p>
+
+                <a href="https://mitanshubhasin.netlify.app" target="_blank"
+                    class="inline-flex items-center gap-3 relative z-10 group-hover:scale-105 transition-transform duration-300">
+                    <div class="h-px w-8 bg-gradient-to-r from-transparent to-green-500/50"></div>
+                    <span
+                        class="font-mono text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-green-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">
+                        Mitanshu_Bhasin<span class="text-white animate-pulse">_</span>
+                    </span>
+                    <div class="h-px w-8 bg-gradient-to-l from-transparent to-green-500/50"></div>
+                </a>
+
+                <p class="text-[10px] text-slate-600 mt-4 font-mono">
+                    <span class="opacity-50">INITIALIZED_AT:</span> <span class="text-green-500">2026.02.17</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bio Modal -->
+    <div id="bio-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeBio()"></div>
+        <div
+            class="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl relative z-10 flex flex-col">
+            <!-- Modal Header -->
+            <div
+                class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                <h3 id="modal-name" class="text-xl font-bold text-slate-900 dark:text-white"></h3>
+                <button onclick="closeBio()"
+                    class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-8 overflow-y-auto modal-scroll">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex-shrink-0 mx-auto md:mx-0">
+                        <div
+                            class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-700">
+                            <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div>
+                        <p id="modal-role"
+                            class="text-green-600 dark:text-green-400 text-sm font-bold uppercase tracking-wide mb-4"></p>
+                        <div id="modal-bio"
+                            class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Bio Data -->
+    <div class="hidden">
+        <div id="bio-kalra-data">
+            <p><strong>Colonel Raj Kalra</strong> is a distinguished entrepreneur, ex-Army veteran, and visionary leader
+                behind the <strong>Kuber Group Africa</strong>, where he serves as the proud Founder and Group Chairman.
+                Headquartered in Accra, Ghana, the Kuber Group is a prominent eco-friendly infrastructure development
+                partner dedicated to sustainable growth across Africa.</p>
+            <p>A testament to the company’s commitment to large-scale sustainable development is the successful creation
+                of a 271-acre industrial park in Prampram. With a strong emphasis on Environmental, Social, and
+                Governance (ESG) compliance, Colonel Kalra is at the forefront of the green energy transition.</p>
+            <p>Beyond his role at Kuber Group, Colonel Kalra is the Founder and Chairman of the Board of Directors of
+                the <strong>International Process Excellence Council (IPEC)</strong>. His dedication to quality is
+                underscored by his certification in Total Quality Management (TQM) by the Japanese Union of Scientists
+                and Engineers (JUSE) in Tokyo.</p>
+        </div>
+        <div id="bio-singh-data">
+            <p><strong>Brajesh Kumar Singh</strong> is a seasoned transformation leader and the Co-Founder and Global
+                CEO of the <strong>International Process Excellence Council (IPEC)</strong>. With over 27 years of
+                experience, he has a proven track record of elevating performance and sustainability for enterprises
+                across four continents, guiding them through large-scale digital and operational turnarounds.</p>
+            <p>In his prior roles as both Chief Operating Officer and Chief Sustainability Officer, Brajesh pioneered
+                the adoption of AI-enabled analytics and robotic process automation to drive multi-million-dollar
+                efficiencies.</p>
+            <p>A Six Sigma Master Black Belt and recipient of MIT’s prestigious Fire Hydrant Award, his leadership style
+                blends disciplined Process Excellence with an entrepreneurial mindset.</p>
+        </div>
+        <div id="bio-biswas-data">
+            <p><strong>Uttam Biswas</strong> is the Chief Executive Officer of IPEC and Director of Zinnia Digital
+                Services LLP. A seasoned quality professional, he brings over 22 years of experience in business process
+                re-engineering, training, and management consulting. His expertise spans diverse industries, including
+                Digital & Platform, Manufacturing, Banking, Financial Services, Insurance, and Civil Infrastructure.</p>
+            <p>A Six Sigma Master Black Belt and Lean Coach, Uttam leverages methodologies such as Lean, Six Sigma, and
+                Kaizen to drive significant cost reductions and revenue enhancements for organizations.</p>
+        </div>
+        <div id="bio-malhotra-data">
+            <p><strong>Sangeet Malhotra</strong> is the Chief Operating Officer of IPEC. He is a seasoned senior
+                management professional with over 15 years of extensive experience in project planning, control, and
+                digital transformation. A Prince2 Certified and PMP-trained project management expert, he specializes in
+                ensuring projects succeed from inception to completion.</p>
+            <p>Sangeet’s core strengths lie in end-to-end project implementation and strategic planning. His expertise
+                includes managing multiple projects on a global scale, standardizing processes across countries like the
+                UK, US, France, and India.</p>
+        </div>
+        <div id="bio-kumar-data">
+            <p><strong>Cdr. M. Ramanathan Kumar (Retd.)</strong> is the Head of International Certifications at IPEC. An
+                experienced consultant and auditor, he specializes in Governance, Risk, and Compliance (GRC),
+                Cybersecurity, Business Resilience, and Data Privacy. His expertise is built on a distinguished career
+                spanning more than three decades, including 21 years of service in the Indian Navy as a submariner.</p>
+        </div>
+        <div id="bio-lingesh-data">
+            <p><strong>Commander Lingesh</strong>, an Indian Navy veteran, has nearly four decades of professional
+                experience. His background spans two decades of distinguished military service as a Submariner,
+                specializing in Telecommunications and Electronic Warfare, and two decades of expertise in
+                Cybersecurity.</p>
+            <p>Commander Lingesh spent 15 years with Tata Consultancy Services (TCS), where he served as the
+                Cybersecurity Delivery Head.</p>
+        </div>
+        <div id="bio-dwivedi-data">
+            <p><strong>Deepak Dwivedi</strong> is a transformative leader in process excellence and educational
+                innovation, with over 27 years of experience. Founder of 4 Alpha AED Labs, he created the Four Alpha
+                Model. A Six Sigma Black Belt from the Indian Statistical Institute and a Certified Knowledge Manager.
+            </p>
+        </div>
+        <div id="bio-mitanshu-data">
+            <p><strong>Mitanshu Bhasin</strong> is the Developer & Tech Associate at IPEC and the architect behind the
+                IPEC Expense Manager platform. A dynamic member of the technical team, he specializes in Python
+                development, full-stack web engineering, and cybersecurity protocols.</p>
+            <p>Mitanshu bridges the gap between theoretical computer science and real-world deployment. He is
+                responsible
+                for developing automated Python scripts for data handling, maintaining cyber hygiene standards across
+                internal communications, and researching emerging STEM technologies for team integration.</p>
+            <p>Currently preparing for advanced engineering entrance examinations (JEE), he applies rigorous analytical
+                training in Physics and Mathematics directly to algorithm optimization and software architecture.
+                His work ethic aligns with professional standards far beyond his years.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { AISupport } from './js/ai-support.js';
+        window.addEventListener('load', () => {
+            new AISupport({
+                name: 'Visitor',
+                role: 'Guest',
+                department: 'Public'
+            });
+        });
+    </script>
+
+    <script>
+        const bios = {
+            'bio-kalra': { name: 'Col. Raj Kalra', role: 'Founder Chairman', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-10-300x278.png' },
+            'bio-singh': { name: 'Brajesh Kumar Singh', role: 'Co-Founder', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-12-300x282.png' },
+            'bio-biswas': { name: 'Uttam Biswas', role: 'Chief Executive Officer', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-14-1-300x278.png' },
+            'bio-malhotra': { name: 'Sangeet Malhotra', role: 'Chief Operating Officer', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-16-1-300x278.png' },
+            'bio-kumar': { name: 'Cdr. M. Ramanathan Kumar', role: 'Head, Intl. Certifications', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-15-1-300x282.png' },
+            'bio-lingesh': { name: 'Cdr. Lingesh', role: 'Head, Cybersecurity', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-19-300x278.png' },
+            'bio-dwivedi': { name: 'Deepak Dwivedi', role: 'Head, Education Policy', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-18-300x278.png' },
+            'bio-mitanshu': { name: 'Mitanshu Bhasin', role: 'Developer & Tech Associate', img: 'https://mitanshubhasin.netlify.app/mitanshu.jpg' }
+        };
+
+        function openBio(id) {
+            const modal = document.getElementById('bio-modal');
+            const data = bios[id];
+            const content = document.getElementById(id + '-data').innerHTML;
+
+            document.getElementById('modal-name').textContent = data.name;
+            document.getElementById('modal-role').textContent = data.role;
+            document.getElementById('modal-img').src = data.img;
+            document.getElementById('modal-bio').innerHTML = content;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeBio() {
+            document.getElementById('bio-modal').classList.add('hidden');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                closeBio();
+            }
+        });
+    </script>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                menu.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            } else {
+                overlay.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    menu.classList.remove('translate-x-full');
+                });
+            }
+        }
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
+        });
+    </script>
+</body>
+
+</html>

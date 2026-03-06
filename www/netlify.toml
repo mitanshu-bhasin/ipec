@@ -1,0 +1,51 @@
+[build]
+  publish = "."  # Public directory (root)
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# ==============================
+# 🚀 SECURITY & CACHE HEADERS (TESTING MODE)
+# ==============================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # TESTING MODE: Prevent all caching so you can see your updates instantly
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# ==============================
+# 🔒 SENSITIVE FILE PROTECTION
+# ==============================
+
+# Block access to firestore rules
+[[redirects]]
+  from = "/firestore.rules"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Redirect anything not found to 404.html
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+  force = false

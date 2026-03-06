@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>IPEC Device Health | System Check</title>
+
+    <!-- PWA / Mobile Optimization Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="IPEC Health">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PDF Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="css/common.css">
+</head>
+
+<body class="test-page min-h-screen flex flex-col relative pb-safe">
+
+    <!-- Background Blobs -->
+    <div class="blob bg-indigo-300 w-80 h-80 rounded-full top-[-50px] left-[-50px]"></div>
+    <div class="blob bg-purple-300 w-80 h-80 rounded-full bottom-[-50px] right-[-50px]"></div>
+
+    <!-- Mobile Header -->
+    <nav
+        class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/50 pt-safe-top transition-all duration-300">
+        <div class="px-5 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-green-600 shadow-lg shadow-green-200 overflow-hidden p-1">
+                    <img src="assets/images/cropped-ipec-logo-32x32.png" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight leading-none block text-slate-800">IPEC
+                        <span class="text-green-600">Health</span></span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">System Check</span>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button id="pdfBtn" onclick="generatePDF()"
+                    class="hidden w-10 h-10 rounded-full bg-slate-50 text-indigo-600 flex items-center justify-center shadow-sm border border-slate-100 transition-all active:scale-95">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App Area -->
+    <main id="app" class="flex-1 px-5 pt-28 pb-24 relative z-10 w-full max-w-lg mx-auto">
+
+        <!-- VIEW 1: INTRO / LANDING (Visible by default) -->
+        <div id="introView" class="flex flex-col items-center justify-center min-h-[60vh] text-center fade-in">
+            <div
+                class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl shadow-green-100 mb-8 border border-slate-100 p-4">
+                <img src="assets/images/cropped-ipec-logo-32x32.png" class="w-full h-full object-contain animate-pulse">
+            </div>
+
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-4 leading-tight">
+                Is Your Device <br> <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Working
+                    Properly?</span>
+            </h1>
+
+            <p class="text-slate-500 text-lg mb-8 max-w-xs mx-auto leading-relaxed">
+                Run a complete medical checkup on your device. Check Screen, Sensors, Audio & Battery instantly.
+            </p>
+
+            <div class="w-full space-y-3 mb-10">
+                <div class="flex items-center gap-3 bg-white/60 p-3 rounded-xl border border-white">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span class="text-sm font-bold text-slate-700">Hardware Sensors & GPS</span>
+                </div>
+                <div class="flex items-center gap-3 bg-white/60 p-3 rounded-xl border border-white">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span class="text-sm font-bold text-slate-700">Display & Touch Digitizer</span>
+                </div>
+                <div class="flex items-center gap-3 bg-white/60 p-3 rounded-xl border border-white">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span class="text-sm font-bold text-slate-700">Audio & Vibration Motors</span>
+                </div>
+            </div>
+
+            <button onclick="enterDashboard()"
+                class="w-full bg-gradient-to-r from-green-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-green-200 hover:scale-[1.02] active:scale-95 transition-all">
+                Run Diagnostics <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+
+            <p class="mt-6 text-xs text-slate-400 font-medium">
+                Powered by IPEC Consulting
+            </p>
+        </div>
+
+        <!-- VIEW 2: DASHBOARD (Hidden initially) -->
+        <div id="dashboardView" class="hidden fade-in">
+            <!-- Status Header -->
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Diagnostics</h2>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <p class="text-slate-500 text-sm font-medium">
+                        Device: <span id="modelName" class="text-indigo-600 font-bold">Detecting...</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div id="testGrid" class="grid grid-cols-2 gap-4">
+                <!-- Cards injected via JS -->
+            </div>
+
+            <!-- Install Banner -->
+            <div id="installBanner"
+                class="hidden mt-8 p-4 bg-slate-900 rounded-2xl text-white flex items-center justify-between shadow-xl">
+                <div>
+                    <p class="font-bold text-sm">Install App</p>
+                    <p class="text-xs text-slate-400">Add to Home Screen</p>
+                </div>
+                <button class="px-4 py-2 bg-indigo-600 rounded-lg text-xs font-bold">Install</button>
+            </div>
+
+            <button onclick="location.reload()"
+                class="mt-8 w-full py-3 text-sm text-slate-400 font-bold hover:text-slate-600 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Start
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Full Screen Overlay (Test Execution) -->
+    <div id="testOverlay" class="hidden fixed inset-0 z-[100] bg-white flex flex-col h-[100dvh]">
+        <!-- Overlay Header -->
+        <div
+            class="px-5 py-4 border-b border-slate-100 flex justify-between items-center bg-white/90 backdrop-blur shrink-0 pt-safe-top">
+            <h2 id="overlayTitle" class="text-lg font-bold text-slate-900 truncate pr-4">Test</h2>
+            <button onclick="closeOverlay()"
+                class="w-8 h-8 flex items-center justify-center bg-slate-100 rounded-full text-slate-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Overlay Content -->
+        <div id="overlayContent"
+            class="flex-1 overflow-y-auto overflow-x-hidden p-5 flex flex-col items-center justify-center bg-slate-50/50">
+            <!-- Dynamic Content -->
+        </div>
+
+        <!-- Overlay Actions -->
+        <div class="p-5 border-t border-slate-100 bg-white pb-safe-bottom shrink-0 flex gap-3">
+            <button onclick="markResult('Fail')"
+                class="flex-1 py-3 rounded-xl font-bold text-sm bg-red-50 text-red-600 border border-red-100 active:scale-95 transition-transform">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Issue
+            </button>
+            <button onclick="markResult('Pass')"
+                class="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-50 text-emerald-600 border border-emerald-100 active:scale-95 transition-transform">
+                <i class="fa-solid fa-check mr-1"></i> Working
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        class="fixed bottom-0 w-full bg-white/80 backdrop-blur-md border-t border-slate-200 py-3 pb-safe-bottom text-center z-40">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+            IPEC Expense Manager Ecosystem
+        </p>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+        // --- State ---
+        const state = {
+            device: 'Mobile',
+            results: {},
+            audioContext: null,
+            oscillator: null
+        };
+
+        // --- Configuration ---
+        const tests = {
+            screen: { id: 'screen', name: 'Screen & Pixels', icon: 'fa-mobile-screen', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+            touch: { id: 'touch', name: 'Touch Digitizer', icon: 'fa-fingerprint', color: 'text-pink-600', bg: 'bg-pink-50' },
+            audio: { id: 'audio', name: 'Speaker & Mic', icon: 'fa-volume-high', color: 'text-rose-600', bg: 'bg-rose-50' },
+            freq: { id: 'freq', name: 'Tone Generator', icon: 'fa-wave-square', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+            vibrate: { id: 'vibrate', name: 'Vibration', icon: 'fa-bolt', color: 'text-amber-600', bg: 'bg-amber-50' },
+            camera: { id: 'camera', name: 'Cameras', icon: 'fa-camera', color: 'text-teal-600', bg: 'bg-teal-50' },
+            sensors: { id: 'sensors', name: 'Sensors', icon: 'fa-compass', color: 'text-orange-600', bg: 'bg-orange-50' },
+            battery: { id: 'battery', name: 'Battery', icon: 'fa-battery-half', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+            network: { id: 'network', name: 'Speed Test', icon: 'fa-wifi', color: 'text-green-600', bg: 'bg-green-50' },
+            gps: { id: 'gps', name: 'GPS', icon: 'fa-location-crosshairs', color: 'text-red-600', bg: 'bg-red-50' },
+            keyboard: { id: 'keyboard', name: 'Keyboard', icon: 'fa-keyboard', color: 'text-slate-600', bg: 'bg-slate-100' },
+            mouse: { id: 'mouse', name: 'Mouse & Trackpad', icon: 'fa-mouse', color: 'text-purple-600', bg: 'bg-purple-50' }
+        };
+
+        // --- Init ---
+        window.onload = () => {
+            // Detect Device Name approximate
+            const ua = navigator.userAgent;
+            let deviceName = "Unknown Device";
+            if (ua.match(/Android/i)) deviceName = "Android";
+            else if (ua.match(/iPhone/i)) deviceName = "iPhone";
+            else if (ua.match(/iPad/i)) deviceName = "iPad";
+            else deviceName = "Desktop/Unknown";
+
+            document.getElementById('modelName').innerText = deviceName;
+        };
+
+        // --- Navigation Logic ---
+        function enterDashboard() {
+            document.getElementById('introView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+            document.getElementById('pdfBtn').classList.remove('hidden');
+            renderDashboard();
+
+            // Check PWA install status (mock)
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                document.getElementById('installBanner').classList.remove('hidden');
+            }
+        }
+
+        // --- Dashboard Render ---
+        function renderDashboard() {
+            const grid = document.getElementById('testGrid');
+            grid.innerHTML = '';
+
+            Object.keys(tests).forEach(testId => {
+                const t = tests[testId];
+                const status = state.results[testId];
+
+                let statusClass = 'border-slate-200';
+                let iconStatus = '';
+
+                if (status === 'Pass') {
+                    statusClass = 'border-emerald-400 bg-emerald-50/50';
+                    iconStatus = '<i class="fa-solid fa-check-circle text-emerald-500 absolute top-3 right-3 text-lg"></i>';
+                } else if (status === 'Fail') {
+                    statusClass = 'border-red-400 bg-red-50/50';
+                    iconStatus = '<i class="fa-solid fa-circle-xmark text-red-500 absolute top-3 right-3 text-lg"></i>';
+                }
+
+                const card = document.createElement('div');
+                card.className = `glass-card p-5 rounded-2xl relative flex flex-col items-center justify-center text-center gap-3 h-36 ${statusClass}`;
+                card.onclick = () => openTest(testId);
+
+                card.innerHTML = `
+                    ${iconStatus}
+                    <div class="w-10 h-10 rounded-xl ${t.bg} ${t.color} flex items-center justify-center text-xl shadow-sm mb-1">
+                        <i class="fa-solid ${t.icon}"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm leading-tight">${t.name}</h3>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-wide">${status || 'Start'}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Overlay Logic ---
+        function openTest(testId) {
+            const overlay = document.getElementById('testOverlay');
+            const title = document.getElementById('overlayTitle');
+            const content = document.getElementById('overlayContent');
+
+            title.innerText = tests[testId].name;
+            content.innerHTML = '';
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent bg scroll
+
+            // Route to Logic
+            const logic = {
+                screen: initScreenTest,
+                touch: initTouchTest,
+                audio: initAudioTest,
+                freq: initFreqTest,
+                vibrate: initVibrateTest,
+                camera: initCameraTest,
+                sensors: initSensorsTest,
+                battery: initBatteryTest,
+                network: initNetworkTest,
+                gps: initGpsTest,
+                keyboard: initKeyboardTest,
+                mouse: initMouseTest
+            };
+
+            if (logic[testId]) logic[testId](content);
+        }
+
+        function closeOverlay() {
+            stopAllMedia();
+            document.getElementById('testOverlay').classList.add('hidden');
+            document.body.style.overflow = '';
+            if (document.fullscreenElement) document.exitFullscreen();
+        }
+
+        function markResult(status) {
+            const currentName = document.getElementById('overlayTitle').innerText;
+            const key = Object.keys(tests).find(k => tests[k].name === currentName);
+            if (key) {
+                state.results[key] = status;
+                closeOverlay();
+                renderDashboard();
+            }
+        }
+
+        function stopAllMedia() {
+            if (window.localStream) window.localStream.getTracks().forEach(t => t.stop());
+            if (state.audioContext) {
+                state.audioContext.close();
+                state.audioContext = null;
+            }
+            if (window.animFrame) cancelAnimationFrame(window.animFrame);
+            if (window.keyHandler) window.removeEventListener('keydown', window.keyHandler);
+        }
+
+        // --- FEATURE: FREQUENCY GENERATOR ---
+        function initFreqTest(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-sm text-center">
+                    <div class="w-24 h-24 mx-auto bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 text-3xl mb-6 shadow-inner" id="speakerIcon">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+                    
+                    <h2 id="freqDisplay" class="text-5xl font-extrabold text-slate-900 mb-2">1000 <span class="text-lg text-slate-400">Hz</span></h2>
+                    <p class="text-xs text-slate-500 mb-8 font-bold uppercase tracking-widest">Sine Wave Generator</p>
+
+                    <div class="mb-8">
+                        <input type="range" id="freqSlider" min="20" max="20000" value="1000" step="10">
+                        <div class="flex justify-between text-[10px] text-slate-400 font-bold mt-2 px-1">
+                            <span>20Hz</span>
+                            <span>Mid</span>
+                            <span>20kHz</span>
+                        </div>
+                    </div>
+
+                    <button id="toggleTone" class="w-full bg-cyan-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-cyan-200 active:scale-95 transition-transform">
+                        <i class="fa-solid fa-play mr-2"></i> Play Tone
+                    </button>
+                    
+                    <p class="text-[10px] text-slate-400 mt-6 mx-auto max-w-[200px] leading-relaxed">
+                        ⚠️ High frequencies can damage ears. Keep volume low.
+                    </p>
+                </div>
+            `;
+
+            const slider = document.getElementById('freqSlider');
+            const display = document.getElementById('freqDisplay');
+            const btn = document.getElementById('toggleTone');
+            let isPlaying = false;
+
+            slider.oninput = () => {
+                const val = slider.value;
+                display.innerHTML = `${val} <span class="text-lg text-slate-400">Hz</span>`;
+                if (state.oscillator) {
+                    state.oscillator.frequency.value = val;
+                }
+            };
+
+            btn.onclick = () => {
+                if (!isPlaying) {
+                    const Ctx = window.AudioContext || window.webkitAudioContext;
+                    state.audioContext = new Ctx();
+                    state.oscillator = state.audioContext.createOscillator();
+                    const gain = state.audioContext.createGain();
+
+                    state.oscillator.type = 'sine';
+                    state.oscillator.frequency.value = slider.value;
+                    state.oscillator.connect(gain);
+                    gain.connect(state.audioContext.destination);
+                    state.oscillator.start();
+
+                    isPlaying = true;
+                    btn.innerHTML = '<i class="fa-solid fa-stop mr-2"></i> Stop';
+                    btn.classList.replace('bg-cyan-600', 'bg-red-500');
+                    document.getElementById('speakerIcon').classList.add('animate-spin');
+                } else {
+                    if (state.oscillator) state.oscillator.stop();
+                    isPlaying = false;
+                    btn.innerHTML = '<i class="fa-solid fa-play mr-2"></i> Play Tone';
+                    btn.classList.replace('bg-red-500', 'bg-cyan-600');
+                    document.getElementById('speakerIcon').classList.remove('animate-spin');
+                }
+            };
+        }
+
+        // --- MOBILE SPECIFIC TESTS ---
+
+        // 1. TOUCH
+        function initTouchTest(container) {
+            container.innerHTML = `
+                <div class="flex flex-col h-full w-full relative">
+                    <p class="absolute top-4 left-0 w-full text-center pointer-events-none text-slate-400 text-xs font-bold bg-white/80 py-1">Swipe to fill blocks green</p>
+                    <div id="touchGrid" class="flex-1 w-full grid touch-none bg-slate-50 rounded-xl overflow-hidden border border-slate-200"></div>
+                </div>
+            `;
+            setTimeout(() => {
+                const grid = document.getElementById('touchGrid');
+                const size = 45; // larger for fingers
+                const cols = Math.floor(grid.clientWidth / size);
+                const rows = Math.floor(grid.clientHeight / size);
+                grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+                for (let i = 0; i < cols * rows; i++) {
+                    const d = document.createElement('div');
+                    d.className = 'grid-cell';
+                    grid.appendChild(d);
+                }
+
+                const paint = (e) => {
+                    const t = e.touches[0];
+                    const el = document.elementFromPoint(t.clientX, t.clientY);
+                    if (el && el.classList.contains('grid-cell')) el.classList.add('filled');
+                };
+                grid.ontouchmove = paint;
+                grid.ontouchstart = paint;
+            }, 50);
+        }
+
+        // 2. VIBRATION
+        function initVibrateTest(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-xs space-y-4">
+                    <button onclick="navigator.vibrate(200)" class="w-full py-4 bg-indigo-100 text-indigo-700 rounded-xl font-bold flex items-center justify-center gap-3 active:bg-indigo-200 transition-colors">
+                        <i class="fa-solid fa-mobile-button"></i> Soft Haptic (200ms)
+                    </button>
+                    <button onclick="navigator.vibrate([500, 100, 500])" class="w-full py-4 bg-amber-100 text-amber-700 rounded-xl font-bold flex items-center justify-center gap-3 active:bg-amber-200 transition-colors">
+                        <i class="fa-solid fa-bell"></i> Notification Pattern
+                    </button>
+                    <button onclick="navigator.vibrate(2000)" class="w-full py-4 bg-red-100 text-red-700 rounded-xl font-bold flex items-center justify-center gap-3 active:bg-red-200 transition-colors">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Long Buzz (2s)
+                    </button>
+                    <p class="text-center text-[10px] text-slate-400 mt-4">Note: Won't work in Silent Mode on iOS.</p>
+                </div>
+            `;
+        }
+
+        // 3. SENSORS
+        function initSensorsTest(container) {
+            container.innerHTML = `
+                <div class="w-full grid gap-4">
+                    <div class="glass-card p-4 rounded-xl text-left">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">Accelerometer</p>
+                        <div id="accel" class="font-mono text-sm text-slate-800 mt-1">Waiting...</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl text-left">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">Gyroscope</p>
+                        <div id="gyro" class="font-mono text-sm text-slate-800 mt-1">Waiting...</div>
+                    </div>
+                    <div class="text-center text-xs text-slate-400 mt-4">
+                        Tilt device to verify sensors.
+                    </div>
+                </div>
+            `;
+            const handleM = (e) => {
+                if (e.accelerationIncludingGravity) {
+                    const { x, y, z } = e.accelerationIncludingGravity;
+                    const el = document.getElementById('accel');
+                    if (el) el.innerHTML = `X:${x.toFixed(1)} Y:${y.toFixed(1)} Z:${z.toFixed(1)}`;
+                }
+            };
+            const handleO = (e) => {
+                const el = document.getElementById('gyro');
+                if (el) el.innerHTML = `α:${e.alpha?.toFixed(0)}° β:${e.beta?.toFixed(0)}° γ:${e.gamma?.toFixed(0)}°`;
+            };
+            window.addEventListener('devicemotion', handleM);
+            window.addEventListener('deviceorientation', handleO);
+        }
+
+        // 4. BATTERY
+        function initBatteryTest(container) {
+            if (!navigator.getBattery) {
+                container.innerHTML = "<div class='text-center text-slate-500'>Battery API not supported on this device.</div>";
+                return;
+            }
+            navigator.getBattery().then(bat => {
+                const draw = () => {
+                    const lvl = Math.round(bat.level * 100);
+                    container.innerHTML = `
+                        <div class="text-center">
+                            <i class="fa-solid fa-battery-half text-6xl text-emerald-500 mb-4 block animate-pulse"></i>
+                            <h2 class="text-5xl font-extrabold text-slate-900">${lvl}%</h2>
+                            <p class="text-sm font-bold text-slate-500 mt-2">${bat.charging ? 'Charging ⚡' : 'Discharging'}</p>
+                        </div>
+                    `;
+                };
+                draw();
+                bat.addEventListener('levelchange', draw);
+            });
+        }
+
+        // 5. GPS
+        function initGpsTest(container) {
+            container.innerHTML = `
+                <button onclick="getLoc()" class="bg-red-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-200 active:scale-95 transition-transform">
+                    Find Location
+                </button>
+                <div id="gpsData" class="mt-6 text-left w-full max-w-xs text-sm font-mono bg-slate-50 p-4 rounded-xl hidden"></div>
+            `;
+        }
+        window.getLoc = function () {
+            const el = document.getElementById('gpsData');
+            el.innerHTML = "Triangulating...";
+            el.classList.remove('hidden');
+            navigator.geolocation.getCurrentPosition(pos => {
+                el.innerHTML = `
+                    Lat: ${pos.coords.latitude.toFixed(4)}<br>
+                    Lon: ${pos.coords.longitude.toFixed(4)}<br>
+                    Acc: ±${pos.coords.accuracy.toFixed(0)}m
+                `;
+            }, err => el.innerHTML = "Error: " + err.message);
+        };
+
+        // 6. SCREEN
+        function initScreenTest(container) {
+            container.innerHTML = `
+                <div class="space-y-4 w-full text-center">
+                    <div class="bg-green-50 p-4 rounded-xl mb-4">
+                        <p class="text-xs text-green-600 font-bold uppercase">Screen Resolution</p>
+                        <h3 class="text-2xl font-mono font-bold text-slate-800">${window.screen.width} x ${window.screen.height}</h3>
+                        <p class="text-xs text-slate-400">Pixel Ratio: ${window.devicePixelRatio}x</p>
+                    </div>
+
+                    <button onclick="fsColors()" class="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 active:scale-95 transition-transform">
+                        Dead Pixel Test
+                    </button>
+                    <div class="h-12 w-full bg-gradient-to-r from-black via-gray-500 to-white rounded-lg border border-slate-200"></div>
+                    <p class="text-xs text-slate-400">Gradient Banding</p>
+                </div>
+            `;
+        }
+        window.fsColors = function () {
+            const colors = ['#000', '#fff', '#f00', '#0f0', '#00f'];
+            let i = 0;
+            const d = document.createElement('div');
+            d.style.cssText = "position:fixed;inset:0;z-index:9999;background:#000;";
+            d.onclick = () => {
+                i++;
+                if (i >= colors.length) { document.exitFullscreen(); d.remove(); }
+                else d.style.background = colors[i];
+            };
+            document.body.appendChild(d);
+            document.documentElement.requestFullscreen();
+        };
+
+        // 7. CAMERA
+        function initCameraTest(container) {
+            container.innerHTML = `
+                <div class="relative w-full aspect-[3/4] bg-black rounded-2xl overflow-hidden shadow-xl mb-4">
+                    <video id="camFeed" autoplay playsinline class="w-full h-full object-cover"></video>
+                </div>
+                <button onclick="startCam()" class="bg-teal-600 text-white px-6 py-2 rounded-full font-bold shadow-lg shadow-teal-200 text-sm active:scale-95 transition-transform">
+                    Start Camera
+                </button>
+            `;
+        }
+        window.startCam = async function () {
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                document.getElementById('camFeed').srcObject = s;
+                window.localStream = s;
+            } catch { alert("Permission Denied"); }
+        };
+
+        // 8. AUDIO 
+        function initAudioTest(container) {
+            container.innerHTML = `
+                 <button onclick="navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{window.localStream=s;alert('Mic Active!')})" class="w-full py-4 mb-4 bg-rose-100 text-rose-700 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-microphone"></i> Test Microphone
+                 </button>
+                 <button onclick="playTestTone()" class="w-full py-4 bg-indigo-100 text-indigo-700 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-volume-high"></i> Test Speaker (Beep)
+                 </button>
+            `;
+        }
+        window.playTestTone = function () {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const o = ctx.createOscillator();
+            o.connect(ctx.destination);
+            o.start();
+            setTimeout(() => o.stop(), 500);
+        };
+
+        // 9. NETWORK
+        function initNetworkTest(container) {
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-6">
+                        <i class="fa-solid fa-wifi text-4xl text-green-500 mb-2"></i>
+                        <h3 class="text-2xl font-bold">${navigator.onLine ? "Online" : "Offline"}</h3>
+                        <p class="text-sm text-slate-400">${navigator.connection?.effectiveType?.toUpperCase() || 'WIFI/LTE'}</p>
+                    </div>
+                    <button onclick="pingTest()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-green-200 active:scale-95 transition-transform">
+                        Check Latency
+                    </button>
+                    <div id="pingRes" class="mt-4 font-mono font-bold text-slate-700"></div>
+                </div>
+            `;
+        }
+        window.pingTest = async function () {
+            const el = document.getElementById('pingRes');
+            el.innerHTML = "Pinging...";
+            const start = Date.now();
+            try {
+                await fetch('https://www.google.com/favicon.ico?' + start, { mode: 'no-cors' });
+                el.innerHTML = (Date.now() - start) + " ms";
+            } catch { el.innerHTML = "Error"; }
+        };
+
+        // 10. KEYBOARD
+        function initKeyboardTest(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-2xl">
+                    <p class="text-center text-sm text-slate-500 mb-6">Press keys on your keyboard to test them.</p>
+                    <div id="keyboard-layout" class="flex flex-col gap-2 select-none">
+                        <!-- Dynamic Grid injected -->
+                    </div>
+                </div>
+            `;
+
+            const rows = [
+                ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
+                ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+                ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+                ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
+                ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+                ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Fn', 'Ctrl']
+            ];
+
+            const layout = document.getElementById('keyboard-layout');
+            layout.innerHTML = '';
+
+            rows.forEach(row => {
+                const rDiv = document.createElement('div');
+                rDiv.className = 'flex justify-center gap-1';
+                row.forEach(key => {
+                    const kDiv = document.createElement('div');
+                    let wClass = 'w-10';
+                    if (key.length > 1) wClass = 'px-3 w-auto min-w-[40px]';
+                    if (key === 'Space') wClass = 'w-64';
+
+                    kDiv.className = `${wClass} h-10 flex items-center justify-center bg-white border border-slate-200 rounded text-xs font-bold shadow-sm transition-all duration-75 key-key-${key.toUpperCase()}`;
+                    kDiv.innerText = key;
+                    kDiv.setAttribute('data-key', key.toUpperCase());
+                    rDiv.appendChild(kDiv);
+                });
+                layout.appendChild(rDiv);
+            });
+
+            // Listener
+            window.keyHandler = (e) => {
+                e.preventDefault();
+                let k = e.key.toUpperCase();
+                if (k === ' ') k = 'SPACE';
+                if (k === 'ESCAPE') k = 'ESC';
+                if (k === 'CONTROL') k = 'CTRL';
+                if (k === 'CAPSLOCK') k = 'CAPS';
+                if (k === 'SHIFT') k = 'SHIFT';
+                if (k === 'ALT') k = 'ALT';
+                if (k === 'META') k = 'WIN';
+                if (k === 'ENTER') k = 'ENTER';
+                if (k === 'BACKSPACE') k = 'BACKSPACE';
+                if (k === 'TAB') k = 'TAB';
+
+                // Find visually
+                const keys = document.querySelectorAll(`[data-key="${k}"]`);
+                keys.forEach(keyEl => {
+                    keyEl.classList.remove('bg-white', 'text-slate-800');
+                    keyEl.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                });
+            };
+            window.addEventListener('keydown', window.keyHandler);
+        }
+
+        // 11. MOUSE
+        function initMouseTest(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-md space-y-6 text-center">
+                    <div class="flex justify-center gap-4">
+                        <div id="btn-left" class="w-24 h-32 bg-white border-2 border-slate-200 rounded-l-full rounded-r-none flex items-center justify-center text-slate-300">LMB</div>
+                        <div id="btn-scroll" class="w-12 h-32 bg-white border-2 border-slate-200 rounded-none flex items-center justify-center text-slate-300"><i class="fa-solid fa-arrows-up-down"></i></div>
+                        <div id="btn-right" class="w-24 h-32 bg-white border-2 border-slate-200 rounded-r-full rounded-l-none flex items-center justify-center text-slate-300">RMB</div>
+                    </div>
+                    
+                    <div id="dbl-click-area" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-xl select-none cursor-pointer hover:bg-slate-50">
+                        <p class="font-bold text-slate-500">Double Click Here</p>
+                    </div>
+
+                    <div class="text-xs text-slate-400">Right click the RMB area to test context menu prevention.</div>
+                </div>
+            `;
+
+            const l = document.getElementById('btn-left');
+            const r = document.getElementById('btn-right');
+            const s = document.getElementById('btn-scroll');
+            const d = document.getElementById('dbl-click-area');
+
+            container.onmousedown = (e) => {
+                if (e.button === 0) {
+                    l.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                    setTimeout(() => l.classList.remove('bg-emerald-500', 'text-white', 'border-emerald-600'), 200);
+                }
+                if (e.button === 1) {
+                    s.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                    setTimeout(() => s.classList.remove('bg-emerald-500', 'text-white', 'border-emerald-600'), 200);
+                }
+                if (e.button === 2) {
+                    r.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                    setTimeout(() => r.classList.remove('bg-emerald-500', 'text-white', 'border-emerald-600'), 200);
+                }
+            };
+
+            container.oncontextmenu = (e) => {
+                e.preventDefault();
+            };
+
+            container.onwheel = () => {
+                s.classList.add('bg-green-500', 'text-white');
+                setTimeout(() => s.classList.remove('bg-green-500', 'text-white'), 200);
+            };
+
+            d.ondblclick = () => {
+                d.classList.add('bg-emerald-100', 'border-emerald-500');
+                d.innerHTML = '<p class="font-bold text-emerald-600"><i class="fa-solid fa-check"></i> Double Click Detected</p>';
+            };
+        }
+
+        // --- PDF Export ---
+        function generatePDF() {
+            if (!window.jspdf) return;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Minimal Header
+            doc.setFillColor(79, 70, 229);
+            doc.rect(0, 0, 210, 30, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.text("DeviceZen Mobile Report", 15, 20);
+            doc.setFontSize(10);
+            doc.text(document.getElementById('modelName').innerText, 150, 20);
+
+            // Table
+            const rows = Object.entries(state.results).map(([k, v]) => [tests[k].name, v]);
+            doc.autoTable({
+                startY: 40,
+                head: [['Test', 'Status']],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] }
+            });
+
+            doc.save('DeviceZen-Report.pdf');
+        }
+    </script>
+</body>
+
+</html>

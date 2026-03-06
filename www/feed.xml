@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IPEC Consulting Expenses - Updates</title>
+    <link>https://ipecconsulting.netlify.app/</link>
+    <description>Latest news and updates from the International Process Excellence Council.</description>
+    <language>en-us</language>
+    <atom:link href="https://ipecconsulting.netlify.app/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Feb 2026 22:45:00 GMT</lastBuildDate>
+    <copyright>Copyright 2026 IPEC Consulting</copyright>
+    <image>
+       <url>https://ipecconsulting.netlify.app/assets/images/ipec.jpg</url>
+       <title>IPEC Consulting</title>
+       <link>https://ipecconsulting.netlify.app/</link>
+    </image>
+
+    <item>
+      <title>Welcome to the New IPEC Portal</title>
+      <link>https://ipecconsulting.netlify.app/index.html</link>
+      <pubDate>Mon, 15 Feb 2026 09:00:00 GMT</pubDate>
+      <description>We have launched our new PWA-enabled expense management portal for enhanced productivity and offline access.</description>
+      <guid>https://ipecconsulting.netlify.app/index.html#launch</guid>
+    </item>
+
+    <item>
+      <title>Meet Our Technical Team</title>
+      <link>https://ipecconsulting.netlify.app/mitanshu.html</link>
+      <pubDate>Mon, 15 Feb 2026 10:30:00 GMT</pubDate>
+      <description>Spotlight on Mitanshu Bhasin, our lead developer driving cybersecurity and innovation.</description>
+      <guid>https://ipecconsulting.netlify.app/mitanshu.html</guid>
+    </item>
+  </channel>
+</rss>

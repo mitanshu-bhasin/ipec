@@ -1,0 +1,58 @@
+/* emp-styles.css - Employee-specific styles */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.glass-header {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.input-field {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    transition: all 0.2s;
+    color: #334155;
+}
+
+.input-field:focus {
+    background: white;
+    border-color: #10b981;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.dark .card {
+    background-color: #16181C;
+    border-color: #2F3336;
+    color: #f8fafc;
+}
+
+.dark .glass-header {
+    background: rgba(0, 0, 0, 0.92);
+    border-bottom: 1px solid #2F3336;
+}
+
+.dark .input-field {
+    background: #000000;
+    border-color: #2F3336;
+    color: #f1f5f9;
+}
+
+.dark .input-field:focus {
+    background: #16181C;
+}

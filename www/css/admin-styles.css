@@ -1,0 +1,367 @@
+/* admin-styles.css - Admin-specific styles */
+
+/* ===== Input & Button Styles ===== */
+.input-primary {
+    width: 100%;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    color: #475569;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.dark .input-primary {
+    background-color: #000000;
+    border-color: #2F3336;
+    color: #e2e8f0;
+}
+
+.input-primary:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1E8E3E, #137333);
+    color: white;
+    font-weight: 600;
+    padding: 0.625rem 1.75rem;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25);
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #188038, #0d5f26);
+    box-shadow: 0 6px 16px rgba(30, 142, 62, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(30, 142, 62, 0.2);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #d93025, #b3261e);
+    color: white;
+    font-weight: 600;
+    padding: 0.625rem 1.75rem;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(217, 48, 37, 0.25);
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c5221f, #a51d1a);
+    box-shadow: 0 6px 16px rgba(217, 48, 37, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-danger:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(217, 48, 37, 0.2);
+}
+
+/* ===== MOBILE RESPONSIVE OPTIMIZATION ===== */
+@media (max-width: 767px) {
+    #content-area {
+        padding: 12px !important;
+    }
+
+    #content-area .p-6 {
+        padding: 14px !important;
+    }
+
+    /* ---- USER MANAGEMENT: Card Layout on Mobile ---- */
+    #content-area .user-mgmt-table-wrap table thead {
+        display: none !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table,
+    #content-area .user-mgmt-table-wrap table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        padding: 14px !important;
+        margin-bottom: 10px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        background: #fff !important;
+        position: relative !important;
+        gap: 6px 12px !important;
+    }
+
+    .dark #content-area .user-mgmt-table-wrap table tbody tr {
+        background: #16181C !important;
+        border-color: #2F3336 !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr.expense-row {
+        display: block !important;
+        border-radius: 10px !important;
+        margin-top: -6px !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td {
+        display: block !important;
+        padding: 2px 0 !important;
+        border: none !important;
+        font-size: 12px !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(2) {
+        width: 100% !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        order: -2 !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(4) {
+        order: -1 !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(1)::before {
+        content: "EMP ID: ";
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(3) {
+        width: 100% !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(3)::before {
+        content: "Email: ";
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(5)::before {
+        content: "Dept: ";
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(6)::before {
+        content: "Budget: ";
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(7)::before {
+        content: "Claims: ";
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8) {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        padding-top: 8px !important;
+        border-top: 1px solid #f1f5f9 !important;
+        margin-top: 6px !important;
+    }
+
+    .dark #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8) {
+        border-top-color: #2F3336 !important;
+    }
+
+    #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8)>div {
+        opacity: 1 !important;
+    }
+
+    /* ---- AUDIT LOGS: Card Layout on Mobile ---- */
+    #content-area .audit-table-wrap table thead {
+        display: none !important;
+    }
+
+    #content-area .audit-table-wrap table,
+    #content-area .audit-table-wrap table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        padding: 14px !important;
+        margin-bottom: 10px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        background: #fff !important;
+        position: relative !important;
+        gap: 4px 12px !important;
+    }
+
+    .dark #content-area .audit-table-wrap table tbody tr {
+        background: #16181C !important;
+        border-color: #2F3336 !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td {
+        display: block !important;
+        padding: 2px 0 !important;
+        border: none !important;
+        font-size: 12px !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(1) {
+        width: 100% !important;
+        order: -3 !important;
+        font-size: 10px !important;
+        color: #94a3b8 !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(2) {
+        order: -2 !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(3) {
+        order: -1 !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(3)::before {
+        content: "By: ";
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(4)::before {
+        content: "Role: ";
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(5) {
+        width: 100% !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(5)::before {
+        content: "Expense: ";
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(6) {
+        width: 100% !important;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(6)::before {
+        content: "Comment: ";
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+    #content-area .audit-table-wrap table tbody tr td:nth-child(7) {
+        position: absolute !important;
+        top: 12px !important;
+        right: 12px !important;
+    }
+
+    /* ---- Audit Header: Stack buttons on mobile ---- */
+    .audit-header-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+
+    .audit-header-flex .flex.gap-2 {
+        width: 100% !important;
+    }
+
+    .audit-header-flex .flex.gap-2 button {
+        flex: 1 !important;
+    }
+
+    /* ---- APPROVALS: Compress card padding ---- */
+    #content-area .grid {
+        gap: 12px !important;
+    }
+
+    /* ---- Overview stat cards: 2-col grid ---- */
+    #content-area .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    #content-area .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4>div {
+        padding: 14px !important;
+    }
+
+    #content-area .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 .text-3xl {
+        font-size: 1.25rem !important;
+    }
+
+    /* ---- Reports bars: compress ---- */
+    #content-area .space-y-3 .flex.items-center.gap-4 span.w-32 {
+        width: 80px !important;
+        font-size: 11px !important;
+    }
+
+    /* ---- Task Manager: Stack columns on mobile ---- */
+    #content-area .flex-col.lg\:flex-row {
+        gap: 14px !important;
+    }
+
+    /* ---- General text compression for mobile ---- */
+    #content-area .text-lg {
+        font-size: 0.9rem !important;
+    }
+
+    #content-area .text-sm {
+        font-size: 0.8rem !important;
+    }
+
+    /* ---- Search bar in User Mgmt: full width ---- */
+    .user-mgmt-header .flex.gap-3 {
+        flex-wrap: wrap !important;
+    }
+
+    .user-mgmt-header .flex.gap-3>div.relative {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .user-mgmt-header .flex.gap-3>button {
+        flex: 1 !important;
+        justify-content: center !important;
+    }
+}
+
+/* Slightly compress for tablets too */
+@media (min-width: 768px) and (max-width: 1023px) {
+    #content-area {
+        padding: 16px !important;
+    }
+}

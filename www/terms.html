@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - IPEC Consulting</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <script src="js/theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <nav
+        class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html"
+                class="font-bold text-xl bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">IPEC
+                Consulting</a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()"
+                    class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-yellow-400 transition">
+                    <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                </button>
+                <a href="index.html"
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Back
+                    to
+                    Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="glass-card rounded-2xl p-8 md:p-12 bg-white dark:bg-slate-800">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">Terms of Service</h1>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Effective Date: February 15, 2026</p>
+
+            <div class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 space-y-6">
+                <p>Welcome to IPEC Consulting. By accessing or using our expense management portal ("Service"), you
+                    agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms,
+                    you may not access the Service.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">1. Authorized Use</h2>
+                <p>The Service is intended solely for authorized employees and administrators of IPEC Consulting.
+                    Unauthorized access or use of this system is strictly prohibited and may result in disciplinary
+                    action or legal prosecution.</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>You agree to use the Service only for lawful business purposes.</li>
+                    <li>You must maintain the confidentiality of your login credentials.</li>
+                    <li>You are responsible for all activities that occur under your account.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">2. Accurate Information</h2>
+                <p>When submitting expense claims, reports, or other data, you represent and warrant that all
+                    information provided is accurate, complete, and in compliance with company policies.</p>
+                <p>Falsification of expense claims is a serious offense and constitutes grounds for immediate
+                    termination of employment and potential legal action.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">3. Intellectual Property</h2>
+                <p>The Service and its original content, features, and functionality are and will remain the exclusive
+                    property of IPEC Consulting and its licensors. The Service is protected by copyright, trademark, and
+                    other laws.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">4. Termination</h2>
+                <p>We may terminate or suspend your account specifically if you breach these Terms or your employment
+                    contract. Upon termination, your right to use the Service will immediately cease.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">5. Limitation of Liability</h2>
+                <p>In no event shall IPEC Consulting, nor its directors, employees, partners, agents, suppliers, or
+                    affiliates, be liable for any indirect, incidental, special, consequential or punitive damages,
+                    including without limitation, loss of profits, data, use, goodwill, or other intangible losses,
+                    resulting from your access to or use of the Service.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">6. Governing Law</h2>
+                <p>These Terms shall be governed and construed in accordance with the laws of the jurisdiction in which
+                    IPEC Consulting is established, without regard to its conflict of law provisions.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">7. Changes</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By
+                    continuing to access or use our Service after those revisions become effective, you agree to be
+                    bound by the revised terms.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">8. Contact Us</h2>
+                <p>If you have any questions about this Terms, please contact your HR department or internal support.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-slate-500 dark:text-slate-400 text-sm">
+            <p>&copy; 2026 IPEC Consulting. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

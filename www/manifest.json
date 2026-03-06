@@ -1,0 +1,123 @@
+{
+  "name": "IPEC Consulting",
+  "short_name": "IPEC Consulting",
+  "id": "/?source=pwa",
+  "description": "The official portal for IPEC Consulting. Advancing excellence across education, industry, and governance. Streamline your operations with our secure, efficient tools.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "handle_links": "preferred",
+  "categories": [
+    "productivity",
+    "finance",
+    "business"
+  ],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "assets/images/cropped-ipec-logo-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/ipec.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/ipec.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/images/s1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Comprehensive Dashboard Overview"
+    },
+    {
+      "src": "assets/images/s2.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Simple Expense Submission"
+    },
+    {
+      "src": "assets/images/s3.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Real-time Approval Tracking"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Submit Claim",
+      "short_name": "New Claim",
+      "description": "Create a new expense claim instantly",
+      "url": "./emp.html?action=create",
+      "icons": [
+        {
+          "src": "assets/images/ipec.jpg",
+          "sizes": "192x192",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "Admin Panel",
+      "short_name": "Admin",
+      "description": "Access administrative controls",
+      "url": "./admin.html",
+      "icons": [
+        {
+          "src": "assets/images/ipec.jpg",
+          "sizes": "192x192",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {
+    "preferred_width": 480
+  },
+  "share_target": {
+    "action": "./emp.html",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "link",
+      "files": [
+        {
+          "name": "receipt",
+          "accept": [
+            "image/jpeg",
+            "image/png",
+            "application/pdf"
+          ]
+        }
+      ]
+    }
+  }
+}

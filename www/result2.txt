@@ -1,0 +1,41 @@
+664: count= 1 | opens=1 closes=0 | <div id="modal-expense"
+666: count= 2 | opens=1 closes=0 | <div
+668: count= 3 | opens=1 closes=0 | <div
+670: count= 4 | opens=1 closes=0 | <div class="flex-1 min-w-0 pr-10">
+678: count= 5 | opens=1 closes=0 | <div
+693: count= 4 | opens=0 closes=1 | </div>
+694: count= 3 | opens=0 closes=1 | </div>
+698: count= 2 | opens=0 closes=1 | </div>
+700: count= 3 | opens=1 closes=0 | <div class="flex-1 flex flex-col lg:flex
+701: count= 4 | opens=1 closes=0 | <div class="flex-1 p-4 sm:p-6 space-y-6 
+702: count= 5 | opens=1 closes=0 | <div class="grid grid-cols-2 gap-4">
+703: count= 6 | opens=1 closes=0 | <div
+710: count= 5 | opens=0 closes=1 | </div>
+711: count= 6 | opens=1 closes=0 | <div
+715: count= 7 | opens=1 closes=0 | <div id="modal-status"
+717: count= 6 | opens=0 closes=1 | PENDING</div>
+718: count= 5 | opens=0 closes=1 | </div>
+719: count= 4 | opens=0 closes=1 | </div>
+721: count= 5 | opens=1 closes=0 | <div id="modal-approval-proof-container"
+727: count= 4 | opens=0 closes=1 | </div>
+730: count= 5 | opens=1 closes=0 | <div id="modal-notes-container"
+739: count= 4 | opens=0 closes=1 | </div>
+742: count= 5 | opens=1 closes=0 | <div>
+745: count= 6 | opens=1 closes=0 | <div id="modal-items" class="space-y-3">
+746: count= 5 | opens=0 closes=1 | </div>
+747: count= 4 | opens=0 closes=1 | </div>
+748: count= 3 | opens=0 closes=1 | </div>
+750: count= 4 | opens=1 closes=0 | <div
+752: count= 5 | opens=1 closes=0 | <div class="lg:flex-1 max-h-48 sm:max-h-
+754: count= 6 | opens=1 closes=0 | <div id="modal-history"
+756: count= 5 | opens=0 closes=1 | </div>
+757: count= 4 | opens=0 closes=1 | </div>
+759: count= 5 | opens=1 closes=0 | <div id="action-panel"
+768: count= 6 | opens=1 closes=0 | <div class="grid grid-cols-2 gap-3">
+773: count= 5 | opens=0 closes=1 | </div>
+774: count= 4 | opens=0 closes=1 | </div>
+775: count= 3 | opens=0 closes=1 | </div>
+776: count= 2 | opens=0 closes=1 | </div>
+777: count= 1 | opens=0 closes=1 | </div>
+778: count= 0 | opens=0 closes=1 | </div>
+781: count= 1 | opens=1 closes=0 | <div id="modal-incoming-call"

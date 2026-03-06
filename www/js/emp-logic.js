@@ -1,0 +1,2858 @@
+// Imports (unchanged)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, doc, addDoc, onSnapshot, serverTimestamp, orderBy, getDoc, updateDoc, deleteDoc, setDoc, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging.js";
+import { AISupport } from './ai-support.js';
+import { checkSpam } from './spam-filter.js';
+// Google Translate Widget Logic
+window.triggerGoogleTranslate = (lang) => {
+    const select = document.querySelector('.goog-te-combo');
+    if (select) {
+        select.value = lang;
+        select.dispatchEvent(new Event('change'));
+    }
+}
+
+window.toggleEmpLanguageDropdown = () => {
+    const dd = document.getElementById('emp-lang-dropdown');
+    if (dd) dd.classList.toggle('hidden');
+};
+
+window.selectEmpLanguage = (lang) => {
+    triggerGoogleTranslate(lang);
+    updateEmpLangUI(lang);
+    const dd = document.getElementById('emp-lang-dropdown');
+    if (dd) dd.classList.add('hidden');
+};
+
+function updateEmpLangUI(lang) {
+    const select = document.getElementById('emp-lang-select');
+    if (select) select.value = lang;
+}
+
+window.toggleEmpView = (view) => {
+    const btnClaims = document.getElementById('btn-view-claims');
+    const btnTasks = document.getElementById('btn-view-tasks');
+    const secClaims = document.getElementById('section-claims');
+    const secTasks = document.getElementById('section-tasks');
+
+    if (view === 'claims') {
+        btnClaims.classList.add('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+        btnClaims.classList.remove('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+        btnClaims.querySelector('i').classList.add('text-green-500');
+
+        btnTasks.classList.remove('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+        btnTasks.classList.add('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+        btnTasks.querySelector('i').classList.remove('text-green-500');
+
+        secClaims.classList.remove('hidden');
+        secTasks.classList.add('hidden');
+    } else {
+        btnTasks.classList.add('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+        btnTasks.classList.remove('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+        btnTasks.querySelector('i').classList.add('text-green-500');
+
+        btnClaims.classList.remove('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+        btnClaims.classList.add('border-transparent', 'text-slate-500', 'dark:text-slate-400');
+        btnClaims.querySelector('i').classList.remove('text-green-500');
+
+        secClaims.classList.add('hidden');
+        secTasks.classList.remove('hidden');
+
+        // Fetch tasks if viewed
+        if (!window.empTasksLoaded) {
+            fetchEmpTasks();
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Init Lang
+});
+
+// ImgBB Config
+const IMGBB_KEY = "dbcb9de125850fefa4337db8d1f37ab6";
+const IMGBB_URL = "https://api.imgbb.com/1/upload";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBHQF5cUBujrCJqOqybEUIeanTCbHYpMWU",
+    authDomain: "expense-manager-ec149.firebaseapp.com",
+    projectId: "expense-manager-ec149",
+    storageBucket: "expense-manager-ec149.firebasestorage.app",
+    messagingSenderId: "868468480650",
+    appId: "1:868468480650:web:484a4e831724a8112feb73"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+let messaging = null;
+try {
+    messaging = getMessaging(app);
+} catch (e) {
+    console.warn("FCM error:", e);
+}
+
+let currentUser = null;
+let userData = null;
+try {
+    const cached = localStorage.getItem('ipec_emp_data_cache');
+    if (cached) {
+        userData = JSON.parse(cached);
+        currentUser = { email: userData.email, uid: userData.uid };
+        document.addEventListener('DOMContentLoaded', () => {
+            const authSc = document.getElementById('auth-screen');
+            const dashSc = document.getElementById('dashboard-screen');
+            if (authSc && dashSc) {
+                authSc.classList.add('hidden');
+                dashSc.classList.remove('hidden');
+            }
+            const nameD = document.getElementById('user-name-display');
+            if (nameD) nameD.textContent = userData.name || '';
+            const roleD = document.getElementById('user-role-display');
+            if (roleD) roleD.textContent = userData.role || 'Employee';
+            const avContainer = document.getElementById('header-profile-avatar');
+            if (avContainer) {
+                if (userData.photoUrl) avContainer.innerHTML = `<img src="${userData.photoUrl}" class="w-full h-full object-cover">`;
+                else avContainer.innerHTML = `<i class="fa-solid fa-user-gear text-xs"></i>`;
+            }
+        });
+    }
+} catch (e) { }
+let expensesData = []; // Store for client-side filtering
+let expensesUnsub = null; // Store listener to unsubscribe
+let aiAssistant = null;
+let lastDashboardContext = null;
+
+// Profile Logic
+window.openProfileModal = () => {
+    // Handle case where custom fields might not be set yet
+    document.getElementById('profile-name').value = userData.name || '';
+    document.getElementById('profile-email').value = userData.email || '';
+    document.getElementById('profile-dept').value = userData.department || '';
+    document.getElementById('profile-empid').value = userData.employeeId || '';
+    document.getElementById('profile-phone').value = userData.phone || '';
+    document.getElementById('profile-dob').value = userData.dob || '';
+    document.getElementById('modal-profile').classList.remove('hidden');
+};
+
+window.submitProfile = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = document.getElementById('profile-name').value;
+    const phone = document.getElementById('profile-phone').value;
+    const dob = document.getElementById('profile-dob').value;
+
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating...';
+    btn.disabled = true;
+
+    try {
+        // Only update editable fields. Department and EmployeeID are managed by Admin.
+        await updateDoc(doc(db, "users", userData.docId), {
+            name, phone, dob, updatedAt: serverTimestamp()
+        });
+
+        userData.name = name; // Local update
+        userData.phone = phone;
+        userData.dob = dob;
+
+        document.getElementById('user-name-display').textContent = name;
+        showToast("Profile updated successfully!", "success");
+        closeModal('modal-profile');
+    } catch (err) {
+        console.error(err);
+        showToast("Update failed: " + err.message, "error");
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+};
+
+window.resetUserPassword = async () => {
+    if (await confirm("Send password reset email to " + userData.email + "?")) {
+        try {
+            await sendPasswordResetEmail(auth, userData.email);
+            showToast("Password reset email sent!", "success");
+        } catch (e) {
+            showToast(e.message, "error");
+        }
+    }
+};
+
+// Toast function
+window.showToast = (message, type = 'info') => {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    const colors = {
+        success: 'bg-green-600',
+        error: 'bg-red-600',
+        info: 'bg-green-600',
+        warning: 'bg-yellow-600'
+    };
+    toast.className = `${colors[type]} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-[slideUp_0.3s] z-50`;
+    toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span class="text-sm">${message}</span>
+            `;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+};
+
+// Load company branding
+async function loadCompanyBranding() {
+    try {
+        const settingsRef = doc(db, "settings", "global");
+        const settingsSnap = await getDoc(settingsRef);
+        if (settingsSnap.exists()) {
+            const data = settingsSnap.data();
+
+            if (data.name) {
+                document.getElementById('login-company-name').textContent = data.name;
+                document.getElementById('header-company-name').innerHTML = data.name.replace(/(\S+)/, '$1<span class="text-green-600">Expense</span>');
+            }
+
+            if (data.logo) {
+                const loginImg = document.getElementById('login-logo-img');
+                const loginFallback = document.getElementById('login-logo-fallback');
+                loginImg.src = data.logo;
+                loginImg.classList.remove('hidden');
+                loginFallback.classList.add('hidden');
+
+                const headerImg = document.getElementById('header-logo-img');
+                const headerFallback = document.getElementById('header-logo-fallback');
+                headerImg.src = data.logo;
+                headerImg.classList.remove('hidden');
+                headerFallback.classList.add('hidden');
+            }
+        }
+    } catch (e) {
+        console.error("Error loading branding:", e);
+    }
+}
+
+window.handleProofUpload = async (input) => {
+    const file = input.files[0];
+    if (!file) return;
+
+    const label = document.getElementById('proof-upload-label');
+    const hiddenInput = document.getElementById('approval-proof-final-url');
+    const urlInput = document.getElementById('approval-proof-url');
+    const removeBtn = document.getElementById('btn-remove-proof');
+
+    // Reset URL input
+    urlInput.value = '';
+
+    const originalLabelHtml = label.innerHTML;
+
+    // Loading UI
+    label.classList.add('opacity-50', 'pointer-events-none');
+    label.innerHTML = '<div class="flex items-center justify-center gap-2 p-2"><i class="fa-solid fa-circle-notch fa-spin text-green-600"></i> <span class="text-xs font-bold text-green-700">Uploading...</span></div>';
+
+    let imageUrl = '';
+
+    try {
+        const formData = new FormData();
+        formData.append('key', IMGBB_KEY);
+        formData.append('image', file);
+
+        const response = await fetch(IMGBB_URL, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || 'ImgBB upload failed');
+        }
+
+        const data = await response.json();
+        imageUrl = data.data.url;
+
+        if (!imageUrl) throw new Error("Upload failed");
+
+        hiddenInput.value = imageUrl;
+
+        // Success UI
+        label.classList.remove('border-dashed', 'bg-emerald-50/50');
+        label.classList.add('border-solid', 'bg-emerald-100');
+        label.innerHTML = `
+                    <div class="flex items-center gap-3 p-1">
+                        <div class="w-8 h-8 bg-emerald-200 rounded flex items-center justify-center text-green-700">
+                             <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="block text-xs font-bold text-emerald-800">Attached</span>
+                            <span class="block text-[10px] text-green-700 truncate">${file.name}</span>
+                        </div>
+                    </div>`;
+
+        removeBtn.classList.remove('hidden');
+
+    } catch (error) {
+        console.error("Proof Upload Error:", error);
+        showToast("Upload failed: " + error.message, "error");
+        label.innerHTML = originalLabelHtml;
+        label.classList.remove('opacity-50', 'pointer-events-none');
+    } finally {
+        label.classList.remove('opacity-50', 'pointer-events-none');
+    }
+};
+
+window.removeProof = (btn) => {
+    const label = document.getElementById('proof-upload-label');
+    const hiddenInput = document.getElementById('approval-proof-final-url');
+
+    hiddenInput.value = '';
+    btn.classList.add('hidden');
+
+    label.className = 'flex items-center gap-2 w-full p-2 border border-dashed border-emerald-300 rounded cursor-pointer hover:bg-emerald-50 transition bg-emerald-50/50';
+    label.innerHTML = `
+                <div class="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center text-green-600">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <span class="block text-xs font-bold text-green-700">Upload Proof</span>
+                    <span class="block text-[10px] text-green-600/70 truncate">Image or PDF</span>
+                </div>
+                <input type="file" id="proof-file-input" accept="image/*,application/pdf" class="hidden" onchange="handleProofUpload(this)">
+             `;
+};
+
+
+
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    const btn = document.getElementById('login-btn');
+
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        showToast('Login successful!', 'success');
+
+        // Immediate UI Switch to prevent "stuck" feeling
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('dashboard-screen').classList.remove('hidden');
+
+    } catch (err) {
+        showToast("Login Failed: " + err.message, "error");
+        btn.innerHTML = 'Sign In';
+    }
+});
+
+// Modal Helpers
+let inputModalResolve = null;
+
+window.showInputPromise = (title, message, placeholder = '', type = 'text', defaultValue = '') => {
+    // If a previous modal is still open/pending, resolve it with null first to clear state
+    if (inputModalResolve) {
+        inputModalResolve(null);
+        inputModalResolve = null;
+    }
+
+    return new Promise((resolve) => {
+        inputModalResolve = resolve;
+
+        document.getElementById('input-modal-title').textContent = title;
+        document.getElementById('input-modal-message').textContent = message;
+
+        const input = document.getElementById('input-modal-value');
+        if (type === 'none') {
+            input.classList.add('hidden');
+        } else {
+            input.classList.remove('hidden');
+            input.type = type;
+            input.placeholder = placeholder;
+            input.value = defaultValue;
+        }
+
+        const modal = document.getElementById('input-modal');
+        modal.classList.remove('hidden');
+        // Use slightly longer timeout to ensure previous transitions clear
+        setTimeout(() => {
+            document.getElementById('input-modal-content').classList.remove('scale-95', 'opacity-0');
+            document.getElementById('input-modal-content').classList.add('scale-100', 'opacity-100');
+            if (type !== 'none') input.focus();
+        }, 50);
+    });
+};
+
+window.closeInputModal = (val) => {
+    const modal = document.getElementById('input-modal');
+    const content = document.getElementById('input-modal-content');
+
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        // Reset input value to avoid reuse
+        const input = document.getElementById('input-modal-value');
+        if (input) input.value = '';
+    }, 200);
+
+    if (inputModalResolve) {
+        const resolve = inputModalResolve;
+        inputModalResolve = null; // Clear global FIRST
+        resolve(val);
+    }
+};
+
+window.confirmInputModal = () => {
+    const input = document.getElementById('input-modal-value');
+    if (input.classList.contains('hidden')) {
+        closeInputModal(true);
+    } else {
+        closeInputModal(input.value);
+    }
+};
+
+document.getElementById('input-modal-value')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') confirmInputModal();
+});
+
+window.toggleAuthMode = (mode) => {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const loginFooter = document.getElementById('login-footer');
+    const signupFooter = document.getElementById('signup-footer');
+    const googleBtn = document.getElementById('google-signin-container');
+    const title = document.getElementById('login-company-name'); // Optional: Update title
+
+    if (mode === 'signup') {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        loginFooter.classList.add('hidden');
+        signupFooter.classList.remove('hidden');
+        googleBtn.classList.add('hidden'); // Hide Google Sign-in on signup page to keep it focused
+        // title.textContent = "Activate Account"; 
+    } else {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        loginFooter.classList.remove('hidden');
+        signupFooter.classList.add('hidden');
+        googleBtn.classList.remove('hidden');
+        // title.textContent = "IPEC Expense Manager";
+    }
+};
+
+window.handleAccountActivation = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signup-email').value;
+    const pass = document.getElementById('signup-password').value;
+    const btn = document.getElementById('signup-btn');
+
+    if (!email || !pass) return showToast("Please fill in all fields", "error");
+    if (pass.length < 6) return showToast("Password must be at least 6 characters", "warning");
+
+    const originalBtnContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Activating...';
+    btn.disabled = true;
+
+    try {
+        // Check if email already exists in DB
+        const q = query(collection(db, "users"), where("email", "==", email));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+            throw new Error("Email not found in employee database. Contact HR.");
+        }
+
+        const userDoc = snap.docs[0];
+        const userData = userDoc.data();
+
+        if (userData.uid) {
+            throw new Error("Account already activated. Please login.");
+        }
+
+        const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+
+        // Activate User: Update Firestore with Auth UID
+        await updateDoc(doc(db, "users", userDoc.id), {
+            uid: userCred.user.uid,
+            updatedAt: serverTimestamp(),
+            status: 'ACTIVE'
+        });
+
+        showToast("Account activated successfully! Logging in...", "success");
+        // Auth Check will handle the rest
+    } catch (err) {
+        showToast(err.message, "error");
+        btn.innerHTML = originalBtnContent;
+        btn.disabled = false;
+    }
+};
+
+window.forgotPassword = async () => {
+    try {
+        const email = await showInputPromise("Reset Password", "Enter your corporate email to reset password:", "user@brandname.com", "email");
+        if (email) {
+            await sendPasswordResetEmail(auth, email);
+            showToast('Password reset email sent!', 'success');
+        }
+    } catch (e) {
+        showToast(e.message, "error");
+    }
+};
+
+window.handleGoogleLogin = async () => {
+    console.log("Starting Google Sign-In...");
+    const provider = new GoogleAuthProvider();
+    provider.addScope('email');
+    provider.addScope('profile');
+
+    try {
+        console.log("Attempting signInWithPopup...");
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        console.log("Google Sign-In successful for:", user.email);
+
+        // 1. Fetch only email from Google and verify in our records
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        let snap = await getDocs(q);
+
+        if (snap.empty) {
+            // Fallback: Case-insensitive/Trim search
+            try {
+                const allUsersSnap = await getDocs(collection(db, "users"));
+                const foundDoc = allUsersSnap.docs.find(doc => doc.data().email?.trim().toLowerCase() === user.email.trim().toLowerCase());
+                if (foundDoc) {
+                    snap = { empty: false, docs: [foundDoc] };
+                    // Auto-fix email casing in DB
+                    await updateDoc(doc(db, "users", foundDoc.id), { email: user.email });
+                }
+            } catch (e) { console.error("Google Auth Fallback Error", e); }
+        }
+
+        if (snap.empty) {
+            await signOut(auth);
+            showToast(`Access Denied: Email [${user.email}] not registered in system.`, "error");
+            return;
+        }
+
+        const userDoc = snap.docs[0].data();
+        const docId = snap.docs[0].id;
+
+        // 2. Pass user (Update system record with Google UID unconditionally)
+        await updateDoc(doc(db, "users", docId), {
+            uid: user.uid,
+            updatedAt: serverTimestamp(),
+            status: 'ACTIVE',
+            authProvider: 'google'
+        });
+
+        showToast("Login successful!", "success");
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('dashboard-screen').classList.remove('hidden');
+
+    } catch (error) {
+        console.error(error);
+        showToast("Google Sign-In Failed: " + error.message, "error");
+    }
+};
+
+window.toggleSignUp = async () => {
+    const email = await showInputPromise("Sign Up", "Enter your corporate email:", "user@brandname.com", "email");
+    if (!email) return;
+    const pass = await showInputPromise("Sign Up", "Create a password (min 6 characters):", "******", "password");
+    if (email && pass) {
+        try {
+            const q = query(collection(db, "users"), where("email", "==", email));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                showToast("Email not found in records. Contact Admin.", "error");
+                return;
+            }
+
+            await createUserWithEmailAndPassword(auth, email, pass);
+
+            // Update user record with UID - THIS IS THE ACTIVATION STEP
+            const userDoc = snap.docs[0];
+            await updateDoc(doc(db, "users", userDoc.id), {
+                uid: auth.currentUser?.uid,
+                updatedAt: serverTimestamp()
+            });
+
+            showToast("Account created! Logging in...", "success");
+        } catch (e) {
+            showToast(e.message, "error");
+        }
+    }
+};
+
+window.handleLogout = async () => {
+    if (await showInputPromise("Logout", "Are you sure you want to logout?", "", "none")) {
+        localStorage.removeItem('ipec_emp_data_cache');
+        signOut(auth);
+        showToast('Logged out successfully', 'info');
+    }
+};
+
+
+
+
+window.getStatusColor = (status) => {
+    if (status.includes('PENDING')) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+    if (status.includes('APPROVED')) return 'bg-green-100 text-green-700 border-green-200';
+    if (status === 'PAID') return 'bg-green-100 text-green-700 border-green-200';
+    if (status === 'AUDITED') return 'bg-purple-100 text-purple-700 border-purple-200';
+    if (status === 'REJECTED') return 'bg-red-100 text-red-700 border-red-200';
+    if (status === 'PAYMENT_ISSUE' || status === 'PAYMENT_DISPUTED') return 'bg-orange-100 text-orange-700 border-orange-200';
+    return 'bg-slate-100 text-slate-600';
+};
+
+window.renderExpensesList = (expenses) => {
+    const list = document.getElementById('expenses-list');
+    list.innerHTML = '';
+
+    if (expenses.length === 0) {
+        list.innerHTML = `<div class="text-center py-12">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-300">
+                        <i class="fa-solid fa-file-invoice text-2xl"></i>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">No expenses found</p>
+                    <p class="text-xs text-slate-400">Create a new claim to get started.</p>
+                </div>`;
+        return;
+    }
+
+    expenses.forEach(data => {
+        const dateStr = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Now';
+        const amt = parseFloat(data.totalAmount) || 0;
+        // prevent editing if PAID or AUDITED
+        const canEdit = !['PAID', 'AUDITED', 'PAYMENT_ISSUE', 'PAYMENT_DISPUTED'].includes(data.status);
+
+        const div = document.createElement('div');
+        div.className = `card p-4 rounded-lg flex justify-between items-center cursor-pointer hover:border-emerald-300 transition group animate-[slideUp_0.1s]`;
+        div.onclick = (e) => {
+            if (!e.target.closest('button')) viewReportHistory(data);
+        };
+
+        div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded border border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400">
+                            <span class="text-[10px] font-bold uppercase">${dateStr.split(' ')[1] || ''}</span>
+                            <span class="text-lg font-bold text-slate-700 dark:text-slate-200">${dateStr.split(' ')[0] || ''}</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-green-600 transition truncate max-w-[150px] sm:max-w-xs">${data.title}</p>
+                            <div class="flex gap-2 text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 flex-wrap">
+                                <span class="bg-slate-100 px-1.5 rounded text-slate-600 dark:text-slate-300 font-medium"><i class="fa-solid fa-hashtag"></i> ${data.projectCode || 'N/A'}</span>
+                                <span class="bg-slate-100 px-1.5 rounded">${data.currency || 'INR'}</span>
+                                ${data.preApproved ? '<span class="text-green-600"><i class="fa-solid fa-check-circle"></i> Pre-Aprvd</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <span class="badge ${getStatusColor(data.status)}">${data.status.replace('_', ' ')}</span>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1 font-mono">${getSymbol(data.currency)} ${amt.toLocaleString()}</p>
+                        </div>
+                        ${canEdit ? `
+                        <div class="flex flex-col gap-1 transition">
+                            <button onclick="editExpense('${data.id}')" class="w-6 h-6 rounded bg-green-50 text-green-600 hover:bg-green-100 flex items-center justify-center" title="Edit"><i class="fa-solid fa-pen text-xs"></i></button>
+                            <button onclick="deleteExpense('${data.id}')" class="w-6 h-6 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center" title="Delete"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+        list.appendChild(div);
+    });
+}
+
+window.filterExpenses = (term) => {
+    term = term ? term.toLowerCase() : '';
+    const filtered = expensesData.filter(e =>
+        e.title.toLowerCase().includes(term) ||
+        (e.projectCode && e.projectCode.toLowerCase().includes(term)) ||
+        e.totalAmount.toString().includes(term)
+    );
+    renderExpensesList(filtered);
+};
+
+function updateStats(pending, paid) {
+    document.getElementById('stat-pending').textContent = `₹${pending.toLocaleString()}`;
+    document.getElementById('stat-paid').textContent = `₹${paid.toLocaleString()}`;
+}
+
+window.handleFileSelect = async (input) => {
+    const file = input.files[0];
+    if (!file) return;
+
+    const grid = input.closest('.grid');
+    const itemUrlInput = input.closest('.line-item').querySelector('.item-url-input');
+    const hiddenInput = input.closest('.line-item').querySelector('.item-img-url');
+    const label = input.closest('.receipt-label');
+    const removeBtn = input.closest('.relative').querySelector('.btn-remove-img');
+    const statusSpan = input.closest('.grid').querySelector('.file-status');
+
+    // Reset URL input if file is selected
+    if (itemUrlInput) itemUrlInput.value = '';
+
+    const originalLabelHtml = label.innerHTML;
+
+    // UI Loading State
+    label.classList.add('opacity-50', 'pointer-events-none');
+    label.innerHTML = '<div class="flex items-center justify-center gap-2"><i class="fa-solid fa-circle-notch fa-spin text-green-600"></i> <span class="text-xs">Uploading...</span></div>';
+
+    let imageUrl = '';
+
+    try {
+        // 1. Try ImgBB Upload
+        try {
+            const formData = new FormData();
+            formData.append('key', IMGBB_KEY);
+            formData.append('image', file);
+
+            // Client-side auth not needed for ImgBB simple upload with key in form data
+            // const controller = new AbortController();
+            // const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
+            const response = await fetch(IMGBB_URL, {
+                method: 'POST',
+                body: formData,
+                // signal: controller.signal
+            });
+            // clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error?.message || 'ImgBB error');
+            }
+
+            const data = await response.json();
+            imageUrl = data.data.url;
+            console.log("Uploaded to ImgBB:", imageUrl);
+
+        } catch (ikError) {
+            console.warn("ImgBB failed, trying Firebase Storage...", ikError);
+
+            // 2. Fallback to Firebase Storage
+            try {
+                const storageRef = ref(storage, 'receipts/' + (Date.now() + '_' + file.name));
+
+                // Read file as Data URL
+                const dataUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+
+                await uploadString(storageRef, dataUrl, 'data_url');
+                imageUrl = await getDownloadURL(storageRef);
+                console.log("Uploaded to Firebase:", imageUrl);
+            } catch (fbErr) {
+                console.warn("Firebase Storage upload also failed, using local compression fallback", fbErr);
+                // 3. Fallback to Local Compression
+                imageUrl = await compressImage(file);
+                console.log("Using Local Compression");
+            }
+        }
+
+        if (!imageUrl) throw new Error("All upload methods failed");
+
+        // Check size (FireStore Limit 1MB approx)
+        if (imageUrl.length > 700000 && !imageUrl.startsWith('http')) {
+            // Second pass compression if too big and not a URL
+            console.warn("Image too large, compressing further...");
+            imageUrl = await compressImage(file, 0.5, 600);
+        }
+
+        hiddenInput.value = imageUrl;
+
+        label.classList.remove('border-dashed', 'border-slate-300');
+        label.classList.add('border-solid', 'border-green-500', 'bg-emerald-50');
+        label.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">${file.name}</span>
+                    </div>`;
+
+        if (statusSpan) {
+            statusSpan.classList.remove('hidden');
+            statusSpan.innerHTML = '<i class="fa-solid fa-check-circle"></i> Attached';
+        }
+        if (removeBtn) removeBtn.classList.remove('hidden');
+
+    } catch (error) {
+        console.error("Upload Error:", error);
+        showToast("Upload failed: " + error.message, "error");
+
+        // Reset UI on Failure
+        label.innerHTML = originalLabelHtml;
+        label.classList.remove('border-solid', 'border-green-500', 'bg-emerald-50');
+        label.classList.add('border-dashed', 'border-slate-300');
+        if (statusSpan) statusSpan.classList.add('hidden');
+        hiddenInput.value = '';
+    } finally {
+        label.classList.remove('opacity-50', 'pointer-events-none');
+    }
+};
+
+window.handleUrlInput = (input) => {
+    const url = input.value.trim();
+    const hiddenInput = input.closest('.line-item').querySelector('.item-img-url');
+    if (url) {
+        hiddenInput.value = url;
+        const statusSpan = input.closest('.line-item').querySelector('.file-status');
+        if (statusSpan) {
+            statusSpan.innerHTML = '<i class="fa-solid fa-link"></i> Linked';
+            statusSpan.classList.remove('hidden');
+        }
+        const fileContainer = input.closest('.flex-col').querySelector('.receipt-label');
+        if (fileContainer && fileContainer.classList.contains('bg-emerald-50')) {
+            // Reset file input look logic if needed
+        }
+    } else {
+        hiddenInput.value = '';
+        const statusSpan = input.closest('.line-item').querySelector('.file-status');
+        if (statusSpan) statusSpan.classList.add('hidden');
+    }
+};
+
+window.removeImage = (btn) => {
+    const container = btn.closest('div').querySelector('.receipt-label');
+    const hiddenInput = btn.closest('div').nextElementSibling; // item-img-url
+
+    hiddenInput.value = '';
+    btn.classList.add('hidden');
+
+    container.innerHTML = `<div class="w-6 h-6 bg-slate-200 rounded flex items-center justify-center text-slate-500 dark:text-slate-400"><i class="fa-solid fa-camera text-xs"></i></div>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 truncate">Upload / Snap</span>
+                        <input type="file" accept="image/*" class="hidden item-file" onchange="handleFileSelect(this)">`;
+    container.classList.remove('border-emerald-300', 'bg-emerald-50');
+
+    const statusSpan = btn.closest('.line-item').querySelector('.file-status');
+    if (statusSpan) statusSpan.classList.add('hidden');
+};
+
+const compressImage = (file, quality = 0.7, maxWidth = 800) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Loop to reduce quality if size is still huge handled by simpler call for now
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
+};
+
+window.openCreateModal = (type = 'EXPENSE') => {
+    document.getElementById('modal-create').classList.remove('hidden');
+    document.getElementById('line-items-container').innerHTML = '';
+    document.getElementById('expense-id').value = ''; // Clear ID
+
+    // Store type in a hidden field or data attribute if needed,
+    // or just adjust UI here.
+
+    // Auto-generate Report ID
+    const prefix = userData.name ? userData.name.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, '') : 'EMP';
+    const count = (window.expensesData || []).length + 1;
+    const reportId = `${prefix}-${String(count).padStart(3, '0')}`;
+    // document.getElementById('report-title').value = reportId; // Don't set here, set in type logic
+
+    document.getElementById('project-code').value = '';
+    document.getElementById('currency').value = 'INR';
+    document.getElementById('pre-approved').checked = false;
+    document.getElementById('approval-proof-url').value = '';
+    document.getElementById('pre-approved-proof-container').classList.add('hidden');
+    document.getElementById('expense-notes').value = '';
+    document.getElementById('running-total').textContent = '0.00';
+
+    const modalTitle = document.querySelector('#modal-create h3');
+    const submitBtn = document.getElementById('btn-submit');
+    submitBtn.disabled = false;
+    submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
+    const projectContainer = document.getElementById('project-code').closest('div');
+    const preApprovedContainer = document.getElementById('pre-approved').closest('div');
+
+    // Set hidden type
+    document.getElementById('claim-type').value = type;
+
+    // Adjust UI based on type
+    const reportTitleInput = document.getElementById('report-title');
+    const reportTitleLabel = document.getElementById('label-report-id');
+
+    if (type === 'REQUEST') {
+        modalTitle.textContent = 'Request New Item / Subscription';
+        submitBtn.innerHTML = '<span>Submit Request</span> <i class="fa-solid fa-paper-plane"></i>';
+
+        // Hide non-essential fields for request
+        if (projectContainer) projectContainer.classList.add('hidden');
+        if (preApprovedContainer) preApprovedContainer.classList.add('hidden');
+
+        // Change Label and Input for Product Name
+        reportTitleLabel.innerHTML = 'Product / Item Name <span class="text-red-500">*</span>';
+        reportTitleInput.placeholder = "e.g., Adobe Creative Cloud License";
+        reportTitleInput.value = ""; // Clear auto-id
+        reportTitleInput.readOnly = false;
+        reportTitleInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
+        reportTitleInput.classList.add('bg-white', 'dark:bg-slate-800');
+
+        // If editing, value might be set later
+
+    } else {
+        modalTitle.textContent = 'New Expense Claim';
+        submitBtn.innerHTML = '<span>Submit Claim</span> <i class="fa-solid fa-paper-plane"></i>';
+
+        if (projectContainer) projectContainer.classList.remove('hidden');
+        if (preApprovedContainer) preApprovedContainer.classList.remove('hidden');
+
+        // Reset to Report ID
+        reportTitleLabel.innerHTML = 'Report ID <span class="text-green-500 text-[10px] font-normal">(Auto-Generated)</span>';
+        reportTitleInput.value = reportId;
+        reportTitleInput.readOnly = true;
+        reportTitleInput.classList.add('bg-slate-100', 'cursor-not-allowed');
+        reportTitleInput.classList.remove('bg-white', 'dark:bg-slate-800');
+    }
+
+    addLineItem();
+};
+
+window.editExpense = async (id) => {
+    const expense = expensesData.find(e => e.id === id);
+    if (!expense) return;
+
+    openCreateModal();
+
+    const isPaid = expense.status === 'PAID';
+    document.querySelector('#modal-create h3').textContent = isPaid ? 'View Expense (Paid - Read Only)' : 'Edit Expense Claim';
+    const submitBtn = document.getElementById('btn-submit');
+    submitBtn.innerHTML = '<span>Update Claim</span> <i class="fa-solid fa-save"></i>';
+
+    document.getElementById('expense-id').value = id;
+    document.getElementById('report-title').value = expense.title;
+    document.getElementById('project-code').value = expense.projectCode;
+    document.getElementById('currency').value = expense.currency;
+    document.getElementById('pre-approved').checked = expense.preApproved;
+    document.getElementById('approval-proof-url').value = expense.approvalProofUrl || '';
+
+    if (expense.preApproved) document.getElementById('pre-approved-proof-container').classList.remove('hidden');
+    else document.getElementById('pre-approved-proof-container').classList.add('hidden');
+
+    document.getElementById('expense-notes').value = expense.notes;
+
+    // Lock fields if PAID
+    const inputs = document.querySelectorAll('#modal-create input, #modal-create select, #modal-create textarea');
+    inputs.forEach(el => el.disabled = isPaid);
+
+    // Allow closing modal
+    document.querySelectorAll('#modal-create button[onclick*="closeModal"]').forEach(el => el.disabled = false);
+
+    if (isPaid) {
+        submitBtn.classList.add('hidden');
+
+        // Robustly find or create the button
+        let issueBtn = document.getElementById('btn-report-issue');
+        if (!issueBtn) {
+            issueBtn = document.createElement('button');
+            issueBtn.id = 'btn-report-issue';
+            issueBtn.className = 'px-6 py-2 rounded-lg font-bold transition flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200';
+            issueBtn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Payment Not Received';
+            issueBtn.onclick = () => {
+                closeModal('modal-create');
+                setTimeout(() => openPaymentIssueModal(id), 200);
+            };
+            // Insert into the footer, which is the parent of submitBtn
+            submitBtn.parentNode.insertBefore(issueBtn, submitBtn);
+            // Also ensure it is visible
+            issueBtn.classList.remove('hidden');
+        } else {
+            issueBtn.classList.remove('hidden');
+            // Update onclick handlers just in case id changed
+            issueBtn.onclick = () => {
+                closeModal('modal-create');
+                setTimeout(() => openPaymentIssueModal(id), 200);
+            };
+            // Ensure it is in the correct place if it was moved
+            if (issueBtn.parentNode !== submitBtn.parentNode) {
+                submitBtn.parentNode.insertBefore(issueBtn, submitBtn);
+            }
+        }
+    } else if (expense.status === 'REJECTED') {
+        submitBtn.classList.remove('hidden');
+        inputs.forEach(el => el.disabled = false);
+        const issueBtn = document.getElementById('btn-report-issue');
+        if (issueBtn) issueBtn.classList.add('hidden');
+
+        if (expense.reviewRequested) {
+            submitBtn.innerHTML = '<span class="opacity-70"><i class="fa-solid fa-clock-rotate-left"></i> Review Already Requested</span>';
+            submitBtn.className = "px-6 py-2.5 bg-slate-100 text-slate-500 rounded-lg text-sm font-bold transition flex items-center gap-2 cursor-not-allowed border border-slate-200";
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.innerHTML = '<span>Request Review Again</span> <i class="fa-solid fa-rotate-left"></i>';
+            submitBtn.className = "px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg shadow-red-200 text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
+            submitBtn.disabled = false;
+        }
+    } else {
+        submitBtn.classList.remove('hidden');
+        inputs.forEach(el => el.disabled = false);
+        const issueBtn = document.getElementById('btn-report-issue');
+        if (issueBtn) issueBtn.classList.add('hidden');
+
+        // Reset Submit Button to default
+        submitBtn.innerHTML = '<span>Update Claim</span> <i class="fa-solid fa-paper-plane"></i>';
+        submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
+        submitBtn.disabled = false;
+    }
+
+    // Clear default line item
+    document.getElementById('line-items-container').innerHTML = '';
+
+    // Populate line items
+    if (expense.lineItems && expense.lineItems.length > 0) {
+        expense.lineItems.forEach(item => {
+            const tpl = document.getElementById('tpl-line-item');
+            const clone = tpl.content.cloneNode(true);
+            const el = clone.querySelector('.line-item');
+
+            el.querySelector('.item-date').value = item.date || new Date().toISOString().split('T')[0];
+            el.querySelector('.item-desc').value = item.description;
+            el.querySelector('.item-amount').value = item.amount;
+            el.querySelector('.item-category').value = item.category;
+            el.querySelector('.item-img-url').value = item.receiptUrl || '';
+            if (item.receiptUrl && !item.receiptUrl.startsWith('data:')) {
+                // Likely a URL, prefill the text input
+                el.querySelector('.item-url-input').value = item.receiptUrl;
+            }
+
+            if (item.receiptUrl) {
+                const container = el.querySelector('.receipt-label');
+                container.innerHTML = `<i class="fa-solid fa-image text-green-500"></i> <span class="text-xs text-green-600 font-bold">Attached</span>`;
+                container.classList.add('border-emerald-300', 'bg-emerald-50');
+                el.querySelector('.file-status').classList.remove('hidden');
+            }
+
+            if (isPaid) {
+                el.querySelectorAll('input, select, button').forEach(i => i.disabled = true);
+                const removeBtn = el.querySelector('.remove-item-btn, button[onclick*="removeLineItem"]');
+                if (removeBtn) removeBtn.style.display = 'none';
+            }
+
+            document.getElementById('line-items-container').appendChild(clone);
+        });
+        calculateTotal();
+    } else {
+        addLineItem();
+        if (isPaid) {
+            document.querySelectorAll('#line-items-container input, #line-items-container select').forEach(el => el.disabled = true);
+        }
+    }
+    // Hide "Add Item" button if paid
+    const addBtn = document.querySelector('button[onclick="addLineItem()"]');
+    if (addBtn) addBtn.style.display = isPaid ? 'none' : 'block';
+};
+
+window.openPaymentIssueModal = (id) => {
+    const expense = expensesData.find(e => e.id === id);
+    if (!expense) return;
+
+    // Block if already reported
+    if (expense.paymentIssueReported || expense.status === 'PAYMENT_ISSUE' || expense.status === 'PAYMENT_DISPUTED') {
+        showToast("You have already reported a payment issue for this claim. Please wait for admin to resolve it.", "warning");
+        return;
+    }
+
+    document.getElementById('issue-expense-id').value = id;
+    document.getElementById('issue-type').value = 'NOT_RECEIVED';
+    document.getElementById('issue-comment').value = '';
+
+    document.getElementById('modal-payment-issue').classList.remove('hidden');
+};
+
+window.submitPaymentIssue = async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('issue-expense-id').value;
+    const type = document.getElementById('issue-type').value;
+    const comment = document.getElementById('issue-comment').value;
+    const btn = document.getElementById('btn-submit-issue');
+
+    if (!comment) return showToast("Please provide details", "error");
+
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Reporting...';
+    btn.disabled = true;
+
+    try {
+        const expenseRef = doc(db, "expenses", id);
+        const currentExpense = expensesData.find(e => e.id === id);
+
+        // Add to history
+        const historyEntry = {
+            action: 'PAYMENT_ISSUE_REPORTED',
+            by: userData.name,
+            role: userData.role,
+            date: new Date(),
+            comment: `Issue: ${type} - ${comment}`,
+            issueType: type
+        };
+
+        await updateDoc(expenseRef, {
+            status: 'PAYMENT_ISSUE',
+            paymentIssue: {
+                type,
+                comment,
+                reportedAt: serverTimestamp(),
+                reportedBy: userData.uid
+            },
+            history: [...(currentExpense.history || []), historyEntry],
+            updatedAt: serverTimestamp()
+        });
+
+        showToast("Payment issue reported successfully. Admin will be notified.", "success");
+        closeModal('modal-payment-issue');
+    } catch (err) {
+        console.error(err);
+        showToast("Failed to report issue: " + err.message, "error");
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+};
+
+window.deleteExpense = async (id) => {
+    if (await showInputPromise("Delete Claim", "Are you sure you want to delete this claim? This action cannot be undone.", "", "none")) {
+        try {
+            await deleteDoc(doc(db, "expenses", id));
+            showToast("Expense deleted successfully", "success");
+        } catch (e) {
+            showToast("Error deleting: " + e.message, "error");
+        }
+    }
+};
+
+window.loadProjects = async () => {
+    const select = document.getElementById('project-code');
+    if (!select) {
+        console.error("Project dropdown element not found");
+        return;
+    }
+
+    // Show loading state
+    select.innerHTML = '<option value="" disabled selected>Loading projects...</option>';
+
+    try {
+        const q = query(collection(db, "projects"), where("active", "==", true)); // Only active projects
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+            select.innerHTML = '<option value="" disabled selected>No active projects</option>';
+            return;
+        }
+
+        select.innerHTML = '<option value="" disabled selected>Select Project...</option>' +
+            snap.docs.map(d => `<option value="${d.data().code}">${d.data().code} - ${d.data().name}</option>`).join('');
+    } catch (e) {
+        console.error("Error loading projects", e);
+        select.innerHTML = '<option value="" disabled selected>Error loading projects</option>';
+        showToast("Failed to load projects: " + e.message, "error");
+    }
+};
+
+window.addLineItem = () => {
+    const tpl = document.getElementById('tpl-line-item');
+    const clone = tpl.content.cloneNode(true);
+    const dateInput = clone.querySelector('.item-date');
+    if (dateInput) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+    }
+    document.getElementById('line-items-container').appendChild(clone);
+};
+
+window.createExpenseFromAI = async (data) => {
+    console.log("Creating expense from AI:", data);
+
+    // Open modal in EXPENSE mode
+    openCreateModal('EXPENSE');
+
+    // Small delay to ensure modal is open
+    await new Promise(r => setTimeout(r, 100));
+
+    // Set Project Code
+    const projectSelect = document.getElementById('project-code');
+    const options = Array.from(projectSelect.options);
+    const match = options.find(o => o.value.toLowerCase() === data.projectCode.toLowerCase() || o.text.toLowerCase().includes(data.projectCode.toLowerCase()));
+
+    if (match) {
+        projectSelect.value = match.value;
+    } else {
+        showToast("Project Code not found, please select manually.", "warning");
+    }
+
+    // Get the first line item (added by openCreateModal)
+    const firstItem = document.querySelector('.line-item');
+    if (firstItem) {
+        firstItem.querySelector('.item-category').value = data.category || 'Travel';
+        firstItem.querySelector('.item-amount').value = data.amount;
+        firstItem.querySelector('.item-desc').value = data.description;
+        firstItem.querySelector('.item-date').value = new Date().toISOString().split('T')[0];
+    }
+
+    if (typeof calculateTotal === 'function') calculateTotal();
+
+    // Confirm with user or just submit? User said "submit bhi kr de"
+    showToast("AI is submitting your expense...", "info");
+    setTimeout(() => {
+        submitExpense();
+    }, 1500);
+};
+
+window.removeLineItem = (btn) => {
+    if (document.querySelectorAll('.line-item').length > 1) {
+        btn.closest('.line-item').remove();
+        calculateTotal();
+    } else {
+        showToast("At least one expense item is required.", "warning");
+    }
+};
+
+window.calculateTotal = () => {
+    let total = 0;
+    document.querySelectorAll('.item-amount').forEach(inp => total += parseFloat(inp.value) || 0);
+    document.getElementById('running-total').textContent = total.toFixed(2);
+};
+
+
+document.getElementById('pre-approved').addEventListener('change', (e) => {
+    const container = document.getElementById('pre-approved-proof-container');
+    if (e.target.checked) container.classList.remove('hidden');
+    else container.classList.add('hidden');
+});
+
+// Helper to get initial stage status
+window.getInitialStageStatus = async (role) => {
+    let config = window.workflowConfigCache; // simple cache
+    if (!config) {
+        try {
+            const snap = await getDoc(doc(db, "settings", "workflow_config"));
+            if (snap.exists()) {
+                config = snap.data();
+                window.workflowConfigCache = config;
+            }
+        } catch (e) { console.error("Config fetch error", e); }
+    }
+
+    if (!config) return null; // Logic will handle fallback
+
+    let chain = config.defaultFlow;
+    if (config.roleOverrides && config.roleOverrides[role] && config.roleOverrides[role].flow) {
+        const overrideFlow = config.roleOverrides[role].flow;
+        if (overrideFlow && overrideFlow.length > 0) chain = overrideFlow;
+    }
+
+    return (chain && chain.length > 0) ? chain[0].stage : null;
+};
+
+window.submitExpense = async () => {
+    const docId = document.getElementById('expense-id').value;
+    const title = document.getElementById('report-title').value.trim();
+    const projectCode = document.getElementById('project-code').value.trim();
+    const currency = document.getElementById('currency').value;
+    const preApproved = document.getElementById('pre-approved').checked;
+    // Check both the URL text input and the hidden input from file upload
+    const proofUrlText = document.getElementById('approval-proof-url').value.trim();
+    const proofUrlFile = document.getElementById('approval-proof-final-url').value.trim();
+    const proofUrl = proofUrlFile || proofUrlText;
+    const notes = document.getElementById('expense-notes').value.trim();
+
+    const claimType = document.getElementById('claim-type').value;
+
+    if (!title) return showToast("Please enter report title.", "error");
+    if (claimType === 'EXPENSE' && !projectCode) return showToast("Please enter project code.", "error");
+
+    // Validation: Proof URL required if Pre-Approved
+    if (preApproved && !proofUrl) {
+        document.getElementById('approval-proof-url').focus();
+        return showToast("Please provide the Approval Proof URL for pre-approved expenses.", "error");
+    }
+
+    const items = [];
+    let total = 0;
+    let isValid = true;
+
+    document.querySelectorAll('.line-item').forEach(el => {
+        const category = el.querySelector('.item-category').value;
+        const amount = el.querySelector('.item-amount').value;
+        const desc = el.querySelector('.item-desc').value;
+        const imgUrl = el.querySelector('.item-img-url').value;
+
+        const date = el.querySelector('.item-date').value;
+
+        if (!amount || parseFloat(amount) <= 0) isValid = false;
+        if (!desc || !date) isValid = false;
+
+        items.push({
+            category,
+            amount: parseFloat(amount) || 0,
+            description: desc || 'No description',
+            receiptUrl: imgUrl || null,
+            date: date || new Date().toISOString().split('T')[0]
+        });
+        total += parseFloat(amount) || 0;
+    });
+
+    if (!isValid) return showToast("Please complete all required fields for each item.", "error");
+    if (total <= 0) return showToast("Total amount must be greater than 0.", "error");
+
+    // Budget Validation
+    const budgetLimit = window.userData?.budgetLimit;
+    if (budgetLimit && budgetLimit > 0) {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        // Calculate total used budget for this month (excluding REJECTED)
+        // Filter out the current editing expense if any (docId)
+        const currentMonthExpenses = window.expensesData.filter(e => {
+            if (e.status === 'REJECTED') return false;
+            const d = e.createdAt?.toDate ? e.createdAt.toDate() : (e.createdAt ? new Date(e.createdAt) : new Date());
+            return d.getMonth() === currentMonth && d.getFullYear() === currentYear && e.id !== docId;
+        });
+
+        const currentTotal = currentMonthExpenses.reduce((sum, e) => sum + (parseFloat(e.totalAmount) || 0), 0);
+
+        if (currentTotal + total > budgetLimit) {
+            showToast(`Monthly Budget Exceeded! Limit: ₹${budgetLimit.toLocaleString()}, Used: ₹${currentTotal.toLocaleString()}`, "error");
+            return;
+        }
+    }
+
+    const btn = document.getElementById('btn-submit');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+    btn.disabled = true;
+
+    try {
+        // Dynamic Initial Status
+        let initialStatus = null;
+        try {
+            initialStatus = await getInitialStageStatus(userData.role);
+        } catch (e) { console.warn("Workflow fetch failed", e); }
+
+        // Fallback Logic if no workflow config or error
+        if (!initialStatus) {
+            if (claimType === 'REQUEST') {
+                initialStatus = 'PENDING_MANAGER';
+            } else {
+                // Default Expense Flow logic based on role
+                initialStatus = 'PENDING_MANAGER'; // Default to manager approval for safety
+            }
+        }
+
+        // Consolidated Spam Check
+        const textToCheck = (title + ' ' + notes + ' ' + items.map(i => i.description).join(' '));
+        const isSpam = checkSpam(textToCheck);
+
+        if (isSpam) {
+            showToast("Your claim contains inappropriate language and has been flagged.", "warning");
+        }
+
+        const expenseData = {
+            userId: userData.docId,
+            userName: userData.name,
+            userEmail: userData.email, // Added Email
+            userPhone: userData.phone || null, // Added Phone if available
+            userRole: userData.role, // Essential for dynamic workflow
+            title,
+            isSpam: isSpam, // Spam Flag
+            projectCode,
+            type: claimType,
+            currency,
+            preApproved,
+            approvalProof: preApproved ? proofUrl : null,
+            notes,
+            status: initialStatus, // Dynamic Status
+            totalAmount: total.toString(),
+            lineItems: items,
+            updatedAt: serverTimestamp()
+        };
+
+        if (docId) {
+            // Update existing
+            await updateDoc(doc(db, "expenses", docId), {
+                ...expenseData,
+                reviewRequested: true, // Flag for admin view
+                history: [...(expensesData.find(e => e.id === docId)?.history || []), {
+                    action: 'UPDATED_REVIEW_REQUEST',
+                    by: userData.name,
+                    role: userData.role,
+                    date: new Date(),
+                    comment: 'User updated claim and requested review'
+                }]
+            });
+            showToast("Claim Updated Successfully!", "success");
+        } else {
+            // Create new
+            await addDoc(collection(db, "expenses"), {
+                ...expenseData,
+                createdAt: serverTimestamp(),
+                history: [{
+                    action: 'SUBMITTED',
+                    by: userData.name,
+                    role: userData.role,
+                    date: new Date(),
+                    comment: preApproved ? 'Marked as Pre-Approved' : 'Initial Submission'
+                }]
+            });
+            showToast("Claim Submitted Successfully!", "success");
+        }
+
+        closeModal('modal-create');
+    } catch (e) {
+        console.error(e);
+        showToast("Error: " + e.message, "error");
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+};
+
+
+
+window.viewReportHistory = (data) => {
+    const modal = document.getElementById('modal-view');
+    modal.classList.remove('hidden');
+
+    document.getElementById('view-title').textContent = data.title;
+    document.getElementById('view-project').textContent = data.projectCode || 'N/A';
+    document.getElementById('view-currency').textContent = data.currency;
+
+    // Status Badge
+    const statusEl = document.getElementById('view-status');
+    const cleanStatus = data.status.replace(/_/g, ' ');
+    // Convert to Title Case for better display
+    const displayStatus = cleanStatus.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+
+    // Dynamic color class based on keyword
+    let statusColor = 'bg-slate-100 text-slate-600';
+    if (data.status.includes('PENDING')) statusColor = 'bg-yellow-100 text-yellow-700';
+    if (data.status.includes('APPROVED')) statusColor = 'bg-green-100 text-green-700';
+    if (data.status === 'PAID') statusColor = 'bg-green-100 text-green-700';
+    if (data.status === 'AUDITED') statusColor = 'bg-purple-100 text-purple-700';
+    if (data.status === 'REJECTED') statusColor = 'bg-red-100 text-red-700';
+    if (data.status === 'PAYMENT_ISSUE' || data.status === 'PAYMENT_DISPUTED') statusColor = 'bg-orange-100 text-orange-700 border-orange-200';
+
+    statusEl.className = `ml-2 badge ${statusColor}`;
+    statusEl.textContent = displayStatus;
+
+    const preEl = document.getElementById('view-pre-approved');
+    const proofEl = document.getElementById('view-approval-proof');
+    const proofLink = document.getElementById('view-approval-link');
+    const footer = document.querySelector('#modal-view .modal-view-footer'); // Ensure your HTML has this class or ID in footer
+
+    if (data.preApproved) {
+        preEl.classList.remove('hidden');
+        const proofVal = data.approvalProof || data.approvalProofUrl;
+        if (proofVal) {
+            proofEl.classList.remove('hidden');
+            proofLink.textContent = proofVal;
+            proofLink.href = proofVal;
+
+            // Security Check Badge
+            const isSecure = proofVal.startsWith('https://');
+            const badge = document.createElement('span');
+            badge.className = `ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-green-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`;
+            badge.innerHTML = isSecure ? '<i class="fa-solid fa-lock mr-1"></i> Secure' : '<i class="fa-solid fa-lock-open mr-1"></i> Insecure';
+
+            // Clear previous badge if any
+            const existingBadge = proofEl.querySelector('span.uppercase');
+            if (existingBadge) existingBadge.remove();
+
+            proofEl.querySelector('p').appendChild(badge);
+        } else {
+            proofEl.classList.add('hidden');
+        }
+    } else {
+        preEl.classList.add('hidden');
+        proofEl.classList.add('hidden');
+    }
+
+    // Timeline
+    const timeline = document.getElementById('view-timeline');
+    timeline.innerHTML = '';
+
+    if (data.history && data.history.length > 0) {
+        // Show payment info if PAID
+        if (data.status === 'PAID' && data.paymentMode) {
+            const payDiv = document.createElement('div');
+            payDiv.className = 'bg-green-50 p-3 rounded-lg border border-green-100 mb-4 flex items-start gap-3';
+            payDiv.innerHTML = `
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 flex-shrink-0 mt-0.5"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div>
+                            <p class="text-xs font-bold text-green-800 uppercase">Payment Processed</p>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-1 mt-1 text-xs text-green-700">
+                                <span><span class="font-bold">Mode:</span> ${data.paymentMode}</span>
+                                <span><span class="font-bold">Ref:</span> <span class="font-mono">${data.transactionRef || 'N/A'}</span></span>
+                                <span class="col-span-2"><span class="font-bold">Date:</span> ${new Date(data.paymentDate).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                     `;
+            timeline.appendChild(payDiv);
+        }
+
+        data.history.forEach((h, index) => {
+            const item = document.createElement('div');
+            item.className = 'relative pl-6 pb-6 border-l border-slate-200 dark:border-slate-700 last:border-0 last:pb-0';
+            item.innerHTML = `
+                        <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-slate-300 border-2 border-white"></div>
+                        <p class="text-[10px] text-slate-400 font-mono mb-0.5">${new Date(h.date?.toDate ? h.date.toDate() : h.date).toLocaleString()}</p>
+                        <p class="text-xs font-bold text-slate-700 dark:text-slate-200">${h.action} <span class="font-normal text-slate-500 dark:text-slate-400">by ${h.by} (${h.role})</span></p>
+                        ${h.comment ? `<p class="text-xs text-slate-600 dark:text-slate-300 mt-1 bg-slate-50 dark:bg-slate-900 p-2 rounded italic border border-slate-100 dark:border-slate-800">"${h.comment}"</p>` : ''}
+                    `;
+            timeline.appendChild(item);
+        });
+    } else {
+        timeline.innerHTML = '<p class="text-xs text-slate-400 italic">No history available.</p>';
+    }
+
+    // Rejection Msg
+    const rejectMsg = document.getElementById('view-reject-msg');
+    const footerEl = document.getElementById('modal-view-footer');
+
+    if (data.status === 'REJECTED') {
+        rejectMsg.classList.remove('hidden');
+        // Find last rejection comment
+        const lastReject = [...data.history].reverse().find(h => h.action === 'REJECTED' || h.action === 'REJECT');
+        document.getElementById('reject-reason-text').textContent = lastReject ? lastReject.comment : 'No reason provided.';
+
+        const isReviewRequested = data.reviewRequested;
+
+        if (isReviewRequested) {
+            // If already requested review and rejected again (or still pending review), hide edit option or show status
+            footerEl.innerHTML = `
+                        <button onclick="closeModal('modal-view')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition">Close</button>
+                        <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 flex items-center gap-2 cursor-not-allowed opacity-80">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Review Requested
+                        </span>
+                    `;
+        } else {
+            // Show Re-claim / Review Button
+            footerEl.innerHTML = `
+                        <button onclick="closeModal('modal-view')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition">Close</button>
+                        <button onclick="editExpense('${data.id}'); closeModal('modal-view')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition shadow-lg shadow-red-200 flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-left"></i> Request Review Again
+                        </button>
+                    `;
+        }
+    } else if (data.status === 'PAID') {
+        rejectMsg.classList.add('hidden');
+        const alreadyReported = data.paymentIssueReported;
+        footerEl.innerHTML = `
+                    <div class="flex justify-between w-full">
+                        ${alreadyReported ? `
+                         <span class="px-4 py-2 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg text-xs font-bold flex items-center gap-2 cursor-not-allowed opacity-80">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Issue Already Reported
+                         </span>
+                        ` : `
+                         <button onclick="openPaymentIssueModal('${data.id}'); closeModal('modal-view')" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                           <i class="fa-solid fa-triangle-exclamation text-yellow-500"></i> Payment Issue?
+                         </button>
+                        `}
+                        <button onclick="closeModal('modal-view')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition">Close</button>
+                    </div>
+                `;
+    } else {
+        rejectMsg.classList.add('hidden');
+        footerEl.innerHTML = `
+                    <button onclick="closeModal('modal-view')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition">Close</button>
+                `;
+    }
+};
+
+
+
+// --- Chat & WebRTC Logic ---
+let activeChatUnsub = null;
+let chatUsers = [];
+let currentChatContext = 'global'; // 'global' or 'userDocId'
+let currentChatUser = null;
+
+// WebRTC Variables
+let localStream = null;
+let peerConnection = null;
+let currentCallDoc = null;
+let incomingCallUnsub = null;
+let activeCallUnsub = null;
+
+const servers = {
+    iceServers: [
+        { urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] }
+    ]
+};
+
+window.openChatModal = async () => {
+    document.getElementById('modal-chat').classList.remove('hidden');
+    document.getElementById('chat-main-area').classList.remove('translate-x-0'); // reset mobile view
+    document.getElementById('chat-main-area').classList.add('translate-x-full');
+    await fetchChatUsers();
+    selectChat('global'); // default
+};
+
+window.hideMobileChatArea = () => {
+    document.getElementById('chat-main-area').classList.remove('translate-x-0');
+    document.getElementById('chat-main-area').classList.add('translate-x-full');
+    // On mobile, keep sidebar visible. The translate class handles overlaps
+};
+
+async function fetchChatUsers() {
+    try {
+        // Fetch all users
+        const snap = await getDocs(collection(db, "users"));
+        const allUsers = snap.docs.map(d => ({ docId: d.id, ...d.data() })).filter(u => u.docId !== userData.docId);
+
+        // Fetch chats for sorting and last message
+        const chatsSnap = await getDocs(query(collection(db, "chats"), where("users", "array-contains", userData.docId)));
+        const chatMeta = {};
+        chatsSnap.forEach(docSnap => {
+            const data = docSnap.data();
+            const otherUser = data.users.find(id => id !== userData.docId);
+            if (otherUser) chatMeta[otherUser] = data;
+        });
+
+        // Get Global Chat last message
+        const globalChatSnap = await getDocs(query(collection(db, "global_chat"), orderBy("createdAt", "desc"), limit(1)));
+        const globalLast = globalChatSnap.empty ? "Company wide chat" : globalChatSnap.docs[0].data().text;
+
+        // Sort users by activity
+        chatUsers = allUsers.sort((a, b) => {
+            const timeA = chatMeta[a.docId]?.lastMessageAt?.toMillis() || 0;
+            const timeB = chatMeta[b.docId]?.lastMessageAt?.toMillis() || 0;
+            return timeB - timeA;
+        });
+
+        renderChatUserSearch('', globalLast, chatMeta);
+    } catch (e) {
+        console.error("Failed to load chat users:", e);
+    }
+}
+
+window.filterChatUsers = (term) => renderChatUserSearch(term.toLowerCase());
+
+function renderChatUserSearch(term, globalLastText = "Company wide chat", chatMeta = {}) {
+    const list = document.getElementById('chat-user-list');
+    list.innerHTML = `
+                <button onclick="selectChat('global')" class="w-full text-left p-3 hover:bg-white dark:hover:bg-slate-800 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50 transition relative">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
+                        <i class="fa-solid fa-users text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Global Group</h4>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${globalLastText}</p>
+                    </div>
+                </button>
+            `;
+
+    const filtered = chatUsers.filter(u => (u.name || '').toLowerCase().includes(term) || (u.email || '').toLowerCase().includes(term));
+
+    filtered.forEach(u => {
+        const initial = (u.name || u.email || '?').charAt(0).toUpperCase();
+        const lastMsg = chatMeta[u.docId]?.lastMessage || u.email;
+        const isUnread = chatMeta[u.docId]?.lastSender && chatMeta[u.docId]?.lastSender !== userData.docId && !chatMeta[u.docId]?.read;
+
+        const btn = document.createElement('button');
+        btn.onclick = () => selectChat(u.docId);
+        btn.className = "w-full text-left p-3 hover:bg-white dark:hover:bg-slate-800 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50 transition relative";
+        btn.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 font-bold flex items-center justify-center text-slate-600 dark:text-slate-200 shrink-0 shadow-sm overflow-hidden">
+                        ${u.photoUrl ? `<img src="${u.photoUrl}" class="w-full h-full object-cover">` : initial}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-center mb-0.5">
+                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate pr-2">${u.name || u.email}</h4>
+                            <span class="text-[9px] text-slate-400 uppercase tracking-widest bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">${u.role || 'EMP'}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${lastMsg}</p>
+                    </div>
+                    ${isUnread ? `<span class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm animate-pulse"></span>` : ''}
+                `;
+        list.appendChild(btn);
+    });
+}
+
+window.selectChat = (contextId) => {
+    currentChatContext = contextId;
+    currentChatUser = contextId === 'global' ? null : chatUsers.find(u => u.docId === contextId);
+
+    // UI Update Left Sidebar (Mobile Shift)
+    const mainArea = document.getElementById('chat-main-area');
+    mainArea.classList.remove('translate-x-full');
+    mainArea.classList.add('translate-x-0');
+
+    // Header Update
+    const headerName = document.getElementById('active-chat-name');
+    const headerStatus = document.getElementById('active-chat-status');
+    const headerAvatar = document.getElementById('active-chat-avatar');
+    const callActions = document.getElementById('chat-call-actions');
+
+    if (contextId === 'global') {
+        headerName.textContent = 'Global Group';
+        headerStatus.textContent = 'Company Chat';
+        headerAvatar.innerHTML = '<i class="fa-solid fa-users text-sm"></i>';
+        headerAvatar.className = 'w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 font-bold shadow-sm';
+        callActions.classList.add('hidden');
+        runChatListener('global_chat', null);
+    } else {
+        headerName.textContent = currentChatUser.name || currentChatUser.email;
+        headerStatus.textContent = currentChatUser.email;
+        headerAvatar.innerHTML = (currentChatUser.name || currentChatUser.email)[0].toUpperCase();
+        headerAvatar.className = 'w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-200 flex items-center justify-center shrink-0 font-bold shadow-sm';
+        callActions.classList.remove('hidden');
+
+        const combinedId = userData.docId < currentChatUser.docId ?
+            `chat_${userData.docId}_${currentChatUser.docId}` :
+            `chat_${currentChatUser.docId}_${userData.docId}`;
+
+        runChatListener('chats', combinedId);
+    }
+};
+
+function runChatListener(collectionName, subCollectionId) {
+    if (activeChatUnsub) activeChatUnsub();
+
+    const container = document.getElementById('chat-messages-emp');
+    container.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-slate-300 dark:text-slate-600 text-2xl"></i></div>';
+
+    let q;
+    if (subCollectionId) {
+        // 1-on-1 Chat
+        q = query(collection(db, "chats", subCollectionId, "messages"), orderBy("createdAt", "asc"), limit(100));
+    } else {
+        // Global Chat
+        q = query(collection(db, "global_chat"), orderBy("createdAt", "asc"), limit(100));
+    }
+
+    activeChatUnsub = onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+            container.innerHTML = '<div class="text-center text-slate-400 mt-20 text-xs"><p>No messages yet. Start the conversation!</p></div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        let lastSenderId = null;
+
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const isMe = data.email === userData.email;
+            const time = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '...';
+            const msgId = docSnap.id;
+
+            // Mark as read if receiving and not read
+            if (!isMe && !data.read) {
+                const path = subCollectionId ? `chats/${subCollectionId}/messages/${msgId}` : `global_chat/${msgId}`;
+                updateDoc(doc(db, path), { read: true }).catch(() => { });
+                // Update chat doc if private
+                if (subCollectionId) {
+                    updateDoc(doc(db, "chats", subCollectionId), { read: true }).catch(() => { });
+                }
+            }
+
+            const canDelete = isMe && data.createdAt && (Date.now() - data.createdAt.toMillis() < 60000);
+
+            const div = document.createElement('div');
+            div.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'} drop-in w-full max-w-full group`;
+
+            div.innerHTML = `
+                        <div class="flex items-end gap-2 max-w-[85%] ${isMe ? 'flex-row-reverse' : ''}">
+                            ${!isMe ? (data.senderPhotoUrl ?
+                    `<img src="${data.senderPhotoUrl}" class="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover shrink-0 shadow-sm border border-white dark:border-slate-800 mt-auto">` :
+                    `<div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-200 shadow-sm mt-auto border border-white dark:border-slate-800 uppercase">${(data.sender || data.email || '?')[0]}</div>`
+                ) : ''}
+                            
+                            <div class="relative ${isMe ? 'bg-green-600 text-white font-medium shadow-md shadow-green-100' : 'bg-white dark:bg-slate-800 dark:text-slate-50 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-800'} p-3 rounded-2xl ${isMe ? 'rounded-br-none' : 'rounded-bl-none'} sm:text-sm text-xs relative overflow-hidden break-words break-all">
+                                ${!isMe && subCollectionId === null && lastSenderId !== data.email ? `<p class="text-[9px] font-bold ${isMe ? 'text-brand-100' : 'text-slate-400 dark:text-slate-400'} mb-1">${data.sender || data.email}</p>` : ''}
+                                <span class="leading-relaxed relative z-10 break-words" style="word-break: break-word;">${data.text}</span>
+                                <div class="flex items-center justify-end gap-1 mt-1">
+                                    <div class="text-[9px] ${isMe ? 'text-brand-200' : 'text-slate-400 dark:text-slate-400'} text-right font-mono">${time}</div>
+                                    ${isMe ? `<span class="text-[10px] ${data.read ? 'text-green-200' : 'text-brand-200'}"><i class="fa-solid fa-check-double"></i></span>` : ''}
+                                </div>
+                                ${canDelete ? `
+                                    <button onclick="deleteChatMessage('${msgId}', '${subCollectionId}')" class="absolute -top-1 ${isMe ? '-left-1' : '-right-1'} w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+            container.appendChild(div);
+            lastSenderId = data.email;
+        });
+
+        // Keep scroll at bottom
+        setTimeout(() => { container.scrollTop = container.scrollHeight; }, 50);
+    });
+}
+
+window.sendChatMessage = async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('chat-input-emp');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+
+    try {
+        const messageData = {
+            text,
+            sender: (userData.name || userData.email || 'Employee'),
+            senderPhotoUrl: (userData.photoUrl || ''),
+            email: (userData.email || ''),
+            role: (userData.role || 'USER'),
+            read: false,
+            createdAt: serverTimestamp()
+        };
+
+        if (currentChatContext === 'global') {
+            await addDoc(collection(db, "global_chat"), messageData);
+        } else {
+            const combinedId = userData.docId < currentChatUser.docId ?
+                `chat_${userData.docId}_${currentChatUser.docId}` :
+                `chat_${currentChatUser.docId}_${userData.docId}`;
+
+            const chatMetaUpdate = {
+                lastMessage: text,
+                lastMessageAt: serverTimestamp(),
+                lastSender: userData.docId || 'system',
+                read: false
+            };
+
+            // Robust check for user IDs
+            if (userData.docId && currentChatUser && currentChatUser.docId) {
+                chatMetaUpdate.users = [userData.docId, currentChatUser.docId];
+            }
+
+            // Update metadata first
+            await setDoc(doc(db, "chats", combinedId), chatMetaUpdate, { merge: true });
+            // Then add message
+            await addDoc(collection(db, "chats", combinedId, "messages"), messageData);
+        }
+
+        const container = document.getElementById('chat-messages-emp');
+        setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
+    } catch (e) {
+        console.error("Chat Error:", e);
+        showToast("Failed to send: " + e.message, "error");
+    }
+};
+
+window.deleteChatMessage = async (msgId, subCollectionId) => {
+    if (!confirm("Delete this message?")) return;
+    try {
+        const path = subCollectionId && subCollectionId !== 'null' ? `chats/${subCollectionId}/messages/${msgId}` : `global_chat/${msgId}`;
+        await deleteDoc(doc(db, path));
+        showToast("Message deleted", "info");
+    } catch (e) {
+        showToast("Failed to delete: " + e.message, "error");
+    }
+};
+
+// --- WebRTC Logic Implementation ---
+
+window.listenForCalls = () => {
+    if (!userData || !userData.docId) return;
+    if (incomingCallUnsub) { incomingCallUnsub(); incomingCallUnsub = null; }
+    const q = query(collection(db, "calls"), where("receiver", "==", userData.docId), where("status", "==", "calling"));
+    incomingCallUnsub = onSnapshot(q, (snapshot) => {
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data.status === 'calling') {
+                showIncomingCallUI(docSnap.id, data);
+            }
+        });
+    });
+};
+
+function showIncomingCallUI(callId, data) {
+    currentCallDoc = callId;
+    document.getElementById('incoming-caller-name').textContent = data.callerName || 'Unknown';
+    document.getElementById('incoming-call-type').textContent = data.type === 'video' ? 'Video' : 'Voice';
+    // Show caller photo
+    const photoEl = document.getElementById('incoming-caller-photo');
+    if (photoEl) {
+        if (data.callerPhotoUrl) {
+            photoEl.innerHTML = `<img src="${data.callerPhotoUrl}" class="w-full h-full object-cover">`;
+        } else {
+            const initial = (data.callerName || '?')[0].toUpperCase();
+            photoEl.innerHTML = initial;
+        }
+    }
+    document.getElementById('modal-incoming-call').classList.remove('hidden');
+    setTimeout(() => {
+        const c = document.getElementById('modal-incoming-call-content');
+        if (c) {
+            c.classList.remove('scale-95', 'opacity-0');
+            c.classList.add('scale-100', 'opacity-100');
+        }
+    }, 10);
+    const ringer = document.getElementById('incoming-ringtone');
+    if (ringer) ringer.play().catch(e => console.log('Autoplay prevented', e));
+}
+
+window.initiateCall = async (type) => {
+    if (currentChatContext === 'global' || !currentChatUser) return showToast("Select a user to call", "error");
+
+    try {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: type === 'video', audio: true });
+        const localVideo = document.getElementById('local-video');
+        localVideo.srcObject = localStream;
+        if (type === 'voice') localVideo.classList.add('hidden');
+        else localVideo.classList.remove('hidden');
+
+        showActiveCallUI(currentChatUser.name || 'User', type, currentChatUser.photoUrl || '');
+
+        // Play outgoing ringing sound
+        const outRinger = document.getElementById('outgoing-ringtone');
+        if (outRinger) outRinger.play().catch(e => console.log('Autoplay prevented', e));
+
+        peerConnection = new RTCPeerConnection(servers);
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        const callDocRef = doc(collection(db, "calls"));
+        currentCallDoc = callDocRef.id;
+
+        const offerCandidates = collection(callDocRef, "offerCandidates");
+        const answerCandidates = collection(callDocRef, "answerCandidates");
+
+        peerConnection.onicecandidate = event => {
+            if (event.candidate) addDoc(offerCandidates, event.candidate.toJSON());
+        };
+
+        peerConnection.ontrack = event => {
+            document.getElementById('remote-video').srcObject = event.streams[0];
+            if (type === 'video') document.getElementById('remote-video').classList.remove('opacity-0');
+            else document.getElementById('remote-audio-indicator').classList.remove('hidden');
+        };
+
+        const offerDescription = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offerDescription);
+
+        await setDoc(callDocRef, {
+            offer: { type: offerDescription.type, sdp: offerDescription.sdp },
+            caller: userData.docId,
+            callerName: userData.name || userData.email,
+            callerPhotoUrl: userData.photoUrl || '',
+            receiver: currentChatUser.docId,
+            receiverName: currentChatUser.name || '',
+            type: type,
+            status: 'calling',
+            createdAt: serverTimestamp()
+        });
+
+        // Chat Log for Call
+        try {
+            const combinedId = userData.docId < currentChatUser.docId ?
+                `chat_${userData.docId}_${currentChatUser.docId}` :
+                `chat_${currentChatUser.docId}_${userData.docId}`;
+
+            const callLogMsg = {
+                text: `📞 Started ${type === 'video' ? 'Video' : 'Voice'} Call`,
+                sender: userData.name || userData.email,
+                email: userData.email,
+                role: userData.role,
+                createdAt: serverTimestamp(),
+                type: 'system'
+            };
+            await addDoc(collection(db, "chats", combinedId, "messages"), callLogMsg);
+            await setDoc(doc(db, "chats", combinedId), {
+                lastMessage: `📞 ${type === 'video' ? 'Video' : 'Voice'} Call`,
+                lastMessageAt: serverTimestamp(),
+                lastSender: userData.docId,
+                users: [userData.docId, currentChatUser.docId]
+            }, { merge: true });
+        } catch (ce) { console.error("Call log error", ce); }
+
+        activeCallUnsub = onSnapshot(callDocRef, snapshot => {
+            const data = snapshot.data();
+            if (data && data.status === 'answered') {
+                // Stop outgoing ringtone
+                const outR = document.getElementById('outgoing-ringtone');
+                if (outR) { outR.pause(); outR.currentTime = 0; }
+
+                // Switch to connected state
+                switchToConnectedUI();
+
+                if (!peerConnection.currentRemoteDescription && data.answer) {
+                    const answerDescription = new RTCSessionDescription(data.answer);
+                    peerConnection.setRemoteDescription(answerDescription);
+                }
+            }
+            if (data && data.status === 'ended') {
+                cleanupCall();
+            }
+        });
+
+        onSnapshot(answerCandidates, snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                    const candidate = new RTCIceCandidate(change.doc.data());
+                    peerConnection.addIceCandidate(candidate);
+                }
+            });
+        });
+
+    } catch (e) {
+        console.error(e);
+        showToast("Failed to start call: " + e.message, "error");
+    }
+};
+
+window.acceptCall = async () => {
+    const ringer = document.getElementById('incoming-ringtone');
+    if (ringer) ringer.pause();
+    const incModal = document.getElementById('modal-incoming-call');
+    if (incModal) incModal.classList.add('hidden');
+
+    try {
+        const callDocRef = doc(db, "calls", currentCallDoc);
+        const callSnap = await getDoc(callDocRef);
+        if (!callSnap.exists()) throw new Error("Call ended");
+        const callData = callSnap.data();
+
+        localStream = await navigator.mediaDevices.getUserMedia({ video: callData.type === 'video', audio: true });
+        const localVideo = document.getElementById('local-video');
+        localVideo.srcObject = localStream;
+        if (callData.type === 'voice') localVideo.classList.add('hidden');
+        else localVideo.classList.remove('hidden');
+
+        showActiveCallUI(callData.callerName || 'User', callData.type, callData.callerPhotoUrl || '');
+        // Accepting = already connected, go straight to connected UI
+        setTimeout(() => switchToConnectedUI(), 300);
+
+        peerConnection = new RTCPeerConnection(servers);
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        const offerCandidates = collection(callDocRef, "offerCandidates");
+        const answerCandidates = collection(callDocRef, "answerCandidates");
+
+        peerConnection.onicecandidate = event => {
+            if (event.candidate) addDoc(answerCandidates, event.candidate.toJSON());
+        };
+
+        peerConnection.ontrack = event => {
+            document.getElementById('remote-video').srcObject = event.streams[0];
+            if (callData.type === 'video') document.getElementById('remote-video').classList.remove('opacity-0');
+            else document.getElementById('remote-audio-indicator').classList.remove('hidden');
+        };
+
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(callData.offer));
+        const answerDescription = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answerDescription);
+
+        await updateDoc(callDocRef, {
+            answer: { type: answerDescription.type, sdp: answerDescription.sdp },
+            status: 'answered'
+        });
+
+        onSnapshot(offerCandidates, snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                    const candidate = new RTCIceCandidate(change.doc.data());
+                    peerConnection.addIceCandidate(candidate);
+                }
+            });
+        });
+
+        activeCallUnsub = onSnapshot(callDocRef, snapshot => {
+            const data = snapshot.data();
+            if (data && data.status === 'ended') {
+                cleanupCall();
+            }
+        });
+
+    } catch (e) {
+        console.error(e);
+        showToast(e.message || "Failed to accept call", "error");
+        cleanupCall();
+    }
+};
+
+window.declineCall = async () => {
+    const ringer = document.getElementById('incoming-ringtone');
+    if (ringer) ringer.pause();
+    const incModal = document.getElementById('modal-incoming-call');
+    if (incModal) incModal.classList.add('hidden');
+    if (currentCallDoc) {
+        await updateDoc(doc(db, "calls", currentCallDoc), { status: 'ended' }).catch(console.warn);
+    }
+    currentCallDoc = null;
+};
+
+window.endCall = async () => {
+    if (currentCallDoc) {
+        await updateDoc(doc(db, "calls", currentCallDoc), { status: 'ended' }).catch(console.warn);
+    }
+    cleanupCall();
+};
+
+function showActiveCallUI(name, type, photoUrl) {
+    document.getElementById('active-call-name').textContent = name;
+    // Set header avatar with photo or initial
+    const avatarEl = document.getElementById('call-avatar');
+    if (photoUrl) {
+        avatarEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover">`;
+    } else {
+        avatarEl.textContent = name[0] ? name[0].toUpperCase() : '?';
+    }
+    // Set ringing screen avatar
+    const ringingAvatarEl = document.getElementById('ringing-avatar');
+    if (ringingAvatarEl) {
+        if (photoUrl) {
+            ringingAvatarEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover">`;
+        } else {
+            ringingAvatarEl.textContent = name[0] ? name[0].toUpperCase() : '?';
+        }
+    }
+    const ringingNameEl = document.getElementById('ringing-name');
+    if (ringingNameEl) ringingNameEl.textContent = name;
+
+    // Show modal in ringing state
+    document.getElementById('modal-active-call').classList.remove('hidden');
+    document.getElementById('modal-active-call').classList.remove('scale-50', 'translate-x-1/4', 'translate-y-1/4', 'rounded-3xl', 'overflow-hidden', 'shadow-2xl');
+    document.getElementById('call-header-overlay').classList.remove('hidden');
+
+    // Show ringing screen, hide connected screen
+    const rScreen = document.getElementById('call-ringing-screen');
+    const cScreen = document.getElementById('call-connected-screen');
+    if (rScreen) rScreen.classList.remove('hidden');
+    if (cScreen) cScreen.classList.add('hidden');
+
+    // Show "Ringing..." status, NO timer yet
+    const statusText = document.getElementById('call-status-text');
+    if (statusText) {
+        statusText.textContent = 'Ringing...';
+        statusText.className = 'text-green-400 animate-pulse';
+    }
+
+    clearInterval(window.callInterval);
+}
+
+function switchToConnectedUI() {
+    // Hide ringing screen, show connected screen
+    const rScreen = document.getElementById('call-ringing-screen');
+    const cScreen = document.getElementById('call-connected-screen');
+    if (rScreen) rScreen.classList.add('hidden');
+    if (cScreen) cScreen.classList.remove('hidden');
+
+    // Update status to "Connected" then start timer
+    const statusText = document.getElementById('call-status-text');
+    if (statusText) {
+        statusText.textContent = 'Connected';
+        statusText.className = 'text-green-400';
+    }
+
+    // Start call timer NOW
+    clearInterval(window.callInterval);
+    let secs = 0;
+    window.callInterval = setInterval(() => {
+        secs++;
+        const mins = String(Math.floor(secs / 60)).padStart(2, '0');
+        const remSecs = String(secs % 60).padStart(2, '0');
+        const statusEl = document.getElementById('call-status-text');
+        if (statusEl) {
+            statusEl.textContent = `${mins}:${remSecs}`;
+            statusEl.className = 'text-green-400';
+        }
+    }, 1000);
+}
+
+function cleanupCall() {
+    if (peerConnection) peerConnection.close();
+    if (localStream) localStream.getTracks().forEach(track => track.stop());
+
+    peerConnection = null;
+    localStream = null;
+    currentCallDoc = null;
+    if (activeCallUnsub) { activeCallUnsub(); activeCallUnsub = null; }
+
+    const acModal = document.getElementById('modal-active-call');
+    if (acModal) acModal.classList.add('hidden');
+
+    const rv = document.getElementById('remote-video');
+    if (rv) { rv.srcObject = null; rv.classList.add('opacity-0'); }
+
+    const lv = document.getElementById('local-video');
+    if (lv) lv.srcObject = null;
+
+    const ai = document.getElementById('remote-audio-indicator');
+    if (ai) ai.classList.add('hidden');
+
+    clearInterval(window.callInterval);
+    const statusText = document.getElementById('call-status-text');
+    if (statusText) {
+        statusText.textContent = 'Ringing...';
+        statusText.className = 'text-green-400 animate-pulse';
+    }
+
+    // Reset ringing/connected screens
+    const rScreen = document.getElementById('call-ringing-screen');
+    const cScreen = document.getElementById('call-connected-screen');
+    if (rScreen) rScreen.classList.remove('hidden');
+    if (cScreen) cScreen.classList.add('hidden');
+
+    // Stop ALL ringtones
+    const ringer = document.getElementById('incoming-ringtone');
+    if (ringer) { ringer.pause(); ringer.currentTime = 0; }
+    const outRinger = document.getElementById('outgoing-ringtone');
+    if (outRinger) { outRinger.pause(); outRinger.currentTime = 0; }
+}
+
+window.toggleMic = () => {
+    if (localStream) {
+        const audioTrack = localStream.getAudioTracks()[0];
+        if (audioTrack) {
+            audioTrack.enabled = !audioTrack.enabled;
+            const btn = document.getElementById('btn-toggle-mic');
+            if (audioTrack.enabled) {
+                btn.classList.remove('bg-red-500/50', 'text-red-200');
+                btn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
+            } else {
+                btn.classList.add('bg-red-500/50', 'text-red-200');
+                btn.innerHTML = '<i class="fa-solid fa-microphone-slash"></i>';
+            }
+        }
+    }
+};
+
+window.toggleCam = () => {
+    if (localStream) {
+        const videoTrack = localStream.getVideoTracks()[0];
+        if (videoTrack) {
+            videoTrack.enabled = !videoTrack.enabled;
+            const btn = document.getElementById('btn-toggle-cam');
+            if (videoTrack.enabled) {
+                btn.classList.remove('bg-red-500/50', 'text-red-200');
+                btn.innerHTML = '<i class="fa-solid fa-video"></i>';
+            } else {
+                btn.classList.add('bg-red-500/50', 'text-red-200');
+                btn.innerHTML = '<i class="fa-solid fa-video-slash"></i>';
+            }
+        }
+    }
+};
+
+window.toggleCallPip = () => {
+    const overlay = document.getElementById('modal-active-call');
+    overlay.classList.toggle('scale-50');
+    overlay.classList.toggle('translate-x-1/4');
+    overlay.classList.toggle('translate-y-1/4');
+    overlay.classList.toggle('rounded-3xl');
+    overlay.classList.toggle('overflow-hidden');
+    overlay.classList.toggle('shadow-2xl');
+    document.getElementById('call-header-overlay').classList.toggle('hidden');
+};
+
+// Payment issue logic removed here, as it is already correctly defined above.
+
+window.downloadMyData = async () => {
+    const btn = event.currentTarget;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+    try {
+        const data = {
+            userProfile: userData,
+            expenses: expensesData,
+            generatedAt: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `my_data_${userData.employeeId || 'user'}_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        showToast("Data downloaded successfully!", "success");
+    } catch (e) {
+        showToast("Download failed: " + e.message, "error");
+    } finally {
+        btn.innerHTML = '<i class="fa-solid fa-download"></i> Download My Data';
+    }
+};
+
+window.closeModal = (id) => {
+    document.getElementById(id).classList.add('hidden');
+};
+
+function getStatusColor(status) {
+    const colors = {
+        'PENDING_MANAGER': 'bg-green-100 text-green-700 border border-green-200',
+        'PENDING_FINANCE': 'bg-indigo-100 text-indigo-700 border border-indigo-200',
+        'FINANCE_APPROVED': 'bg-purple-100 text-purple-700 border border-purple-200',
+        'PENDING_ACCOUNTS': 'bg-orange-100 text-orange-700 border border-orange-200',
+        'PENDING_COMPLIANCE': 'bg-pink-100 text-pink-700 border border-pink-200',
+        'PENDING_TREASURY': 'bg-amber-100 text-amber-700 border border-amber-200',
+        'PAID': 'bg-emerald-100 text-green-700 border border-emerald-200',
+        'AUDITED': 'bg-teal-100 text-green-700 border border-teal-200',
+        'REJECTED': 'bg-red-100 text-red-700 border border-red-200',
+    };
+    return colors[status] || 'bg-slate-100 text-slate-500 dark:text-slate-400';
+}
+
+function getSymbol(curr) {
+    const sym = { 'INR': '₹', 'USD': '$', 'EUR': '€', 'GBP': '£' };
+    return sym[curr] || '₹';
+}
+
+// Auth Listener & Data Loading
+onAuthStateChanged(auth, async (user) => {
+
+    // AI initialization is handled with a delay below
+
+    if (user) {
+        currentUser = user;
+        try {
+            const q = query(collection(db, "users"), where("email", "==", user.email));
+            let snap = await getDocs(q);
+
+            if (snap.empty) {
+                try {
+                    // Fallback: Case-insensitive/Trim search
+                    const allUsersSnap = await getDocs(collection(db, "users"));
+                    const foundDoc = allUsersSnap.docs.find(doc => doc.data().email?.trim().toLowerCase() === user.email.trim().toLowerCase());
+                    if (foundDoc) {
+                        snap = { empty: false, docs: [foundDoc] };
+                        // Auto-fix email casing in DB
+                        await updateDoc(doc(db, "users", foundDoc.id), { email: user.email });
+                    }
+                } catch (e) { console.error("Fallback lookup failed", e); }
+            }
+
+            if (!snap.empty) {
+                userData = { ...snap.docs[0].data(), docId: snap.docs[0].id };
+                localStorage.setItem('ipec_emp_data_cache', JSON.stringify(userData));
+
+                // --- MAINTENANCE MODE CHECK ---
+                try {
+                    const settingsRef = doc(db, "settings", "global");
+                    const setSnap = await getDoc(settingsRef);
+                    if (setSnap.exists() && setSnap.data().maintenanceMode === true) {
+                        if (user.email !== 'mfskufgu@gmail.com' && user.email !== 'info@fouralpha.org') {
+                            document.body.innerHTML = `
+                                        <div style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0f172a;color:white;font-family:sans-serif;text-align:center;padding:20px;">
+                                            <i class="fa-solid fa-person-digging" style="font-size:5rem;color:#ef4444;margin-bottom:20px;"></i>
+                                            <h1 style="font-size:2.5rem;font-weight:bold;margin-bottom:10px;">System Under Maintenance</h1>
+                                            <p style="color:#94a3b8;font-size:1.1rem;max-width:500px;">The IPEC Expense Manager is currently down for scheduled upgrades. Please try again later.</p>
+                                        </div>
+                                    `;
+                            await signOut(auth);
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.error("Maintenance check failed:", e);
+                }
+                // ------------------------------
+
+                // Ensure UID is linked (Safe update if mismatch)
+                if (userData.uid !== user.uid) {
+                    await updateDoc(doc(db, "users", userData.docId), {
+                        uid: user.uid,
+                        status: 'ACTIVE',
+                        authProvider: 'google',
+                        updatedAt: serverTimestamp()
+                    });
+                }
+
+                console.log("Logged in as:", userData.email);
+
+                // Show Dashboard, Hide Auth
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+
+                // Update UI
+                const nameDisplay = document.getElementById('user-name-display');
+                if (nameDisplay) nameDisplay.textContent = userData.name;
+
+                const roleDisplay = document.getElementById('user-role-display');
+                if (roleDisplay) roleDisplay.textContent = userData.role || 'Employee';
+
+                const avatarContainer = document.getElementById('header-profile-avatar');
+                if (avatarContainer) {
+                    if (userData.photoUrl) {
+                        avatarContainer.innerHTML = `<img src="${userData.photoUrl}" class="w-full h-full object-cover">`;
+                    } else {
+                        avatarContainer.innerHTML = `<i class="fa-solid fa-user-gear text-xs"></i>`;
+                    }
+                }
+
+                // Initialize AI with 5-second delay to ensure all data is ready
+                setTimeout(() => {
+                    if (aiAssistant) {
+                        aiAssistant.updateContext(userData);
+                        // Update greeting if it was already created with 'User'
+                        const greetingEl = document.querySelector('.ai-message.ai strong');
+                        if (greetingEl && (greetingEl.textContent === 'User' || !greetingEl.textContent)) {
+                            greetingEl.textContent = userData.name || userData.displayName || 'User';
+                        }
+                    } else if (typeof AISupport !== 'undefined') {
+                        aiAssistant = new AISupport(userData);
+                        window.aiAssistant = aiAssistant;
+                    }
+                    // After initialization/update, push any cached dashboard data
+                    if (aiAssistant && lastDashboardContext) {
+                        aiAssistant.updateContext({ dashboardData: lastDashboardContext });
+                    }
+                }, 5000);
+
+
+
+
+                // Start listening for calls
+                window.listenForCalls();
+
+                // Load Data
+                if (typeof window.fetchExpenses === 'function') {
+                    window.fetchExpenses();
+                }
+                if (typeof window.loadProjects === 'function') {
+                    window.loadProjects();
+                }
+                if (typeof loadCompanyBranding === 'function') loadCompanyBranding();
+
+                if (aiAssistant) aiAssistant.updateContext(userData);
+
+                // --- FCM LIVE NOTIFICATIONS PUSH ---
+                if (messaging) {
+                    try {
+                        const permission = await Notification.requestPermission();
+                        if (permission === 'granted') {
+                            // Please replace 'VAPID_KEY_HERE' with your actual Firebase Web Push cert key
+                            const currentToken = await getToken(messaging, { vapidKey: 'BOsOeRaI8phgZF1FNFk3ruTzQJh15l0QA2vYzuwJ3ZS59jSSFRxfWRWpzWGriIGhaaLwxASNtvrRCdYO-Zs2B-s' }).catch(() => null);
+                            if (currentToken) {
+                                // Save token to user doc
+                                await updateDoc(doc(db, "users", userData.docId), {
+                                    fcmToken: currentToken
+                                });
+                            }
+                        }
+
+                        onMessage(messaging, (payload) => {
+                            console.log('FCM Foreground Message received: ', payload);
+                            showToast(payload.notification.title + " - " + payload.notification.body, 'info');
+                        });
+                    } catch (e) {
+                        console.error('FCM Setup Error:', e);
+                    }
+                }
+
+                // --- Custom Notification Listener ---
+                if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+                try {
+                    const notifQ = query(
+                        collection(db, "notifications"),
+                        where("targetUserId", "in", [userData.docId, 'ALL']),
+                        orderBy("createdAt", "desc"),
+                        limit(5)
+                    );
+                    let isInitialLoad = true;
+                    onSnapshot(notifQ, (snapshot) => {
+                        if (isInitialLoad) { isInitialLoad = false; return; }
+                        if (snapshot.metadata.hasPendingWrites) return;
+
+                        snapshot.docChanges().forEach((change) => {
+                            if (change.type === 'added') {
+                                const d = change.doc.data();
+                                if (Notification.permission === 'granted') {
+                                    const opts = {
+                                        body: d.body,
+                                        icon: 'assets/images/cropped-ipec-logo-32x32.png',
+                                        tag: change.doc.id,
+                                        vibrate: [200, 100, 200]
+                                    };
+                                    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                                        navigator.serviceWorker.ready.then(reg => reg.showNotification(d.title, opts));
+                                    } else {
+                                        new Notification(d.title, opts);
+                                    }
+                                }
+                                showToast(`New Message: ${d.title}`, 'info');
+                            }
+                        });
+                    });
+
+                    // --- CHAT NOTIFICATIONS ---
+                    let chatNotifInitial = true;
+                    onSnapshot(query(collection(db, "chats"), where("users", "array-contains", userData.docId)), (snapshot) => {
+                        if (chatNotifInitial) { chatNotifInitial = false; return; }
+                        snapshot.docChanges().forEach(change => {
+                            if (change.type === 'modified') {
+                                const data = change.doc.data();
+                                if (data.lastSender && data.lastSender !== userData.docId) {
+                                    if (document.hidden || (typeof currentChatUser !== 'undefined' && currentChatUser && `chat_${userData.docId < currentChatUser.docId ? userData.docId + '_' + currentChatUser.docId : currentChatUser.docId + '_' + userData.docId}` !== change.doc.id)) {
+                                        if (Notification.permission === 'granted') {
+                                            const opts = {
+                                                body: data.lastMessage || 'New message',
+                                                icon: 'assets/images/cropped-ipec-logo-32x32.png',
+                                                vibrate: [200, 100, 200],
+                                                tag: change.doc.id,
+                                                renotify: true
+                                            };
+                                            if (navigator.serviceWorker?.controller) {
+                                                navigator.serviceWorker.ready.then(reg => reg.showNotification('New Private Message', opts));
+                                            } else {
+                                                new Notification('New Private Message', opts);
+                                            }
+                                        }
+                                    }
+                                    if (!document.getElementById('modal-chat').classList.contains('hidden')) {
+                                        if (typeof fetchChatUsers === 'function') fetchChatUsers();
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    // --- GLOBAL CHAT NOTIFICATIONS ---
+                    let globalNotifInitial = true;
+                    onSnapshot(query(collection(db, "global_chat"), orderBy("createdAt", "desc"), limit(1)), (snapshot) => {
+                        if (globalNotifInitial) { globalNotifInitial = false; return; }
+                        if (!snapshot.empty) {
+                            const data = snapshot.docs[0].data();
+                            if (data.email !== userData.email) {
+                                if (document.hidden || (typeof currentChatContext !== 'undefined' && currentChatContext !== 'global')) {
+                                    if (Notification.permission === 'granted') {
+                                        const opts = { body: `${data.sender}: ${data.text}`, icon: 'assets/images/cropped-ipec-logo-32x32.png', tag: 'global_chat' };
+                                        if (navigator.serviceWorker?.controller) {
+                                            navigator.serviceWorker.ready.then(reg => reg.showNotification('Global Group Message', opts));
+                                        } else {
+                                            new Notification('Global Group Message', opts);
+                                        }
+                                    }
+                                }
+                                if (!document.getElementById('modal-chat').classList.contains('hidden')) {
+                                    if (typeof fetchChatUsers === 'function') fetchChatUsers();
+                                }
+                            }
+                        }
+                    });
+                } catch (e) { console.error("Notif Error", e); }
+
+            } else {
+                console.error("User document not found in Firestore");
+                showToast("Account not found. Contact Admin.", "error");
+                signOut(auth);
+            }
+        } catch (e) {
+            console.error("Auth Data Error:", e);
+            showToast("Error loading profile: " + e.message, "error");
+        }
+    } else {
+        currentUser = null;
+        userData = null;
+        // Show Auth, Hide Dashboard
+        document.getElementById('auth-screen').classList.remove('hidden');
+        document.getElementById('dashboard-screen').classList.add('hidden');
+        if (typeof loadCompanyBranding === 'function') loadCompanyBranding();
+    }
+});
+
+window.fetchExpenses = () => {
+    if (!currentUser || !userData) return;
+
+    // Clean up previous listener if exists
+    if (expensesUnsub) {
+        expensesUnsub();
+        expensesUnsub = null;
+    }
+
+    const list = document.getElementById('expenses-list');
+    list.innerHTML = '<div class="text-center text-slate-400 mt-4"><i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...</div>';
+
+    const q = query(collection(db, "expenses"), where("userId", "==", userData.docId));
+
+    expensesUnsub = onSnapshot(q, (snapshot) => {
+        // --- Notification Logic ---
+        if (!snapshot.metadata.hasPendingWrites) {
+            if (Notification.permission === 'default') Notification.requestPermission();
+            if (Notification.permission === 'granted') {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'modified') {
+                        const d = change.doc.data();
+                        const s = d.status.replace(/_/g, ' ');
+                        const title = `Claim Status: ${s}`;
+                        const body = `Your claim "${d.title}" is now ${s}.`;
+
+                        if (navigator.serviceWorker.controller) {
+                            navigator.serviceWorker.ready.then(r => r.showNotification(title, { body, icon: 'assets/images/cropped-ipec-logo-32x32.png', vibration: [200] }));
+                        } else {
+                            new Notification(title, { body, icon: 'assets/images/cropped-ipec-logo-32x32.png' });
+                        }
+                    }
+                });
+            }
+        }
+
+        let pendingTotal = 0;
+        let paidTotal = 0;
+
+        // Update module-scoped variable
+        expensesData = [];
+
+        if (snapshot.empty) {
+            window.expensesData = expensesData; // Sync global
+            renderExpensesList([]);
+            updateStats(0, 0);
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const amt = parseFloat(data.totalAmount) || 0;
+
+            if (data.status === 'PAID') paidTotal += amt;
+            else if (!['REJECTED', 'DRAFT'].includes(data.status)) pendingTotal += amt;
+
+            expensesData.push({ id: doc.id, ...data });
+        });
+
+        // Client-side sort by date descending
+        expensesData.sort((a, b) => {
+            const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+            const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+            return dateB - dateA;
+        });
+
+        window.expensesData = expensesData; // Sync global for debugging
+
+        lastDashboardContext = {
+            expenses: expensesData.slice(0, 20),
+            summary: { pending: pendingTotal, paid: paidTotal }
+        };
+
+        if (aiAssistant) {
+            aiAssistant.updateContext({ dashboardData: lastDashboardContext });
+        }
+
+
+        updateStats(pendingTotal, paidTotal);
+        // Apply search filter if any
+        const searchTerm = document.getElementById('emp-search') ? document.getElementById('emp-search').value : '';
+        filterExpenses(searchTerm);
+    }, (error) => {
+        console.error("Sync Error:", error);
+        list.innerHTML = `<div class="text-center text-red-500 mt-4 p-4 border border-red-200 bg-red-50 rounded-lg">
+                    <p class="font-bold">Sync Error</p>
+                    <p class="text-xs">Please contact admin. (${error.code})</p>
+                </div>`;
+    });
+};
+
+function getEmptyStateTasks(msg) {
+    return `
+            <div class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-slate-800 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                <div class="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-slate-300 dark:text-slate-600 mb-4 shadow-inner">
+                    <i class="fa-solid fa-list-check text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-slate-700 dark:text-slate-200 mb-1">No Tasks Found</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">${msg}</p>
+            </div>`;
+}
+
+window.fetchEmpTasks = () => {
+    if (!currentUser || !userData) return;
+
+    window.empTasksLoaded = true;
+    const list = document.getElementById('emp-tasks-list');
+    list.innerHTML = '<div class="text-center text-slate-400 mt-4"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading tasks...</div>';
+
+    const q = query(collection(db, "tasks"), where("assignedTo", "==", userData.email));
+
+    onSnapshot(q, (snapshot) => {
+        let tasksData = [];
+
+        if (snapshot.empty) {
+            window.empTasksData = tasksData;
+            list.innerHTML = getEmptyStateTasks("No tasks assigned to you.");
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            tasksData.push({ id: doc.id, ...doc.data() });
+        });
+
+        tasksData.sort((a, b) => {
+            const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+            const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+            return dateB - dateA;
+        });
+
+        window.empTasksData = tasksData;
+        filterEmpTasks();
+    }, (error) => {
+        console.error("Task Sync Error:", error);
+        list.innerHTML = `<div class="text-center text-red-500 mt-4 p-4 border border-red-200 bg-red-50 rounded-lg">
+                    <p class="font-bold">Sync Error</p>
+                    <p class="text-xs">Failed to load tasks. (${error.code})</p>
+                </div>`;
+    });
+};
+
+window.filterEmpTasks = () => {
+    const list = document.getElementById('emp-tasks-list');
+    if (!list || !window.empTasksData) return;
+
+    const search = (document.getElementById('emp-task-search')?.value || '').toLowerCase();
+
+    const filtered = window.empTasksData.filter(t => {
+        return (t.title + t.description).toLowerCase().includes(search);
+    });
+
+    if (filtered.length === 0) {
+        list.innerHTML = getEmptyStateTasks("No tasks match your search.");
+        return;
+    }
+
+    list.innerHTML = filtered.map(t => {
+        const statusColors = {
+            'PENDING': 'bg-amber-100 text-amber-700 border-amber-200 cursor-pointer hover:bg-amber-200',
+            'IN_PROGRESS': 'bg-green-100 text-green-700 border-green-200 cursor-pointer hover:bg-green-200',
+            'COMPLETED': 'bg-green-100 text-green-700 border-green-200 cursor-pointer hover:bg-green-200'
+        };
+        const statusColor = statusColors[t.status] || 'bg-slate-100 text-slate-700 cursor-pointer hover:bg-slate-200';
+        return `
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition relative mb-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm">${t.title}</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${t.description || 'No description provided.'}</p>
+                        </div>
+                        <select onchange="updateTaskStatus('${t.id}', this.value)" class="text-[10px] font-bold px-2 py-1 rounded badge ${statusColor} border outline-none appearance-none pr-3">
+                            <option value="PENDING" class="bg-white text-slate-800" ${t.status === 'PENDING' ? 'selected' : ''}>PENDING</option>
+                            <option value="IN_PROGRESS" class="bg-white text-slate-800" ${t.status === 'IN_PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
+                            <option value="COMPLETED" class="bg-white text-slate-800" ${t.status === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-50 dark:border-slate-700/50 flex flex-wrap gap-4 text-[10px] text-slate-500 dark:text-slate-400 items-center">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-user text-green-500"></i> Assigned By: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedBy}</span></span>
+                        <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-check text-red-400"></i> Due: <span class="font-bold ${new Date(t.dueDate) < new Date() && t.status !== 'COMPLETED' ? 'text-red-500' : 'text-slate-700 dark:text-slate-300'}">${new Date(t.dueDate).toLocaleDateString()}</span></span>
+                        ${t.status !== 'COMPLETED' ? `<button onclick="updateTaskStatus('${t.id}', 'COMPLETED')" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold transition ml-auto shadow-sm"><i class="fa-solid fa-check"></i> Mark Done</button>` : ''}
+                    </div>
+                </div>
+            `}).join('');
+};
+
+
+window.openEmpTaskModal = async () => {
+    if (!userData) return;
+
+    const modal = document.getElementById('modal-emp-task');
+    const dueInput = document.getElementById('emp-task-due-date');
+    if (dueInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dueInput.min = today;
+    }
+
+    if (modal) modal.classList.remove('hidden');
+    await loadEmpTaskUsers();
+
+    const assigneeSelect = document.getElementById('emp-task-assignee');
+    if (assigneeSelect && userData.email) assigneeSelect.value = userData.email;
+};
+
+window.closeEmpTaskModal = () => {
+    const modal = document.getElementById('modal-emp-task');
+    if (modal) modal.classList.add('hidden');
+    const form = document.getElementById('emp-create-task-form');
+    if (form) form.reset();
+};
+
+async function loadEmpTaskUsers() {
+    const select = document.getElementById('emp-task-assignee');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Loading...</option>';
+    try {
+        const usersSnap = await getDocs(query(collection(db, "users"), where("status", "==", "ACTIVE")));
+        let options = '<option value="">Select Employee...</option>';
+        usersSnap.forEach(d => {
+            const u = d.data();
+            if (!u || !u.email) return;
+            options += `<option value="${u.email}">${u.name || u.email} (${(u.role || 'EMPLOYEE').replace('_', ' ')})</option>`;
+        });
+        select.innerHTML = options;
+    } catch (e) {
+        console.error("Error loading users for tasks:", e);
+        select.innerHTML = '<option value="">Failed to load users</option>';
+        showToast("Failed to load users list", "error");
+    }
+}
+
+window.handleEmpCreateTask = async (e) => {
+    e.preventDefault();
+    if (!userData) return;
+
+    const btn = document.getElementById('btn-emp-create-task');
+    const original = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
+        btn.disabled = true;
+    }
+
+    try {
+        const title = document.getElementById('emp-task-title').value.trim();
+        const desc = document.getElementById('emp-task-desc').value.trim();
+        const assignee = document.getElementById('emp-task-assignee').value;
+        const dueDate = document.getElementById('emp-task-due-date').value;
+
+        if (!title) throw new Error('Task title is required');
+        if (!assignee) throw new Error('Assignee is required');
+        if (!dueDate) throw new Error('Due date is required');
+
+        await addDoc(collection(db, "tasks"), {
+            title: title,
+            description: desc,
+            assignedTo: assignee,
+            assignedBy: userData.email,
+            status: 'PENDING',
+            dueDate: dueDate,
+            createdAt: serverTimestamp()
+        });
+
+        showToast('Task sent successfully!', 'success');
+        closeEmpTaskModal();
+    } catch (err) {
+        console.error("Emp task create error:", err);
+        showToast(err.message || 'Failed to create task', 'error');
+    } finally {
+        if (btn) {
+            btn.innerHTML = original;
+            btn.disabled = false;
+        }
+    }
+};
+window.updateTaskStatus = async (taskId, newStatus) => {
+    try {
+        await updateDoc(doc(db, "tasks", taskId), {
+            status: newStatus,
+            updatedAt: serverTimestamp()
+        });
+        showToast("Task status updated", "success");
+    } catch (err) {
+        console.error("Update task error:", err);
+        showToast("Failed to update task status", "error");
+    }
+};

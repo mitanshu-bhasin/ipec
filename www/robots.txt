@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /debug.html
+Disallow: /sw.js
+Disallow: /js/admin-helper.js
+Disallow: /js/theme.js
+Disallow: /.well-known/
+
+Sitemap: https://ipecconsulting.netlify.app/sitemap.xml
+Host: https://ipecconsulting.netlify.app

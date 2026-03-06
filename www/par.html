@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments and Refunds - IPEC Consulting</title>
+    <meta name="description"
+        content="Refund and cancellation policy for IPEC courses certifications and events with clear easy to understand guidelines.">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <script src="js/theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <nav
+        class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html"
+                class="font-bold text-xl bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">IPEC
+                Consulting</a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()"
+                    class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-yellow-400 transition">
+                    <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                </button>
+                <a href="index.html"
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Back
+                    to
+                    Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="glass-card rounded-2xl p-8 md:p-12 bg-white dark:bg-slate-800">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">Refund and Cancellation
+                Policy</h1>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Last Updated: February 15, 2026</p>
+
+            <div class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 space-y-6">
+                <p>At IPEC Consulting, we are committed to ensuring our customers have a clear understanding of our
+                    policies regarding payments, cancellations, and refunds for our courses, certifications, and events.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">1. Cancellation Policy</h2>
+                <h3 class="text-lg font-semibold mt-4 text-slate-800 dark:text-slate-200">1.1 Course Cancellations by
+                    Participant</h3>
+                <p>Participants may cancel their enrollment in a course or certification program subject to the
+                    following
+                    conditions:</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li><strong>More than 7 days before start date:</strong> Full refund of the course fee.</li>
+                    <li><strong>3 to 7 days before start date:</strong> 50% refund of the course fee.</li>
+                    <li><strong>Less than 3 days before start date:</strong> No refund will be issued. However, you may
+                        request to reschedule to a future batch, subject to availability and a rescheduling fee.</li>
+                </ul>
+
+                <h3 class="text-lg font-semibold mt-4 text-slate-800 dark:text-slate-200">1.2 Cancellation by IPEC
+                    Consulting</h3>
+                <p>IPEC Consulting reserves the right to cancel or reschedule any course or event due to insufficient
+                    enrollment, instructor illness, or force majeure events. In such cases:</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>Participants will be notified immediately.</li>
+                    <li>A full refund of the paid amount will be processed.</li>
+                    <li>Alternatively, participants may choose to transfer their registration to a future date at no
+                        extra cost.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">2. Refund Policy</h2>
+                <p>All refund requests must be submitted in writing via email to our support team.</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>Refunds are processed within <strong>7-10 business days</strong> from the date of approval.</li>
+                    <li>Refunds will be credited back to the original method of payment used during the transaction.
+                    </li>
+                    <li>Any transaction charges or taxes deducted by the payment gateway may not be refundable,
+                        depending on the payment provider's policy.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">3. Payment Terms</h2>
+                <p>Full payment for courses and certifications is required prior to the commencement of the program
+                    unless a valid installment plan has been approved in writing by IPEC Consulting.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">4. Contact Us</h2>
+                <p>If you have any questions about our Refund and Cancellation Policy, please contact us at:</p>
+                <p class="font-semibold">IPEC Consulting<br>
+                    Email: finance@ipecconsulting.org<br>
+                    Phone: +91-9990071450</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-slate-500 dark:text-slate-400 text-sm">
+            <p>&copy; 2026 IPEC Consulting. All rights reserved.</p>
+            <div class="mt-2 text-xs">
+                <a href="privacy.html"
+                    class="hover:underline mx-2 hover:text-indigo-600 dark:hover:text-indigo-400">Privacy Policy</a>
+                <a href="terms.html" class="hover:underline mx-2 hover:text-indigo-600 dark:hover:text-indigo-400">Terms
+                    of Use</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
