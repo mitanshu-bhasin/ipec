@@ -186,7 +186,7 @@
     </div>
 
     <!-- Firebase Logic -->
-    <script src="js/env.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -198,12 +198,12 @@
         // However, standard practice here:
 
         const firebaseConfig = {
-            apiKey: window.ENV.FIREBASE_API_KEY,
-            authDomain: window.ENV.FIREBASE_AUTH_DOMAIN,
-            projectId: window.ENV.FIREBASE_PROJECT_ID,
-            storageBucket: window.ENV.FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: window.ENV.FIREBASE_MESSAGING_SENDER_ID,
-            appId: window.ENV.FIREBASE_APP_ID
+            apiKey: "AIzaSyBHQF5cUBujrCJqOqybEUIeanTCbHYpMWU",
+            authDomain: "expense-manager-ec149.firebaseapp.com",
+            projectId: "expense-manager-ec149",
+            storageBucket: "expense-manager-ec149.firebasestorage.app",
+            messagingSenderId: "868468480650",
+            appId: "1:868468480650:web:484a4e831724a8112feb73"
         };
 
         // Try to get config from window if defined in other scripts, else fallback

@@ -3,7 +3,7 @@
  * Provides a chat interface for users to get support and insights.
  */
 
-const GEMINI_API_KEY = window.ENV?.GEMINI_API_KEY || '';
+const GEMINI_API_KEY = 'AIzaSyDKy8-WdO1gqlDr6wDjHjdfI9D2nknTF14';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 export class AISupport {

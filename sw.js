@@ -18,7 +18,6 @@ const APP_SHELL = [
     './js/admin-helper.js',
     './js/utils.js',
     './css/common.css',
-    './js/env.js',
     './js/firebase-config.js'
 ];
 

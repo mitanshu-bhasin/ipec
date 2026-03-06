@@ -76,24 +76,7 @@
    cd expense-tracker
    ```
 
-2. **Configure environment variables**
-   ```bash
-   cp js/env.example.js js/env.js
-   ```
-   Open `js/env.js` and replace the placeholder values with your Firebase project credentials:
-   ```js
-   window.ENV = {
-       FIREBASE_API_KEY: "your-api-key",
-       FIREBASE_AUTH_DOMAIN: "your-project.firebaseapp.com",
-       FIREBASE_PROJECT_ID: "your-project-id",
-       FIREBASE_STORAGE_BUCKET: "your-project.firebasestorage.app",
-       FIREBASE_MESSAGING_SENDER_ID: "your-sender-id",
-       FIREBASE_APP_ID: "your-app-id",
-       FIREBASE_MEASUREMENT_ID: "your-measurement-id"
-   };
-   ```
-
-3. **Deploy Cloud Functions** *(optional)*
+2. **Deploy Cloud Functions** *(optional)*
    ```bash
    cd functions
    npm install
@@ -134,8 +117,6 @@
 │   ├── ai-support.js        # AI chatbot widget logic
 │   ├── firebase-config.js   # Firebase initialization
 │   ├── spam-filter.js       # Spam detection for messaging
-│   ├── env.js               # Runtime environment variables (gitignored)
-│   └── env.example.js       # Env template for new developers
 │
 ├── scripts/                 # Build & maintenance scripts (Python)
 │   ├── make_common_css.py
@@ -172,7 +153,6 @@
 
 - **Firebase Rules** — Firestore rules (`firestore.rules`) ensure authenticated access only
 - **Security Policy** — Standardized `security.txt` in `.well-known/`
-- **Environment Isolation** — API keys stored in `js/env.js` (gitignored), with `js/env.example.js` as a safe template
 - **Input Validation** — Spam filtering on messaging features
 
 ---
