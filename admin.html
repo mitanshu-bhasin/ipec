@@ -3,8 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#3b82f6">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#10b981">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="IPEC Consulting">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
     <link rel="apple-touch-icon" href="ipec.jpg">
@@ -1228,10 +1233,14 @@
         class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center transform transition-all scale-95 opacity-0 animate-[slideUp_0.3s_ease-out] border border-slate-100 dark:border-slate-700"
             id="modal-incoming-call-content">
-            <div
-                class="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 text-white flex items-center justify-center mx-auto mb-6 text-4xl shadow-lg shadow-blue-500/40 relative animate-[pulse_1.5s_infinite]">
-                <i class="fa-solid fa-phone-volume"></i>
+            <div class="relative mx-auto mb-6 w-28 h-28">
                 <div class="absolute inset-0 rounded-full border-4 border-blue-500 animate-ping opacity-20"></div>
+                <div class="absolute inset-0 rounded-full border-2 border-blue-400/40 animate-[pulse_2s_infinite]">
+                </div>
+                <div id="incoming-caller-photo"
+                    class="w-28 h-28 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 text-white flex items-center justify-center text-4xl shadow-lg shadow-blue-500/40 overflow-hidden font-bold relative z-10">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
             </div>
             <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-2 truncate" id="incoming-caller-name">
                 Caller Name</h3>
@@ -1240,6 +1249,8 @@
             </p>
 
             <audio id="incoming-ringtone" loop src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"
+                preload="auto"></audio>
+            <audio id="outgoing-ringtone" loop src="https://assets.mixkit.co/active_storage/sfx/2053/2053-preview.mp3"
                 preload="auto"></audio>
 
             <div class="flex justify-center gap-6">
@@ -1261,13 +1272,15 @@
         <div class="p-4 sm:p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent fixed top-0 w-full z-10 transition-opacity"
             id="call-header-overlay">
             <div class="flex items-center gap-4 text-white">
-                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-lg"
+                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-lg overflow-hidden"
                     id="call-avatar">
                     ?
                 </div>
                 <div>
                     <h3 class="font-bold text-lg md:text-xl drop-shadow-md" id="active-call-name">User</h3>
-                    <p class="text-xs text-brand-300 font-mono" id="active-call-duration">00:00</p>
+                    <p class="text-xs font-mono" id="active-call-duration">
+                        <span id="call-status-text" class="text-blue-400 animate-pulse">Ringing...</span>
+                    </p>
                 </div>
             </div>
             <button onclick="toggleCallPip()"
@@ -1276,7 +1289,29 @@
             </button>
         </div>
 
-        <div class="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden">
+        <!-- Ringing Screen (shown before connection) -->
+        <div id="call-ringing-screen"
+            class="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden">
+            <div class="text-center">
+                <div class="relative mx-auto mb-6 w-32 h-32">
+                    <div class="absolute inset-0 rounded-full border-4 border-blue-500/40 animate-ping"></div>
+                    <div
+                        class="absolute inset-[-8px] rounded-full border-2 border-blue-400/20 animate-[pulse_2s_infinite]">
+                    </div>
+                    <div id="ringing-avatar"
+                        class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-5xl shadow-2xl shadow-blue-500/30 overflow-hidden font-bold relative z-10">
+                        ?
+                    </div>
+                </div>
+                <h2 id="ringing-name" class="text-2xl font-bold text-white mb-2">User</h2>
+                <p id="ringing-status" class="text-blue-400 text-sm font-medium animate-pulse"><i
+                        class="fa-solid fa-phone fa-shake mr-2"></i>Ringing...</p>
+            </div>
+        </div>
+
+        <!-- Connected Screen (shown after connection) -->
+        <div id="call-connected-screen"
+            class="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden hidden">
             <video id="remote-video" class="w-full h-full object-cover transition-opacity duration-500 opacity-0"
                 autoplay playsinline></video>
             <div id="remote-audio-indicator"
@@ -2321,10 +2356,8 @@
                 document.getElementById('nav-settings').classList.remove('hidden');
             }
 
-            // Audit Logs: Admin, Audit role
-            if (['ADMIN', 'AUDIT'].includes(userData.role)) {
-                document.getElementById('nav-audit').classList.remove('hidden');
-            }
+            // Audit Logs: Visible to all, but data is filtered by role inside the tab
+            document.getElementById('nav-audit').classList.remove('hidden');
 
             // Task Manager: Admin, HR, Managers (Optional: logic to show for anyone who can assign tasks)
             if (['ADMIN', 'MANAGER', 'SENIOR_MANAGER', 'HR'].includes(userData.role)) {
@@ -2671,7 +2704,12 @@
                 // Sort by date desc
                 auditLogs.sort((a, b) => new Date(b.date?.toDate ? b.date.toDate() : b.date) - new Date(a.date?.toDate ? a.date.toDate() : a.date));
 
-                window.currentAuditLogs = auditLogs; // Store globally for export
+                let filteredLogs = auditLogs;
+                if (!['ADMIN', 'HR'].includes(userData.role)) {
+                    filteredLogs = auditLogs.filter(log => log.by === userData.name);
+                }
+
+                window.currentAuditLogs = filteredLogs; // Store globally for export
 
                 content.innerHTML = `
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
@@ -2703,7 +2741,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${auditLogs.slice(0, 50).map(log => `
+                                    ${filteredLogs.slice(0, 50).map(log => `
                                         <tr class="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:bg-slate-900">
                                             <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">${new Date(log.date?.toDate ? log.date.toDate() : log.date).toLocaleString()}</td>
                                             <td class="px-6 py-4">
@@ -6335,6 +6373,16 @@
             currentCallDoc = callId;
             document.getElementById('incoming-caller-name').textContent = data.callerName || 'Unknown';
             document.getElementById('incoming-call-type').textContent = data.type === 'video' ? 'Video' : 'Voice';
+            // Show caller photo
+            const photoEl = document.getElementById('incoming-caller-photo');
+            if (photoEl) {
+                if (data.callerPhotoUrl) {
+                    photoEl.innerHTML = `<img src="${data.callerPhotoUrl}" class="w-full h-full object-cover">`;
+                } else {
+                    const initial = (data.callerName || '?')[0].toUpperCase();
+                    photoEl.innerHTML = initial;
+                }
+            }
             document.getElementById('modal-incoming-call').classList.remove('hidden');
             setTimeout(() => {
                 const c = document.getElementById('modal-incoming-call-content');
@@ -6357,7 +6405,11 @@
                 if (type === 'voice') localVideo.classList.add('hidden');
                 else localVideo.classList.remove('hidden');
 
-                showActiveCallUI(currentChatUser.name || 'User', type);
+                showActiveCallUI(currentChatUser.name || 'User', type, currentChatUser.photoUrl || '');
+
+                // Play outgoing ringing sound
+                const outRinger = document.getElementById('outgoing-ringtone');
+                if (outRinger) outRinger.play().catch(e => console.log('Autoplay prevented', e));
 
                 peerConnection = new RTCPeerConnection(servers);
                 localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
@@ -6385,7 +6437,9 @@
                     offer: { type: offerDescription.type, sdp: offerDescription.sdp },
                     caller: userData.docId,
                     callerName: userData.name || userData.email,
+                    callerPhotoUrl: userData.photoUrl || '',
                     receiver: currentChatUser.docId,
+                    receiverName: currentChatUser.name || '',
                     type: type,
                     status: 'calling',
                     createdAt: serverTimestamp()
@@ -6411,9 +6465,18 @@
 
                 activeCallUnsub = onSnapshot(callDocRef, snapshot => {
                     const data = snapshot.data();
-                    if (data && data.status === 'answered' && !peerConnection.currentRemoteDescription && data.answer) {
-                        const answerDescription = new RTCSessionDescription(data.answer);
-                        peerConnection.setRemoteDescription(answerDescription);
+                    if (data && data.status === 'answered') {
+                        // Stop outgoing ringtone
+                        const outR = document.getElementById('outgoing-ringtone');
+                        if (outR) { outR.pause(); outR.currentTime = 0; }
+
+                        // Switch to connected state
+                        switchToConnectedUI();
+
+                        if (!peerConnection.currentRemoteDescription && data.answer) {
+                            const answerDescription = new RTCSessionDescription(data.answer);
+                            peerConnection.setRemoteDescription(answerDescription);
+                        }
                     }
                     if (data && data.status === 'ended') {
                         cleanupCall();
@@ -6453,7 +6516,9 @@
                 if (callData.type === 'voice') localVideo.classList.add('hidden');
                 else localVideo.classList.remove('hidden');
 
-                showActiveCallUI(callData.callerName || 'User', callData.type);
+                showActiveCallUI(callData.callerName || 'User', callData.type, callData.callerPhotoUrl || '');
+                // Accepting = already connected, go straight to connected UI
+                setTimeout(() => switchToConnectedUI(), 300);
 
                 peerConnection = new RTCPeerConnection(servers);
                 localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
@@ -6521,20 +6586,74 @@
             cleanupCall();
         };
 
-        function showActiveCallUI(name, type) {
+        function showActiveCallUI(name, type, photoUrl) {
             document.getElementById('active-call-name').textContent = name;
-            document.getElementById('call-avatar').textContent = name[0] ? name[0].toUpperCase() : '?';
+            // Set header avatar with photo or initial
+            const avatarEl = document.getElementById('call-avatar');
+            if (photoUrl) {
+                avatarEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover">`;
+            } else {
+                avatarEl.textContent = name[0] ? name[0].toUpperCase() : '?';
+            }
+            // Set ringing screen avatar
+            const ringingAvatarEl = document.getElementById('ringing-avatar');
+            if (ringingAvatarEl) {
+                if (photoUrl) {
+                    ringingAvatarEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover">`;
+                } else {
+                    ringingAvatarEl.textContent = name[0] ? name[0].toUpperCase() : '?';
+                }
+            }
+            const ringingNameEl = document.getElementById('ringing-name');
+            if (ringingNameEl) ringingNameEl.textContent = name;
+
+            // Show modal in ringing state
             document.getElementById('modal-active-call').classList.remove('hidden');
             document.getElementById('modal-active-call').classList.remove('scale-50', 'translate-x-1/4', 'translate-y-1/4', 'rounded-3xl', 'overflow-hidden', 'shadow-2xl');
             document.getElementById('call-header-overlay').classList.remove('hidden');
 
+            // Show ringing screen, hide connected screen
+            const rScreen = document.getElementById('call-ringing-screen');
+            const cScreen = document.getElementById('call-connected-screen');
+            if (rScreen) rScreen.classList.remove('hidden');
+            if (cScreen) cScreen.classList.add('hidden');
+
+            // Show "Ringing..." status, NO timer yet
+            const statusText = document.getElementById('call-status-text');
+            if (statusText) {
+                statusText.textContent = 'Ringing...';
+                statusText.className = 'text-blue-400 animate-pulse';
+            }
+
+            clearInterval(window.callInterval);
+        }
+
+        function switchToConnectedUI() {
+            // Hide ringing screen, show connected screen
+            const rScreen = document.getElementById('call-ringing-screen');
+            const cScreen = document.getElementById('call-connected-screen');
+            if (rScreen) rScreen.classList.add('hidden');
+            if (cScreen) cScreen.classList.remove('hidden');
+
+            // Update status to "Connected" then start timer
+            const statusText = document.getElementById('call-status-text');
+            if (statusText) {
+                statusText.textContent = 'Connected';
+                statusText.className = 'text-green-400';
+            }
+
+            // Start call timer NOW
             clearInterval(window.callInterval);
             let secs = 0;
             window.callInterval = setInterval(() => {
                 secs++;
                 const mins = String(Math.floor(secs / 60)).padStart(2, '0');
                 const remSecs = String(secs % 60).padStart(2, '0');
-                document.getElementById('active-call-duration').textContent = `${mins}:${remSecs}`;
+                const statusEl = document.getElementById('call-status-text');
+                if (statusEl) {
+                    statusEl.textContent = `${mins}:${remSecs}`;
+                    statusEl.className = 'text-green-400';
+                }
             }, 1000);
         }
 
@@ -6560,11 +6679,23 @@
             if (ai) ai.classList.add('hidden');
 
             clearInterval(window.callInterval);
-            const dur = document.getElementById('active-call-duration');
-            if (dur) dur.textContent = '00:00';
+            const statusText = document.getElementById('call-status-text');
+            if (statusText) {
+                statusText.textContent = 'Ringing...';
+                statusText.className = 'text-blue-400 animate-pulse';
+            }
 
+            // Reset ringing/connected screens
+            const rScreen = document.getElementById('call-ringing-screen');
+            const cScreen = document.getElementById('call-connected-screen');
+            if (rScreen) rScreen.classList.remove('hidden');
+            if (cScreen) cScreen.classList.add('hidden');
+
+            // Stop ALL ringtones
             const ringer = document.getElementById('incoming-ringtone');
-            if (ringer) ringer.pause();
+            if (ringer) { ringer.pause(); ringer.currentTime = 0; }
+            const outRinger = document.getElementById('outgoing-ringtone');
+            if (outRinger) { outRinger.pause(); outRinger.currentTime = 0; }
         }
 
         window.toggleMic = () => {

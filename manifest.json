@@ -3,8 +3,8 @@
   "short_name": "IPEC Consulting",
   "id": "/?source=pwa",
   "description": "The official portal for IPEC Consulting. Advancing excellence across education, industry, and governance. Streamline your operations with our secure, efficient tools.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
   "display_override": [
     "window-controls-overlay",
@@ -13,6 +13,9 @@
   "orientation": "portrait-primary",
   "background_color": "#f8fafc",
   "theme_color": "#10b981",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "handle_links": "preferred",
   "categories": [
     "productivity",
     "finance",
@@ -22,12 +25,6 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "ipec.jpg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any"
-    },
-    {
       "src": "cropped-ipec-logo-32x32.png",
       "sizes": "32x32",
       "type": "image/png",
@@ -35,34 +32,18 @@
     },
     {
       "src": "ipec.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "ipec.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "s1.jpg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Comprehensive Dashboard Overview"
-    },
-    {
-      "src": "s2.jpg",
-      "sizes": "720x1280",
-      "type": "image/jpeg",
-      "form_factor": "narrow",
-      "label": "Simple Expense Submission"
-    },
-    {
-      "src": "s3.jpg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Real-time Approval Tracking"
-    }
-  ],
+  "screenshots": [],
   "shortcuts": [
     {
       "name": "Submit Claim",
@@ -93,6 +74,9 @@
   ],
   "launch_handler": {
     "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {
+    "preferred_width": 480
   },
   "share_target": {
     "action": "./emp.html",

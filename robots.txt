@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /debug.html
 Disallow: /sw.js
-Disallow: /chat.js
 Disallow: /admin-helper.js
 Disallow: /theme.js
 Disallow: /.well-known/

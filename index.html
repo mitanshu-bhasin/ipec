@@ -3,12 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>IPEC Expense Manager | Integrated Financial Control</title>
     <meta name="description"
         content="Streamline your corporate expenses with IPEC Expense Manager. Secure, fast, and transparent financial operations for employees and administrators.">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#10b981">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="IPEC Consulting">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="ipec.jpg">
     <link rel="manifest" href="manifest.json">
+
+    <!-- Resource Hints for faster CDN loading -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -141,53 +159,62 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"
+        onclick="toggleMobileMenu()"></div>
+
+    <!-- Mobile Sidebar Menu -->
     <div id="mobile-menu"
-        class="hidden md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 absolute top-20 left-0 w-full shadow-lg h-[calc(100vh-5rem)] overflow-y-auto z-50">
-        <div class="px-4 pt-2 pb-4 space-y-1">
-            <a href="index.html" data-i18n="nav_home"
-                class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Home</a>
-
-            <!-- Mobile Council Verticals -->
-            <div x-data="{ open: false }">
-                <button onclick="document.getElementById('mobile-council-dropdown').classList.toggle('hidden')"
-                    class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                    <span data-i18n="nav_council">Council Verticals</span> <i
-                        class="fa-solid fa-chevron-down text-xs"></i>
-                </button>
-                <div id="mobile-council-dropdown"
-                    class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
-                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600">PP</a>
-                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600">CC</a>
+        class="fixed top-0 right-0 w-[280px] h-full bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col md:hidden">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 rounded flex items-center justify-center">
+                    <img src="cropped-ipec-logo-32x32.png" alt="Logo" class="w-6 h-6 object-contain">
                 </div>
+                <span class="font-bold text-slate-800 dark:text-white">IPEC Menu</span>
             </div>
+            <button onclick="toggleMobileMenu()"
+                class="text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
 
-            <!-- Mobile Services -->
-            <div>
-                <button onclick="document.getElementById('mobile-services-dropdown').classList.toggle('hidden')"
-                    class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                    <span data-i18n="nav_services">Services</span> <i class="fa-solid fa-chevron-down text-xs"></i>
-                </button>
-                <div id="mobile-services-dropdown"
-                    class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
-                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Lean
-                        Six
-                        Sigma</a>
-                    <a href="#"
-                        class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Cybersecurity</a>
-                </div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-8">
+            <nav class="space-y-6">
+                <a href="#features" data-i18n="nav_features"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-bold text-lg transition">Features</a>
+                <a href="#portals" data-i18n="nav_portals"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-bold text-lg transition">Access
+                    Portals</a>
+                <a href="#contact" data-i18n="nav_support"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-bold text-lg transition">Contact
+                    Support</a>
+            </nav>
+
+            <hr class="border-slate-100 dark:border-slate-800">
+
+            <div class="space-y-4">
+                <a href="help.html" class="flex items-center gap-3 text-slate-500 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-circle-question opacity-70"></i>
+                    <span data-i18n="footer_help">Help Center</span>
+                </a>
+                <a href="test.html" class="flex items-center gap-3 text-slate-500 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-laptop-medical opacity-70"></i>
+                    <span>Device Health</span>
+                </a>
             </div>
+        </div>
 
-            <a href="event.html" data-i18n="nav_events"
-                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Events</a>
-            <a href="https://ipecconsulting.org" target="_blank" data-i18n="nav_official"
-                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Official
-                Website</a>
-            <a href="team.html" data-i18n="nav_team"
-                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Leadership
-                Team</a>
-            <a href="contact.html" data-i18n="nav_support"
-                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <div class="flex flex-col gap-3">
+                <a href="emp.html"
+                    class="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center text-sm font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95">Employee
+                    Portal</a>
+                <a href="admin.html"
+                    class="px-4 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl text-center text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95">Admin
+                    Console</a>
+            </div>
         </div>
     </div>
     </nav>
@@ -225,7 +252,7 @@
                     </div>
                     <span class="flex items-center gap-3 relative z-10 text-lg">
                         <i class="fa-solid fa-user-tag text-brand-100 group-hover:scale-110 transition-transform"></i>
-                        <span data-i18n="btn_employee_portal">Employee Total</span>
+                        <span data-i18n="btn_employee_portal">Employee Portal</span>
                     </span>
                     <span data-i18n="btn_employee_sub"
                         class="block text-xs font-medium opacity-90 mt-1 text-brand-50">Login to Submit Claims & Track
@@ -239,11 +266,11 @@
                     <span class="flex items-center gap-3 relative z-10 text-lg">
                         <i
                             class="fa-solid fa-shield-halved text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-                        <span data-i18n="btn_admin_portal">Command Center</span>
+                        <span data-i18n="btn_admin_portal">Admin Portal</span>
                     </span>
                     <span data-i18n="btn_admin_sub"
                         class="block text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 group-hover:text-slate-600 dark:group-hover:text-slate-300 relative z-10">Secure
-                        Admin Oversight & Audit</span>
+                        Admin Portal</span>
                 </a>
             </div>
         </div>
@@ -662,23 +689,6 @@
     <script type="module">
         import { AISupport } from './ai-support.js';
 
-        // Toggle Mobile Menu
-        window.toggleMobileMenu = function () {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('mobile-menu-icon');
-
-            menu.classList.toggle('hidden');
-
-            if (menu.classList.contains('hidden')) {
-                // Menu is closed, show hamburger
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            } else {
-                // Menu is open, show close icon
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            }
-        };
 
         // Initialize Chatbot for Visitors
         const initChatbot = () => {
@@ -796,6 +806,85 @@
             if (container && !container.contains(e.target)) {
                 if (dropdown) dropdown.classList.add('hidden');
             }
+        });
+
+        // Toggle Mobile Menu
+        window.toggleMobileMenu = function () {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const icon = document.getElementById('mobile-menu-icon');
+
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (!isOpen) {
+                // Open Menu
+                menu.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                if (icon) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            } else {
+                // Close Menu
+                menu.classList.add('translate-x-full');
+                overlay.classList.remove('opacity-100');
+                if (icon) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Close mobile menu when clicking any link inside it
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (!mobileMenu.classList.contains('translate-x-full')) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+
+    <!-- Service Worker Registration & PWA Install -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+                    console.log('[PWA] SW registered, scope:', registration.scope);
+
+                    // Check for updates periodically
+                    setInterval(() => registration.update(), 60 * 60 * 1000); // Every hour
+                } catch (error) {
+                    console.error('[PWA] SW registration failed:', error);
+                }
+            });
+        }
+
+        // PWA Install Prompt (Android)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('[PWA] Install prompt available');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+            console.log('[PWA] App installed successfully');
         });
     </script>
 </body>

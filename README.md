@@ -1,108 +1,194 @@
-# IPEC Expense Manager
+<p align="center">
+  <img src="ipec.jpg" alt="IPEC Consulting Logo" width="120" />
+</p>
 
-### Official Expense Tracking & Reimbursement Portal for the International Process Excellence Council (IPEC)
+<h1 align="center">IPEC Expense Manager</h1>
 
-**Live Demo**: [https://ipecconsulting.netlify.app](https://ipecconsulting.netlify.app)
+<p align="center">
+  <strong>The Official Expense Tracking & Reimbursement Portal for IPEC Consulting</strong>
+</p>
 
----
-
-## 📌 Project Overview
-
-The **IPEC Expense Manager** is a comprehensive, progressive web application (PWA) designed to streamline financial operations for IPEC. It facilitates seamless expense submission for employees and provides robust approval workflows for administrators.
-
-**Key Features:**
-*   **Role-Based Access Control**: Separate, secure portals for Employees and Administrators.
-*   **Real-Time Sync**: Instant updates using Firebase Firestore.
-*   **Offline Capability**: Fully functional offline mode with PWA caching.
-*   **AI Integration**: Built-in AI assistant for policy queries.
-*   **Direct Chat**: Integrated messaging system for internal communication.
-*   **Comprehensive Reporting**: Generate PDF reports and visualize spending trends.
+<p align="center">
+  <a href="https://ipecconsulting.netlify.app"><img src="https://img.shields.io/badge/Live%20Demo-ipecconsulting.netlify.app-10b981?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" /></a>
+  <img src="https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA Ready" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License" />
+</p>
 
 ---
 
-## 📂 Codebase Structure & File Descriptions
+## 📌 Overview
 
-### **Core Application Pages**
-
-*   **`index.html` (Landing Page)**
-    *   **Purpose**: Public-facing landing page.
-    *   **Features**: Displays mission statement, key features, and entry points to portals. Contains comprehensive SEO meta tags and Organization Schema.
-
-*   **`emp.html` (Employee Portal)**
-    *   **Purpose**: The workspace for general staff.
-    *   **Features**:
-        *   **Dashboard**: View total paid/pending claims at a glance.
-        *   **Create Claim**: Modal form with receipt upload (ImageKit/Firebase), multi-currency support, and expense categorization.
-        *   **History**: Searchable list of all submitted claims with status badges.
-        *   **Profile**: manage personal details and download personal data.
-
-*   **`admin.html` (Admin Command Center)**
-    *   **Purpose**: Management console for Approvers/Finance team.
-    *   **Features**:
-        *   **Approval Workflow**: Review pending claims, view receipts, and Approve/Reject with comments.
-        *   **Analytics**: Visual charts (Chart.js) showing spending by category/month.
-        *   **User Management**: Add/Edit/Remove system users and assign roles.
-        *   **Project Management**: Create and manage billing codes/projects.
-        *   **Audit Logs**: detailed timeline of all system actions for compliance.
-
-### **System & Utility Files**
-
-*   **`mitanshu.html` (Author Profile)**
-    *   **Purpose**: Professional portfolio for the lead developer/team member.
-    *   **Features**: Detailed bio, skills, and contact information with schema markup.
-
-*   **`chat.js` (Communication Module)**
-    *   **Purpose**: Implements the internal messaging system.
-    *   **Tech**: Uses `localStorage` event listeners to simulate real-time socket behavior across tabs/devices without a backend socket server.
-
-*   **`sw.js` (Service Worker)**
-    *   **Purpose**: Enables PWA functionality.
-    *   **Features**: Caches critical assets (HTML, CSS, JS) for offline access. Implements a "Network-First, Fallback to Cache" strategy for reliability.
-
-*   **`manifest.json`**
-    *   **Purpose**: Web App Manifest.
-    *   **Features**: Defines app name, icons, theme colors, and shortcuts for installation on Android/Windows.
-
-*   **`offline.html`**
-    *   **Purpose**: Custom error page.
-    *   **Features**: Displayed automatically when the user loses internet connection, with auto-retry functionality.
-
-*   **`404.html`**
-    *   **Purpose**: Custom "Page Not Found".
-    *   **Features**: User-friendly navigation back to safety.
-
-*   **`theme.js`**
-    *   **Purpose**: UI Logic.
-    *   **Features**: Handles Dark/Light mode toggling and persistence.
-
-*   **`utils.js` & `admin-helper.js`**
-    *   **Purpose**: Shared Logic.
-    *   **Features**: Formats currency, dates, handles file uploads, and specific admin calculations.
-
-*   **`ai-support.js`**
-    *   **Purpose**: AI Widget.
-    *   **Features**: Logic for the floating AI help assistant.
+**IPEC Expense Manager** is a comprehensive, progressive web application (PWA) designed to streamline financial operations for the International Process Excellence Council. It facilitates seamless expense submission for employees and provides robust approval workflows for administrators — all with offline capability and real-time sync.
 
 ---
 
-## 🛠 Technology Stack
+## ✨ Features
 
-*   **Frontend**: HTML5, Vanilla JavaScript (ES6+), Tailwind CSS (via CDN)
-*   **Backend / Database**: Firebase (Firestore, Auth, Storage)
-*   **Media Storage**: ImageKit.io (integrated for receipts)
-*   **Charts**: Chart.js
-*   **PDF Generation**: html2pdf.js
+### 👤 Employee Portal (`emp.html`)
+- **Dashboard** — View total paid/pending claims at a glance
+- **Create Claim** — Modal form with receipt upload (ImageKit/Firebase), multi-currency support, and expense categorization
+- **Claim History** — Searchable list of all submitted claims with status badges
+- **Profile Management** — Edit personal details and download personal data (GDPR-ready)
+
+### 🛡️ Admin Command Center (`admin.html`)
+- **Approval Workflow** — Review pending claims, view receipts, and Approve/Reject with comments
+- **Analytics** — Visual charts (Chart.js) for spending by category/month
+- **User Management** — Add/Edit/Remove system users and assign roles
+- **Project Management** — Create and manage billing codes/projects
+- **Audit Logs** — Detailed timeline of all system actions for compliance
+
+### 🌐 Platform
+- **PWA** — Installable on Android, iOS, Windows, and macOS with full offline support
+- **Role-Based Access Control** — Separate, secure portals for Employees and Administrators
+- **Real-Time Sync** — Instant updates via Firebase Firestore
+- **AI Assistant** — Built-in AI chatbot for policy queries and support
+- **Direct Chat** — Integrated messaging system for internal communication
+- **PDF Reports** — Generate and download expense reports as PDF
 
 ---
 
-## 🚀 Deployment
+## 🛠️ Tech Stack
 
-Hosted on **Netlify**: `https://ipecconsulting.netlify.app`
+| Layer            | Technology                                   |
+|------------------|----------------------------------------------|
+| **Frontend**     | HTML5, Vanilla JavaScript (ES6+), Tailwind CSS |
+| **Backend**      | Firebase (Firestore, Auth, Storage, Cloud Functions) |
+| **Media Storage**| ImageKit.io                                  |
+| **Charts**       | Chart.js                                     |
+| **PDF Export**   | html2pdf.js                                  |
+| **Hosting**      | Netlify                                      |
+| **PWA**          | Service Worker (Network-first + Cache-first strategies) |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- A modern browser (Chrome, Edge, Firefox, or Safari)
+- A Firebase project with Firestore, Auth, and Storage enabled
+- Node.js (only required for Cloud Functions in `/functions`)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/expense-tracker.git
+   cd expense-tracker
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   cp env.example.js env.js
+   ```
+   Open `env.js` and replace the placeholder values with your Firebase project credentials:
+   ```js
+   window.ENV = {
+       FIREBASE_API_KEY: "your-api-key",
+       FIREBASE_AUTH_DOMAIN: "your-project.firebaseapp.com",
+       FIREBASE_PROJECT_ID: "your-project-id",
+       FIREBASE_STORAGE_BUCKET: "your-project.firebasestorage.app",
+       FIREBASE_MESSAGING_SENDER_ID: "your-sender-id",
+       FIREBASE_APP_ID: "your-app-id",
+       FIREBASE_MEASUREMENT_ID: "your-measurement-id"
+   };
+   ```
+
+3. **Deploy Cloud Functions** *(optional)*
+   ```bash
+   cd functions
+   npm install
+   firebase deploy --only functions
+   ```
+
+4. **Run locally**
+
+   Serve the project using any static file server:
+   ```bash
+   npx serve .
+   ```
+   Then open `http://localhost:3000` in your browser.
+
+5. **Deploy to Netlify**
+
+   Push to your connected GitHub repo — Netlify will auto-deploy. The `_redirects` file handles SPA routing automatically.
+
+---
+
+## 📂 Project Structure
+
+```
+├── index.html               # Landing page (public entry point)
+├── emp.html                 # Employee portal
+├── admin.html               # Admin command center
+├── sw.js                    # Service worker (PWA offline support)
+├── firebase-messaging-sw.js # Firebase Cloud Messaging worker
+├── manifest.json            # Web App Manifest (PWA config)
+├── firebase-config.js       # Firebase initialization
+├── env.js                   # Runtime environment variables (gitignored)
+├── env.example.js           # Env template for new developers
+├── firestore.rules          # Firestore security rules
+│
+├── common.css               # Shared styles
+├── theme.js                 # Dark/Light mode toggle
+├── utils.js                 # Shared utility functions
+├── admin-helper.js          # Admin-specific calculations
+├── ai-support.js            # AI chatbot widget logic
+├── spam-filter.js           # Spam detection for messaging
+│
+├── 404.html                 # Custom "Page Not Found"
+├── offline.html             # Offline fallback page
+├── mitanshu.html            # Developer profile page
+├── help.html / support.html # Help desk & ticket tracking
+├── privacy.html / terms.html# Legal pages
+│
+├── functions/               # Firebase Cloud Functions
+│   ├── index.js
+│   └── package.json
+│
+├── .well-known/             # security.txt
+├── robots.txt               # Search engine directives
+├── sitemap.xml              # XML sitemap
+├── _redirects               # Netlify redirect rules
+├── feed.xml                 # RSS feed
+├── opensearch.xml           # Browser search integration
+├── browserconfig.xml        # Windows tile config
+├── humans.txt               # Team credits
+└── LICENSE                  # MIT License
+```
+
+---
 
 ## 🔒 Security
 
-*   **`security.txt`**: Standardized security policy located in `.well-known/`.
-*   **Firebase Rules**: Firestore rules ensure users can only access their own data (unless Admin).
+- **Firebase Rules** — Firestore rules (`firestore.rules`) ensure authenticated access only
+- **Security Policy** — Standardized `security.txt` in `.well-known/`
+- **Environment Isolation** — API keys stored in `env.js` (gitignored), with `env.example.js` as a safe template
+- **Input Validation** — Spam filtering on messaging features
 
 ---
-&copy; 2026 International Process Excellence Council. All Rights Reserved.
+
+## 🤝 Contributing
+
+Contributions are welcome! To get started:
+
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code follows the existing style and conventions.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://mitanshubhasin.netlify.app">Mitanshu Bhasin</a> for <strong>IPEC Consulting</strong>
+  <br />
+  &copy; 2026 International Process Excellence Council. All Rights Reserved.
+</p>
