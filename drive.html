@@ -45,7 +45,7 @@
 
     <link rel="stylesheet" href="css/common.css">
 
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -60,7 +60,7 @@
   "@id": "https://i.fouralpha.org/#organization"
 }
 </script>
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -272,8 +272,18 @@
     </main>
 
     <footer
-        class="text-center py-6 text-xs text-slate-400 font-medium relative z-10 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm mt-auto w-full">
-        Powered by Google Drive API &bull; IPEC Systems
+        class="text-center py-6 text-xs text-slate-400 font-medium relative z-10 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm mt-auto w-full flex flex-col items-center gap-4">
+        <div
+            class="flex items-center gap-3 px-3 py-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-lg border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors group cursor-default">
+            <img src="images (1).png" alt="Qualys SSL Labs A+ Logo"
+                class="h-5 w-auto opacity-70 group-hover:opacity-100 transition-opacity">
+            <div class="flex flex-col text-left">
+                <span class="text-[7px] font-extrabold text-slate-500 uppercase tracking-widest leading-none">Security
+                    Certified</span>
+                <span class="text-[9px] font-bold text-slate-700 dark:text-slate-300">Qualys SSL Labs A+</span>
+            </div>
+        </div>
+        <p>Powered by Google Drive API &bull; IPEC Systems</p>
     </footer>
 
     <!-- Logic -->
