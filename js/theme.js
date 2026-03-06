@@ -34,7 +34,7 @@ window.updateThemeIcons = function () {
 }
 
     // Initialize theme on load
-    (function () {
+    ; (function () {
         const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light
         if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark');
