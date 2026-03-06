@@ -68,8 +68,8 @@ exports.sendCallNotification = functions.firestore
                     notification: {
                         title: `📞 Incoming ${callType} Call`,
                         body: `${callerName} is calling you...`,
-                        icon: "/cropped-ipec-logo-32x32.png",
-                        badge: "/cropped-ipec-logo-32x32.png",
+                        icon: "/assets/images/cropped-ipec-logo-32x32.png",
+                        badge: "/assets/images/cropped-ipec-logo-32x32.png",
                         requireInteraction: true,
                         vibrate: [300, 100, 300, 100, 300]
                     }

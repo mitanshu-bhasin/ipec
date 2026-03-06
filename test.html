@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     
-    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="css/common.css">
 </head>
 
 <body class="test-page min-h-screen flex flex-col relative pb-safe">
@@ -44,12 +44,12 @@
         <div class="px-5 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div
-                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-lg shadow-blue-200 overflow-hidden p-1">
-                    <img src="cropped-ipec-logo-32x32.png" class="w-full h-full object-contain">
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-green-600 shadow-lg shadow-green-200 overflow-hidden p-1">
+                    <img src="assets/images/cropped-ipec-logo-32x32.png" class="w-full h-full object-contain">
                 </div>
                 <div>
                     <span class="text-lg font-extrabold tracking-tight leading-none block text-slate-800">IPEC
-                        <span class="text-blue-600">Health</span></span>
+                        <span class="text-green-600">Health</span></span>
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">System Check</span>
                 </div>
             </div>
@@ -68,13 +68,13 @@
         <!-- VIEW 1: INTRO / LANDING (Visible by default) -->
         <div id="introView" class="flex flex-col items-center justify-center min-h-[60vh] text-center fade-in">
             <div
-                class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl shadow-blue-100 mb-8 border border-slate-100 p-4">
-                <img src="cropped-ipec-logo-32x32.png" class="w-full h-full object-contain animate-pulse">
+                class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl shadow-green-100 mb-8 border border-slate-100 p-4">
+                <img src="assets/images/cropped-ipec-logo-32x32.png" class="w-full h-full object-contain animate-pulse">
             </div>
 
             <h1 class="text-4xl font-extrabold text-slate-900 mb-4 leading-tight">
                 Is Your Device <br> <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-500">Working
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Working
                     Properly?</span>
             </h1>
 
@@ -98,7 +98,7 @@
             </div>
 
             <button onclick="enterDashboard()"
-                class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 hover:scale-[1.02] active:scale-95 transition-all">
+                class="w-full bg-gradient-to-r from-green-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-green-200 hover:scale-[1.02] active:scale-95 transition-all">
                 Run Diagnostics <i class="fa-solid fa-arrow-right ml-2"></i>
             </button>
 
@@ -202,7 +202,7 @@
             camera: { id: 'camera', name: 'Cameras', icon: 'fa-camera', color: 'text-teal-600', bg: 'bg-teal-50' },
             sensors: { id: 'sensors', name: 'Sensors', icon: 'fa-compass', color: 'text-orange-600', bg: 'bg-orange-50' },
             battery: { id: 'battery', name: 'Battery', icon: 'fa-battery-half', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-            network: { id: 'network', name: 'Speed Test', icon: 'fa-wifi', color: 'text-blue-600', bg: 'bg-blue-50' },
+            network: { id: 'network', name: 'Speed Test', icon: 'fa-wifi', color: 'text-green-600', bg: 'bg-green-50' },
             gps: { id: 'gps', name: 'GPS', icon: 'fa-location-crosshairs', color: 'text-red-600', bg: 'bg-red-50' },
             keyboard: { id: 'keyboard', name: 'Keyboard', icon: 'fa-keyboard', color: 'text-slate-600', bg: 'bg-slate-100' },
             mouse: { id: 'mouse', name: 'Mouse & Trackpad', icon: 'fa-mouse', color: 'text-purple-600', bg: 'bg-purple-50' }
@@ -530,8 +530,8 @@
         function initScreenTest(container) {
             container.innerHTML = `
                 <div class="space-y-4 w-full text-center">
-                    <div class="bg-blue-50 p-4 rounded-xl mb-4">
-                        <p class="text-xs text-blue-600 font-bold uppercase">Screen Resolution</p>
+                    <div class="bg-green-50 p-4 rounded-xl mb-4">
+                        <p class="text-xs text-green-600 font-bold uppercase">Screen Resolution</p>
                         <h3 class="text-2xl font-mono font-bold text-slate-800">${window.screen.width} x ${window.screen.height}</h3>
                         <p class="text-xs text-slate-400">Pixel Ratio: ${window.devicePixelRatio}x</p>
                     </div>
@@ -601,11 +601,11 @@
             container.innerHTML = `
                 <div class="text-center">
                     <div class="mb-6">
-                        <i class="fa-solid fa-wifi text-4xl text-blue-500 mb-2"></i>
+                        <i class="fa-solid fa-wifi text-4xl text-green-500 mb-2"></i>
                         <h3 class="text-2xl font-bold">${navigator.onLine ? "Online" : "Offline"}</h3>
                         <p class="text-sm text-slate-400">${navigator.connection?.effectiveType?.toUpperCase() || 'WIFI/LTE'}</p>
                     </div>
-                    <button onclick="pingTest()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 active:scale-95 transition-transform">
+                    <button onclick="pingTest()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-green-200 active:scale-95 transition-transform">
                         Check Latency
                     </button>
                     <div id="pingRes" class="mt-4 font-mono font-bold text-slate-700"></div>
@@ -730,8 +730,8 @@
             };
 
             container.onwheel = () => {
-                s.classList.add('bg-blue-500', 'text-white');
-                setTimeout(() => s.classList.remove('bg-blue-500', 'text-white'), 200);
+                s.classList.add('bg-green-500', 'text-white');
+                setTimeout(() => s.classList.remove('bg-green-500', 'text-white'), 200);
             };
 
             d.ondblclick = () => {

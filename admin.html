@@ -11,18 +11,19 @@
     <meta name="apple-mobile-web-app-title" content="IPEC Consulting">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
     <meta name="description"
-        content="IPEC Admin Dashboard - Manage expenses, approve claims, and track company spending secure and efficiently.">
-    <meta name="keywords" content="IPEC, Admin, Expense Approval, Dashboard, Management">
-    <meta name="author" content="IPEC Consulting">
+        content="Admin dashboard for IPEC Expense Manager by IPEC Consulting & Sangeet Malhotra. Approve claims securely and efficiently.">
+    <meta name="keywords" content="IPEC, Admin, Expense Approval, Dashboard, Management, Sangeet Malhotra">
+    <meta name="author" content="Sangeet Malhotra, IPEC Consulting">
     <link rel="canonical" href="https://ipecconsulting.netlify.app/admin.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="IPEC Admin | Command Center">
-    <meta property="og:description" content="Manage expenses, approve claims, and track company spending securely.">
+    <meta property="og:title" content="Admin - IPEC Expense Manager | IPEC Consulting">
+    <meta property="og:description"
+        content="Admin dashboard for IPEC Expense Manager by IPEC Consulting & Sangeet Malhotra. Approve claims securely and efficiently.">
     <meta property="og:url" content="https://ipecconsulting.netlify.app/admin.html">
     <meta property="og:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
 
@@ -50,7 +51,7 @@
     }
     </script>
 
-    <title>IPEC Admin | Command Center</title>
+    <title>Admin - IPEC Expense Manager | IPEC Consulting</title>
     <script>
         (function () {
             const theme = localStorage.getItem('theme') || 'light';
@@ -63,9 +64,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="theme.js"></script>
-    <script src="utils.js"></script>
-    <script src="admin-helper.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin-helper.js"></script>
     <script>
         // ImageKit Config (WARNING: Client-side usage with private key is NOT recommended for production)
         const IMAGEKIT_URL = "https://upload.imagekit.io/api/v1/files/upload"; // Standard upload endpoint
@@ -110,7 +111,6 @@
                         ipec: {
                             red: '#D93025',
                             green: '#1E8E3E',
-                            blue: '#1A73E8',
                             dark: '#0F172A'
                         },
                         brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' }
@@ -119,6 +119,39 @@
             }
         }
     </script>
+    <style>
+        /* Theme Custom Cursors */
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%231E8E3E"/><stop offset="0.5" stop-color="%23F9AB00"/><stop offset="1" stop-color="%23D93025"/></linearGradient></defs><path d="M4 2.5l11 11.43-4.5 1.5 3.38 5.73-2.58 1.34-3.46-5.83-4.84 4.83Z" fill="url(%23g)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 2, auto;
+        }
+
+        a,
+        button,
+        [role="button"],
+        input[type="submit"],
+        input[type="button"],
+        input[type="reset"],
+        select,
+        .cursor-pointer {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%231E8E3E"/><stop offset="0.5" stop-color="%23F9AB00"/><stop offset="1" stop-color="%23D93025"/></linearGradient></defs><path d="M10.5 2a2 2 0 0 1 2 2v5a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v2a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7.5a6.5 6.5 0 0 1-13 0V4a2 2 0 0 1 2-2z" fill="url(%23p)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 10 2, pointer !important;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        .cursor-text {
+            cursor: text;
+        }
+
+        .cursor-not-allowed,
+        :disabled {
+            cursor: not-allowed !important;
+        }
+    </style>
     <style>
         .input-primary {
             width: 100%;
@@ -144,7 +177,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(to right, #1A73E8, #1E8E3E);
+            background: linear-gradient(to right, #1E8E3E, #1E8E3E);
             color: white;
             font-weight: bold;
             padding: 0.625rem 1.5rem;
@@ -298,12 +331,12 @@
             background-color: #000000;
         }
 
-        .dark [class*="bg-blue-50"] {
+        .dark [class*="bg-green-50"] {
             background-color: #16181C !important;
             border-color: #2F3336 !important;
         }
 
-        .dark [class*="bg-blue-100"] {
+        .dark [class*="bg-green-100"] {
             background-color: #16181C !important;
         }
 
@@ -358,7 +391,7 @@
         }
 
         /* text colors in repurposed light cards */
-        .dark [class*="bg-blue-50"] p,
+        .dark [class*="bg-green-50"] p,
         .dark [class*="bg-slate-50"] p,
         .dark [class*="bg-green-50"] p,
         .dark [class*="bg-emerald-50"] p,
@@ -381,7 +414,7 @@
         /* Distinct Gradient Background */
         /* Logo Gradient Text Effect */
         .gradient-text {
-            background: linear-gradient(to right, #D93025, #1E8E3E, #1A73E8);
+            background: linear-gradient(to right, #D93025, #F9AB00, #1E8E3E);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -394,6 +427,317 @@
 
         .dark .hero-bg {
             background: #000000;
+        }
+
+        /* ===== MOBILE RESPONSIVE OPTIMIZATION ===== */
+
+        /* Compress content-area padding on mobile */
+        @media (max-width: 767px) {
+            #content-area {
+                padding: 12px !important;
+            }
+
+            /* Compress card padding on mobile */
+            #content-area .p-6 {
+                padding: 14px !important;
+            }
+
+            /* ---- USER MANAGEMENT: Card Layout on Mobile ---- */
+            #content-area .user-mgmt-table-wrap table thead {
+                display: none !important;
+            }
+
+            #content-area .user-mgmt-table-wrap table,
+            #content-area .user-mgmt-table-wrap table tbody {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            #content-area .user-mgmt-table-wrap table tbody tr {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                padding: 14px !important;
+                margin-bottom: 10px !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 14px !important;
+                background: #fff !important;
+                position: relative !important;
+                gap: 6px 12px !important;
+            }
+
+            .dark #content-area .user-mgmt-table-wrap table tbody tr {
+                background: #16181C !important;
+                border-color: #2F3336 !important;
+            }
+
+            #content-area .user-mgmt-table-wrap table tbody tr.expense-row {
+                display: block !important;
+                border-radius: 10px !important;
+                margin-top: -6px !important;
+            }
+
+            #content-area .user-mgmt-table-wrap table tbody tr td {
+                display: block !important;
+                padding: 2px 0 !important;
+                border: none !important;
+                font-size: 12px !important;
+            }
+
+            /* Name col - full width, bigger */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(2) {
+                width: 100% !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                order: -2 !important;
+            }
+
+            /* Role col - auto */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(4) {
+                order: -1 !important;
+            }
+
+            /* Employee ID - label it */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(1)::before {
+                content: "EMP ID: ";
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 10px;
+            }
+
+            /* Email col */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(3) {
+                width: 100% !important;
+            }
+
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(3)::before {
+                content: "Email: ";
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 10px;
+            }
+
+            /* Department */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(5)::before {
+                content: "Dept: ";
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 10px;
+            }
+
+            /* Budget */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(6)::before {
+                content: "Budget: ";
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 10px;
+            }
+
+            /* Expenses count */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(7)::before {
+                content: "Claims: ";
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 10px;
+            }
+
+            /* Actions - bottom right */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8) {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: flex-end !important;
+                padding-top: 8px !important;
+                border-top: 1px solid #f1f5f9 !important;
+                margin-top: 6px !important;
+            }
+
+            .dark #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8) {
+                border-top-color: #2F3336 !important;
+            }
+
+            /* Force action buttons visible on mobile (no hover needed) */
+            #content-area .user-mgmt-table-wrap table tbody tr td:nth-child(8)>div {
+                opacity: 1 !important;
+            }
+
+            /* ---- AUDIT LOGS: Card Layout on Mobile ---- */
+            #content-area .audit-table-wrap table thead {
+                display: none !important;
+            }
+
+            #content-area .audit-table-wrap table,
+            #content-area .audit-table-wrap table tbody {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            #content-area .audit-table-wrap table tbody tr {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                padding: 14px !important;
+                margin-bottom: 10px !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 14px !important;
+                background: #fff !important;
+                position: relative !important;
+                gap: 4px 12px !important;
+            }
+
+            .dark #content-area .audit-table-wrap table tbody tr {
+                background: #16181C !important;
+                border-color: #2F3336 !important;
+            }
+
+            #content-area .audit-table-wrap table tbody tr td {
+                display: block !important;
+                padding: 2px 0 !important;
+                border: none !important;
+                font-size: 12px !important;
+            }
+
+            /* Timestamp - top, muted */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(1) {
+                width: 100% !important;
+                order: -3 !important;
+                font-size: 10px !important;
+                color: #94a3b8 !important;
+            }
+
+            /* Action badge - prominent */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(2) {
+                order: -2 !important;
+            }
+
+            /* User */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(3) {
+                order: -1 !important;
+            }
+
+            #content-area .audit-table-wrap table tbody tr td:nth-child(3)::before {
+                content: "By: ";
+                font-weight: 700;
+                color: #94a3b8;
+                font-size: 10px;
+            }
+
+            /* Role */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(4)::before {
+                content: "Role: ";
+                font-weight: 700;
+                color: #94a3b8;
+                font-size: 10px;
+            }
+
+            /* Expense */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(5) {
+                width: 100% !important;
+            }
+
+            #content-area .audit-table-wrap table tbody tr td:nth-child(5)::before {
+                content: "Expense: ";
+                font-weight: 700;
+                color: #94a3b8;
+                font-size: 10px;
+            }
+
+            /* Comment */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(6) {
+                width: 100% !important;
+            }
+
+            #content-area .audit-table-wrap table tbody tr td:nth-child(6)::before {
+                content: "Comment: ";
+                font-weight: 700;
+                color: #94a3b8;
+                font-size: 10px;
+            }
+
+            /* View button */
+            #content-area .audit-table-wrap table tbody tr td:nth-child(7) {
+                position: absolute !important;
+                top: 12px !important;
+                right: 12px !important;
+            }
+
+            /* ---- Audit Header: Stack buttons on mobile ---- */
+            .audit-header-flex {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+
+            .audit-header-flex .flex.gap-2 {
+                width: 100% !important;
+            }
+
+            .audit-header-flex .flex.gap-2 button {
+                flex: 1 !important;
+            }
+
+            /* ---- APPROVALS: Compress card padding ---- */
+            #content-area .grid {
+                gap: 12px !important;
+            }
+
+            /* ---- Overview stat cards: 2-col grid ---- */
+            #content-area .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+
+            #content-area .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4>div {
+                padding: 14px !important;
+            }
+
+            #content-area .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 .text-3xl {
+                font-size: 1.25rem !important;
+            }
+
+            /* ---- Reports bars: compress ---- */
+            #content-area .space-y-3 .flex.items-center.gap-4 span.w-32 {
+                width: 80px !important;
+                font-size: 11px !important;
+            }
+
+            /* ---- Task Manager: Stack columns on mobile ---- */
+            #content-area .flex-col.lg\\:flex-row {
+                gap: 14px !important;
+            }
+
+            /* ---- General text compression for mobile ---- */
+            #content-area .text-lg {
+                font-size: 0.9rem !important;
+            }
+
+            #content-area .text-sm {
+                font-size: 0.8rem !important;
+            }
+
+            /* ---- Search bar in User Mgmt: full width ---- */
+            .user-mgmt-header .flex.gap-3 {
+                flex-wrap: wrap !important;
+            }
+
+            .user-mgmt-header .flex.gap-3>div.relative {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .user-mgmt-header .flex.gap-3>button {
+                flex: 1 !important;
+                justify-content: center !important;
+            }
+        }
+
+        /* Slightly compress for tablets too */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #content-area {
+                padding: 16px !important;
+            }
         }
     </style>
     <link rel="manifest" href="manifest.json">
@@ -411,7 +755,7 @@
                                     const title = "Test Notification";
                                     const opts = {
                                         body: "This is a test notification to confirm setup.",
-                                        icon: "cropped-ipec-logo-32x32.png"
+                                        icon: "assets/images/cropped-ipec-logo-32x32.png"
                                     };
                                     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
                                         navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts));
@@ -426,7 +770,7 @@
             });
         }
     </script>
-    <script src="env.js"></script>
+    <script src="js/env.js"></script>
 </head>
 
 <body
@@ -502,7 +846,7 @@
                 <!-- Main Admin Only: Profile Pic -->
                 <div id="user-profile-pic-container" class="hidden">
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Profile
-                        Picture URL <span class="text-blue-500 text-[10px]">(Main Admin Only)</span></label>
+                        Picture URL <span class="text-green-500 text-[10px]">(Main Admin Only)</span></label>
                     <input type="url" id="user-profile-pic" class="input-primary"
                         placeholder="https://i.postimg.cc/...">
                     <p class="text-[10px] text-slate-400 mt-1">Paste a direct image link.</p>
@@ -519,7 +863,7 @@
                     <button type="button" onclick="closeUserModal()"
                         class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:text-slate-200 py-2 rounded-lg text-sm font-semibold transition">Cancel</button>
                     <button type="submit"
-                        class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-blue-200 dark:shadow-none">Save
+                        class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-green-200 dark:shadow-none">Save
                         User</button>
                 </div>
             </form>
@@ -561,7 +905,7 @@
                     <button type="button" onclick="closeProjectModal()"
                         class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:text-slate-200 py-2 rounded-lg text-sm font-semibold transition">Cancel</button>
                     <button type="submit"
-                        class="flex-1 bg-blue-600 hover:bg-brand-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-blue-200">Save
+                        class="flex-1 bg-green-600 hover:bg-brand-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-green-200">Save
                         Project</button>
                 </div>
             </form>
@@ -596,7 +940,7 @@
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center transform transition-all scale-95 opacity-0"
             id="global-modal-content">
             <div id="modal-icon"
-                class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-4 text-xl">
+                class="w-12 h-12 rounded-full bg-green-50 text-green-500 flex items-center justify-center mx-auto mb-4 text-xl">
                 <i class="fa-solid fa-info"></i>
             </div>
             <h3 id="modal-title" class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Notification</h3>
@@ -605,7 +949,7 @@
                 <button onclick="closeGlobalModal()"
                     class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:text-slate-200 py-2 rounded-lg text-sm font-semibold transition">Close</button>
                 <button id="modal-confirm-btn"
-                    class="hidden flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg text-sm font-semibold transition">Confirm</button>
+                    class="hidden flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg text-sm font-semibold transition">Confirm</button>
             </div>
         </div>
     </div>
@@ -624,7 +968,7 @@
                 <button onclick="closeInputModal(null)"
                     class="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-lg text-sm font-semibold transition">Cancel</button>
                 <button onclick="confirmInputModal()"
-                    class="flex-1 bg-blue-600 hover:bg-brand-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-blue-200">Confirm</button>
+                    class="flex-1 bg-green-600 hover:bg-brand-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-green-200">Confirm</button>
             </div>
         </div>
     </div>
@@ -636,7 +980,7 @@
             id="modal-account-content">
             <div class="flex justify-between items-center mb-6 shrink-0">
                 <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100"><i
-                        class="fa-solid fa-id-card-clip mr-2 text-blue-600"></i> Account Center</h3>
+                        class="fa-solid fa-id-card-clip mr-2 text-green-600"></i> Account Center</h3>
                 <button onclick="closeModal('modal-account')"
                     class="text-slate-400 hover:text-slate-600 dark:text-slate-300 transition-colors"><i
                         class="fa-solid fa-times text-lg"></i></button>
@@ -645,18 +989,18 @@
             <div class="flex-1 overflow-y-auto pr-2 pb-2 space-y-5 custom-scrollbar">
                 <!-- User Banner -->
                 <div
-                    class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-800 rounded-xl border border-blue-100 dark:border-slate-700 flex items-center gap-4 relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 text-blue-500/10 dark:text-slate-600/20 text-6xl">
+                    class="p-4 bg-gradient-to-r from-green-50 to-indigo-50 dark:from-slate-700 dark:to-slate-800 rounded-xl border border-green-100 dark:border-slate-700 flex items-center gap-4 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-green-500/10 dark:text-slate-600/20 text-6xl">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <div class="w-16 h-16 rounded-full bg-white dark:bg-slate-900 text-blue-600 flex items-center justify-center text-2xl font-bold border-4 border-blue-200 dark:border-slate-600 shadow-sm relative z-10 shrink-0"
+                    <div class="w-16 h-16 rounded-full bg-white dark:bg-slate-900 text-green-600 flex items-center justify-center text-2xl font-bold border-4 border-green-200 dark:border-slate-600 shadow-sm relative z-10 shrink-0"
                         id="ac-avatar">
                         ?
                     </div>
                     <div class="relative z-10 overflow-hidden">
                         <h4 class="font-bold text-lg text-slate-800 dark:text-slate-100 truncate" id="ac-name">
                             Loading...</h4>
-                        <p class="text-[10px] font-bold text-blue-700 dark:text-brand-300 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm px-2.5 py-1 rounded-full inline-block mt-1 uppercase tracking-wider shadow-sm border border-blue-200/50 dark:border-blue-500/30"
+                        <p class="text-[10px] font-bold text-green-700 dark:text-brand-300 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm px-2.5 py-1 rounded-full inline-block mt-1 uppercase tracking-wider shadow-sm border border-green-200/50 dark:border-green-500/30"
                             id="ac-role">...</p>
                     </div>
                 </div>
@@ -704,15 +1048,15 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div
                             class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-center shadow-sm">
-                            <span class="block text-2xl font-black text-blue-600 dark:text-blue-400"
+                            <span class="block text-2xl font-black text-green-600 dark:text-green-400"
                                 id="ac-stat-claims">-</span>
                             <span class="text-[10px] text-slate-500 font-bold uppercase">Total Claims</span>
                         </div>
                         <div
                             class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-center shadow-sm text-ellipsis overflow-hidden">
                             <span
-                                class="block text-2xl font-black text-blue-600 dark:text-blue-400 flex items-center justify-center gap-1 font-mono text-sm max-w-full"><span
-                                    class="text-[10px] font-normal text-blue-500">₹</span><span id="ac-stat-budget"
+                                class="block text-2xl font-black text-green-600 dark:text-green-400 flex items-center justify-center gap-1 font-mono text-sm max-w-full"><span
+                                    class="text-[10px] font-normal text-green-500">₹</span><span id="ac-stat-budget"
                                     class="truncate">0</span></span>
                             <span class="text-[10px] text-slate-500 font-bold uppercase truncate">Monthly Budget</span>
                         </div>
@@ -731,7 +1075,7 @@
                             <label
                                 class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Language</label>
                             <select onchange="selectAdminLanguage(this.value)"
-                                class="input-primary bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-xs py-1.5 focus:ring-brand-500 focus:border-blue-500 outline-none">
+                                class="input-primary bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-xs py-1.5 focus:ring-brand-500 focus:border-green-500 outline-none">
                                 <option value="en">English (US)</option>
                                 <option value="hi">हिंदी (Hindi)</option>
                             </select>
@@ -742,7 +1086,7 @@
                             <button onclick="toggleTheme()"
                                 class="w-full py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center px-3 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                                 <span>Dark/Light</span>
-                                <i class="fa-solid fa-moon theme-toggle-icon dark:text-blue-400"></i>
+                                <i class="fa-solid fa-moon theme-toggle-icon dark:text-green-400"></i>
                             </button>
                         </div>
                     </div>
@@ -764,7 +1108,7 @@
                                 <div class="relative">
                                     <i class="fa-solid fa-phone absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                                     <input type="tel" id="ac-phone"
-                                        class="input-primary pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 py-1.5 text-xs focus:ring-brand-500 focus:border-blue-500 outline-none"
+                                        class="input-primary pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 py-1.5 text-xs focus:ring-brand-500 focus:border-green-500 outline-none"
                                         placeholder="+91 9876543210">
                                 </div>
                             </div>
@@ -775,14 +1119,14 @@
                                 <div class="relative">
                                     <i class="fa-solid fa-envelope absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                                     <input type="email" id="ac-alt-email"
-                                        class="input-primary pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 py-1.5 text-xs focus:ring-brand-500 focus:border-blue-500 outline-none"
+                                        class="input-primary pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 py-1.5 text-xs focus:ring-brand-500 focus:border-green-500 outline-none"
                                         placeholder="backup@example.com">
                                 </div>
                             </div>
                         </div>
                         <div class="flex gap-3 mt-4">
                             <button type="submit"
-                                class="flex-1 bg-blue-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-lg shadow-md shadow-blue-200 dark:shadow-none transition flex items-center justify-center gap-2">
+                                class="flex-1 bg-green-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-lg shadow-md shadow-green-200 dark:shadow-none transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-floppy-disk"></i> Save Details
                             </button>
                         </div>
@@ -792,7 +1136,7 @@
                                 <i class="fa-solid fa-key"></i> Reset
                             </button>
                             <a href="support.html"
-                                class="w-full py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-blue-600 dark:text-blue-400 text-xs font-bold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition flex items-center justify-center gap-2">
+                                class="w-full py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-green-600 dark:text-green-400 text-xs font-bold hover:bg-green-50 dark:hover:bg-green-900/20 transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-headset"></i> Support
                             </a>
                         </div>
@@ -823,7 +1167,7 @@
                 class="glass p-6 md:p-8 rounded-2xl w-full max-w-md shadow-2xl z-10 relative mb-8 fade-scale transition-all duration-300">
                 <div class="text-center mb-8">
                     <div id="login-logo-container"
-                        class="w-20 h-20 bg-gradient-to-br from-blue-600 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30 overflow-hidden animate-float">
+                        class="w-20 h-20 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30 overflow-hidden animate-float">
                         <img id="login-logo-img" class="w-full h-full object-contain hidden" src="ipec_logo.jpg"
                             alt="Company Logo">
                         <i id="login-logo-fallback" class="fa-solid fa-seedling text-3xl text-white drop-shadow-md"></i>
@@ -855,18 +1199,18 @@
                             <input type="password" id="login-password" class="input-primary !pl-10 pr-10"
                                 placeholder="••••••••" autocomplete="current-password" required>
                             <button type="button" onclick="toggleLoginPassword()"
-                                class="absolute right-3 top-2.5 text-slate-400 hover:text-blue-600 transition">
+                                class="absolute right-3 top-2.5 text-slate-400 hover:text-green-600 transition">
                                 <i class="fa-regular fa-eye" id="login-eye-icon"></i>
                             </button>
                         </div>
                         <div class="text-right mt-1">
                             <button type="button" onclick="forgotPassword()"
-                                class="text-xs text-blue-600 hover:text-brand-800 font-semibold hover:underline">Forgot
+                                class="text-xs text-green-600 hover:text-brand-800 font-semibold hover:underline">Forgot
                                 Password?</button>
                         </div>
                     </div>
                     <button type="submit" id="login-btn"
-                        class="w-full btn-primary py-3 text-base shadow-xl shadow-blue-500/30 bg-gradient-to-r from-blue-700 to-green-700 hover:from-blue-600 hover:to-green-600 border border-blue-400/30 relative overflow-hidden group">
+                        class="w-full btn-primary py-3 text-base shadow-xl shadow-green-500/30 bg-gradient-to-r from-green-700 to-green-700 hover:from-green-600 hover:to-green-600 border border-green-400/30 relative overflow-hidden group">
                         <span class="relative z-10 flex items-center justify-center gap-2">Secure Login <i
                                 class="fa-solid fa-shield-halved"></i></span>
                         <div
@@ -898,7 +1242,7 @@
                         </div>
                     </div>
                     <button type="submit" id="signup-btn"
-                        class="w-full btn-primary py-3 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-500 hover:to-teal-500 border-blue-400/30 text-white font-bold py-2.5 px-4 rounded-lg transition-all shadow-md shadow-blue-200 dark:shadow-none py-3 rounded-lg transition shadow-lg transform hover:translate-y-[-1px]">
+                        class="w-full btn-primary py-3 bg-gradient-to-r from-green-600 to-green-600 hover:from-green-500 hover:to-teal-500 border-green-400/30 text-white font-bold py-2.5 px-4 rounded-lg transition-all shadow-md shadow-green-200 dark:shadow-none py-3 rounded-lg transition shadow-lg transform hover:translate-y-[-1px]">
                         <span class="relative z-10 flex items-center justify-center gap-2">Activate Account <i
                                 class="fa-solid fa-check-circle"></i></span>
                     </button>
@@ -916,16 +1260,16 @@
                 <div class="mt-6 text-center border-t border-slate-100 dark:border-slate-800 pt-6">
                     <div id="login-footer" class="space-y-4">
                         <p class="text-[10px] text-slate-400 max-w-xs mx-auto leading-relaxed">
-                            <i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> New Admin?
+                            <i class="fa-solid fa-circle-info mr-1 text-green-500"></i> New Admin?
                         </p>
                         <button onclick="toggleAuthMode('signup')"
-                            class="block w-full text-center text-xs text-blue-600 hover:text-brand-800 font-bold hover:underline transition-colors py-2">Activate
+                            class="block w-full text-center text-xs text-green-600 hover:text-brand-800 font-bold hover:underline transition-colors py-2">Activate
                             Account</button>
                     </div>
                     <div id="signup-footer" class="hidden space-y-4">
                         <p class="text-[10px] text-slate-400 mb-2">Account active?</p>
                         <button onclick="toggleAuthMode('login')"
-                            class="block w-full text-center text-xs text-blue-600 hover:text-brand-800 font-bold hover:underline transition-colors py-2">Back
+                            class="block w-full text-center text-xs text-green-600 hover:text-brand-800 font-bold hover:underline transition-colors py-2">Back
                             to
                             Login</button>
                     </div>
@@ -933,9 +1277,9 @@
             </div>
             <div class="flex justify-between mt-3 text-xs w-full pt-4 border-t border-slate-50 dark:border-slate-800">
                 <a href="index.html" onclick="localStorage.removeItem('ipec_portal_preference')"
-                    class="text-slate-400 hover:text-blue-600 transition">Back to Website</a>
+                    class="text-slate-400 hover:text-green-600 transition">Back to Website</a>
                 <a href="emp.html"
-                    class="text-blue-600 hover:text-brand-800 font-bold transition flex items-center gap-1">
+                    class="text-green-600 hover:text-brand-800 font-bold transition flex items-center gap-1">
                     <i class="fa-solid fa-user-tie"></i> Login as Employee
                 </a>
             </div>
@@ -946,11 +1290,11 @@
             <p class="font-bold mb-1 opacity-70">IPEC Expenze System</p>
             <p class="opacity-60">Authorized Access Only. All activities are monitored.</p>
             <div class="flex gap-4 justify-center mt-3 opacity-60">
-                <a href="privacy.html" class="hover:text-blue-600 transition">Privacy</a>
+                <a href="privacy.html" class="hover:text-green-600 transition">Privacy</a>
                 <span class="text-slate-300">•</span>
-                <a href="terms.html" class="hover:text-blue-600 transition">Terms</a>
+                <a href="terms.html" class="hover:text-green-600 transition">Terms</a>
                 <span class="text-slate-300">•</span>
-                <a href="contact.html" class="hover:text-blue-600 transition">Support</a>
+                <a href="contact.html" class="hover:text-green-600 transition">Support</a>
             </div>
         </div>
     </div>
@@ -958,7 +1302,7 @@
 
     <!-- Background Blobs (light mode only) -->
     <div class="dark:hidden absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-blue-100/50 rounded-full blur-3xl"></div>
+        <div class="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-green-100/50 rounded-full blur-3xl"></div>
         <div class="absolute bottom-[10%] left-[10%] w-[40%] h-[40%] bg-indigo-100/50 rounded-full blur-3xl"></div>
     </div>
     </div>
@@ -976,9 +1320,9 @@
             <div
                 class="h-16 flex items-center justify-between px-6 border-b border-slate-800 bg-slate-950 flex-shrink-0">
                 <div class="flex items-center">
-                    <i class="fa-solid fa-bolt text-blue-500 text-xl mr-3"></i>
+                    <i class="fa-solid fa-bolt text-green-500 text-xl mr-3"></i>
                     <span class="font-bold text-lg tracking-tight" id="sidebar-company-name">IPEC <span
-                            class="text-blue-500">Expense Manager</span></span>
+                            class="text-green-500">Expense Manager</span></span>
                 </div>
                 <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white"><i
                         class="fa-solid fa-xmark text-xl"></i></button>
@@ -998,7 +1342,7 @@
                     <i class="fa-solid fa-stamp w-6 text-center group-hover:scale-110 transition"></i>
                     <span class="ml-3 font-medium text-sm">Approvals</span>
                     <span id="pending-count"
-                        class="absolute right-3 w-2 h-2 rounded-full bg-blue-500 hidden lg:block animate-pulse"></span>
+                        class="absolute right-3 w-2 h-2 rounded-full bg-green-500 hidden lg:block animate-pulse"></span>
                 </button>
 
                 <button onclick="switchTab('my-claims')"
@@ -1068,7 +1412,7 @@
 
             <div class="p-4 border-t border-slate-800 space-y-4 bg-slate-900 flex-shrink-0">
                 <button id="pwa-install-btn-admin"
-                    class="hidden w-full flex items-center justify-start px-3 py-2 text-blue-400 hover:text-emerald-300 hover:bg-emerald-900/20 rounded-lg transition border border-emerald-900/30">
+                    class="hidden w-full flex items-center justify-start px-3 py-2 text-green-400 hover:text-emerald-300 hover:bg-emerald-900/20 rounded-lg transition border border-emerald-900/30">
                     <i class="fa-solid fa-download"></i>
                     <span class="ml-3 text-xs font-bold">INSTALL APP</span>
                 </button>
@@ -1080,13 +1424,13 @@
                     </div>
                     <div class="block overflow-hidden">
                         <p class="text-sm font-bold text-white truncate w-32" id="current-user-name">Loading...</p>
-                        <p class="text-[10px] text-blue-400 uppercase font-bold tracking-wider" id="current-user-role">
+                        <p class="text-[10px] text-green-400 uppercase font-bold tracking-wider" id="current-user-role">
                             ...</p>
                     </div>
                 </div>
 
                 <button onclick="openAccountCenter()"
-                    class="w-full flex items-center justify-start px-3 py-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition mb-1">
+                    class="w-full flex items-center justify-start px-3 py-2 text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition mb-1">
                     <i class="fa-solid fa-id-card"></i>
                     <span class="ml-3 text-xs font-bold">Account Center</span>
                 </button>
@@ -1105,7 +1449,7 @@
                 class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 md:px-8 sticky top-0 z-10 shadow-sm/50">
                 <div class="flex items-center gap-4">
                     <button onclick="toggleSidebar()"
-                        class="lg:hidden text-slate-500 dark:text-slate-400 hover:text-blue-600 transition">
+                        class="lg:hidden text-slate-500 dark:text-slate-400 hover:text-green-600 transition">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                     <h2 id="page-title" class="text-lg font-bold text-slate-800 dark:text-slate-100">Dashboard</h2>
@@ -1131,65 +1475,83 @@
 
     <!-- Expense Modal -->
     <div id="modal-expense"
-        class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[80] hidden flex items-center justify-center sm:p-4">
         <div
-            class="bg-white dark:bg-slate-800 w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-[slideUp_0.3s]">
+            class="bg-white dark:bg-slate-800 w-full h-full sm:h-auto sm:max-w-5xl sm:rounded-2xl shadow-2xl flex flex-col sm:max-h-[90vh] overflow-hidden animate-[slideUp_0.3s]">
             <div
-                class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-3">
-                        <span id="modal-title">Expense Report</span>
+                class="px-4 py-4 sm:px-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start bg-slate-50 dark:bg-slate-900/50 relative shrink-0">
+                <div class="flex-1 min-w-0 pr-10">
+                    <h3
+                        class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 flex flex-wrap items-center gap-2">
+                        <span id="modal-title" class="truncate line-clamp-1">Expense Report</span>
                         <span id="modal-pre-approved"
-                            class="hidden text-[10px] bg-green-100 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-bold uppercase"><i
+                            class="hidden text-[10px] bg-green-100 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-bold uppercase shrink-0"><i
                                 class="fa-solid fa-check mr-1"></i> Pre-Approved</span>
                     </h3>
-                    <div class="flex gap-4 text-xs mt-1 text-slate-500 dark:text-slate-400">
+                    <div
+                        class="flex flex-col sm:flex-row sm:flex-wrap gap-1 sm:gap-4 text-xs mt-2 text-slate-500 dark:text-slate-400">
                         <span id="modal-id"
-                            class="font-mono bg-slate-100 px-2 rounded text-slate-600 dark:text-slate-300">ID:
+                            class="font-mono bg-slate-100 dark:bg-slate-800 px-2 rounded text-slate-600 dark:text-slate-300 inline-block w-fit">ID:
                             ...</span>
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-folder-tree text-blue-500"></i>
+                        <span class="flex items-center gap-1 shrink-0"><i
+                                class="fa-solid fa-folder-tree text-green-500"></i>
                             Project: <span id="modal-project"
-                                class="font-semibold text-slate-700 dark:text-slate-200">...</span></span>
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-currency"></i> Currency: <span
-                                id="modal-currency"
+                                class="font-semibold text-slate-700 dark:text-slate-200 truncate max-w-[150px]">...</span></span>
+                        <span class="flex items-center gap-1 shrink-0"><i class="fa-solid fa-currency"></i> Currency:
+                            <span id="modal-currency"
                                 class="font-semibold text-slate-700 dark:text-slate-200">INR</span></span>
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-user"></i> Employee: <span
+                        <span class="flex items-center gap-1 shrink-0"><i class="fa-solid fa-user"></i> Employee: <span
                                 id="modal-employee"
-                                class="font-semibold text-slate-700 dark:text-slate-200">...</span></span>
+                                class="font-semibold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">...</span></span>
                     </div>
                 </div>
                 <button onclick="closeModal('modal-expense')"
-                    class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 dark:text-slate-300 transition"><i
+                    class="absolute top-4 right-4 shrink-0 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 transition z-10"><i
                         class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-0 flex flex-col lg:flex-row h-full">
-                <div class="flex-1 p-6 space-y-6 overflow-y-auto">
+            <div class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
+                <div class="flex-1 p-4 sm:p-6 space-y-6 lg:overflow-y-auto">
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                            <p class="text-xs font-bold text-blue-400 uppercase tracking-wider">Total Amount</p>
-                            <p class="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1 font-mono"
+                        <div
+                            class="p-4 rounded-xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
+                            <p
+                                class="text-[10px] sm:text-xs font-bold text-green-500 dark:text-green-400 uppercase tracking-wider">
+                                Total Amount</p>
+                            <p class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1 font-mono break-words"
                                 id="modal-amount">₹0.00</p>
                         </div>
                         <div
                             class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Status</p>
+                            <p class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Current
+                                Status</p>
                             <div id="modal-status"
-                                class="mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold uppercase border">
+                                class="mt-2 inline-block px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase border">
                                 PENDING</div>
                         </div>
                     </div>
 
                     <div id="modal-approval-proof-container"
                         class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-900/30">
-                        <p class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-1"><i
+                        <p class="text-xs font-bold text-green-600 dark:text-green-400 mb-1"><i
                                 class="fa-solid fa-link mr-1"></i> Pre-Approval Proof</p>
                         <a href="#" target="_blank" id="modal-approval-link"
-                            class="text-sm text-blue-600 dark:text-blue-400 hover:underline truncate block">...</a>
+                            class="text-sm text-green-600 dark:text-green-400 hover:underline truncate block w-full max-w-full overflow-hidden text-ellipsis">...</a>
+                    </div>
+
+                    <!-- Employee Notes -->
+                    <div id="modal-notes-container"
+                        class="hidden p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30">
+                        <p
+                            class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-sticky-note"></i> Employee Notes / Description
+                        </p>
+                        <p id="modal-notes"
+                            class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap break-words">
+                        </p>
                     </div>
 
                     <!-- Line items -->
-
                     <div>
                         <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-2">Line Items
                         </h4>
@@ -1199,8 +1561,8 @@
                 </div>
 
                 <div
-                    class="w-full lg:w-96 bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 p-6 flex flex-col gap-6">
-                    <div class="flex-1 overflow-y-auto max-h-60 pr-2">
+                    class="w-full lg:w-96 bg-slate-50 dark:bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 p-4 sm:p-6 flex flex-col gap-6 shrink-0 lg:overflow-y-auto">
+                    <div class="lg:flex-1 max-h-48 sm:max-h-60 lg:max-h-none overflow-y-auto lg:overflow-visible pr-2">
                         <h4 class="text-xs font-bold text-slate-400 uppercase mb-3">Audit Timeline</h4>
                         <div id="modal-history"
                             class="space-y-4 border-l-2 border-slate-200 dark:border-slate-700 ml-2 pl-4 py-2">
@@ -1208,19 +1570,19 @@
                     </div>
 
                     <div id="action-panel"
-                        class="hidden bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg relative">
+                        class="hidden bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg relative shrink-0">
                         <h4
-                            class="text-xs font-bold text-blue-600 uppercase mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+                            class="text-xs font-bold text-green-600 uppercase mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
                             Approver Action</h4>
 
                         <textarea id="decision-comment" placeholder="Add comments or rejection reason..."
-                            class="input-primary h-20 resize-none mb-3 text-xs"></textarea>
+                            class="input-primary h-20 resize-none mb-3 text-xs w-full"></textarea>
 
                         <div class="grid grid-cols-2 gap-3">
                             <button onclick="handleDecision('REJECT')"
                                 class="bg-white dark:bg-slate-800 border border-red-200 text-red-600 hover:bg-red-50 py-2 rounded-lg text-xs font-bold transition">Reject</button>
                             <button onclick="handleDecision('APPROVE')" id="btn-approve"
-                                class="bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg shadow-blue-200">Approve</button>
+                                class="bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg shadow-green-200">Approve</button>
                         </div>
                     </div>
                 </div>
@@ -1234,11 +1596,11 @@
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center transform transition-all scale-95 opacity-0 animate-[slideUp_0.3s_ease-out] border border-slate-100 dark:border-slate-700"
             id="modal-incoming-call-content">
             <div class="relative mx-auto mb-6 w-28 h-28">
-                <div class="absolute inset-0 rounded-full border-4 border-blue-500 animate-ping opacity-20"></div>
-                <div class="absolute inset-0 rounded-full border-2 border-blue-400/40 animate-[pulse_2s_infinite]">
+                <div class="absolute inset-0 rounded-full border-4 border-green-500 animate-ping opacity-20"></div>
+                <div class="absolute inset-0 rounded-full border-2 border-green-400/40 animate-[pulse_2s_infinite]">
                 </div>
                 <div id="incoming-caller-photo"
-                    class="w-28 h-28 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 text-white flex items-center justify-center text-4xl shadow-lg shadow-blue-500/40 overflow-hidden font-bold relative z-10">
+                    class="w-28 h-28 rounded-full bg-gradient-to-tr from-green-500 to-indigo-500 text-white flex items-center justify-center text-4xl shadow-lg shadow-green-500/40 overflow-hidden font-bold relative z-10">
                     <i class="fa-solid fa-phone-volume"></i>
                 </div>
             </div>
@@ -1259,7 +1621,7 @@
                     <i class="fa-solid fa-phone-slash"></i>
                 </button>
                 <button onclick="acceptCall()"
-                    class="w-16 h-16 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center text-2xl transition shadow-lg shadow-blue-500/30 hover:scale-105 active:scale-95">
+                    class="w-16 h-16 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center text-2xl transition shadow-lg shadow-green-500/30 hover:scale-105 active:scale-95">
                     <i class="fa-solid fa-phone"></i>
                 </button>
             </div>
@@ -1279,7 +1641,7 @@
                 <div>
                     <h3 class="font-bold text-lg md:text-xl drop-shadow-md" id="active-call-name">User</h3>
                     <p class="text-xs font-mono" id="active-call-duration">
-                        <span id="call-status-text" class="text-blue-400 animate-pulse">Ringing...</span>
+                        <span id="call-status-text" class="text-green-400 animate-pulse">Ringing...</span>
                     </p>
                 </div>
             </div>
@@ -1294,17 +1656,17 @@
             class="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden">
             <div class="text-center">
                 <div class="relative mx-auto mb-6 w-32 h-32">
-                    <div class="absolute inset-0 rounded-full border-4 border-blue-500/40 animate-ping"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-green-500/40 animate-ping"></div>
                     <div
-                        class="absolute inset-[-8px] rounded-full border-2 border-blue-400/20 animate-[pulse_2s_infinite]">
+                        class="absolute inset-[-8px] rounded-full border-2 border-green-400/20 animate-[pulse_2s_infinite]">
                     </div>
                     <div id="ringing-avatar"
-                        class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-5xl shadow-2xl shadow-blue-500/30 overflow-hidden font-bold relative z-10">
+                        class="w-32 h-32 rounded-full bg-gradient-to-tr from-green-600 to-indigo-600 text-white flex items-center justify-center text-5xl shadow-2xl shadow-green-500/30 overflow-hidden font-bold relative z-10">
                         ?
                     </div>
                 </div>
                 <h2 id="ringing-name" class="text-2xl font-bold text-white mb-2">User</h2>
-                <p id="ringing-status" class="text-blue-400 text-sm font-medium animate-pulse"><i
+                <p id="ringing-status" class="text-green-400 text-sm font-medium animate-pulse"><i
                         class="fa-solid fa-phone fa-shake mr-2"></i>Ringing...</p>
             </div>
         </div>
@@ -1317,7 +1679,7 @@
             <div id="remote-audio-indicator"
                 class="hidden absolute inset-0 flex items-center justify-center bg-slate-900 z-0">
                 <div
-                    class="w-32 h-32 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-5xl">
+                    class="w-32 h-32 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-5xl">
                     <i class="fa-solid fa-microphone"></i>
                 </div>
             </div>
@@ -1466,9 +1828,9 @@
                         </div>
 
                         <div
-                            class="md:col-span-2 flex items-center gap-3 bg-blue-50 border border-blue-100 p-3 rounded-lg">
+                            class="md:col-span-2 flex items-center gap-3 bg-green-50 border border-green-100 p-3 rounded-lg">
                             <input type="checkbox" id="pre-approved"
-                                class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
+                                class="w-4 h-4 text-green-600 rounded focus:ring-green-500 border-gray-300">
                             <div>
                                 <label for="pre-approved"
                                     class="text-sm font-bold text-slate-700 dark:text-slate-200">Pre-Approved
@@ -1495,7 +1857,7 @@
                             class="flex justify-between items-end border-b border-slate-200 dark:border-slate-700 pb-2">
                             <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase"><i
                                     class="fa-solid fa-receipt mr-1"></i> Expenses</label>
-                            <span class="text-xs font-bold text-blue-600 bg-emerald-50 px-2 py-1 rounded">Total:
+                            <span class="text-xs font-bold text-green-600 bg-emerald-50 px-2 py-1 rounded">Total:
                                 <span id="running-total">0.00</span></span>
                         </div>
 
@@ -1503,7 +1865,7 @@
                         </div>
 
                         <button type="button" onclick="addLineItem()"
-                            class="w-full py-3 border border-dashed border-slate-300 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:border-blue-400 hover:bg-emerald-50 transition text-xs font-bold uppercase flex items-center justify-center gap-2">
+                            class="w-full py-3 border border-dashed border-slate-300 rounded-lg text-slate-500 dark:text-slate-400 hover:text-green-600 hover:border-green-400 hover:bg-emerald-50 transition text-xs font-bold uppercase flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus-circle"></i> Add Another Expense
                         </button>
                     </div>
@@ -1563,7 +1925,7 @@
                     <label
                         class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold flex justify-between items-center mb-1">
                         <span>Receipt</span>
-                        <span class="file-status text-blue-600 hidden text-[10px]"><i
+                        <span class="file-status text-green-600 hidden text-[10px]"><i
                                 class="fa-solid fa-check-circle"></i> Ready</span>
                     </label>
                     <div class="flex flex-col gap-2 w-full">
@@ -1585,7 +1947,7 @@
                         <div class="relative">
                             <i class="fa-solid fa-link absolute left-2 top-2 text-slate-400 text-[10px]"></i>
                             <input type="text"
-                                class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded p-1.5 pl-6 text-[10px] text-slate-600 dark:text-slate-300 outline-none focus:border-blue-500 item-url-input"
+                                class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded p-1.5 pl-6 text-[10px] text-slate-600 dark:text-slate-300 outline-none focus:border-green-500 item-url-input"
                                 placeholder="Or paste image URL" onchange="handleUrlInput(this)">
                         </div>
                     </div>
@@ -1601,7 +1963,7 @@
         import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc, onSnapshot, serverTimestamp, setDoc, orderBy, getDoc, deleteDoc, writeBatch, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
         import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging.js";
-        import { AISupport } from './ai-support.js';
+        import { AISupport } from './js/ai-support.js';
 
         const firebaseConfig = {
             apiKey: window.ENV.FIREBASE_API_KEY,
@@ -1676,7 +2038,7 @@
             const colors = {
                 success: 'bg-green-600',
                 error: 'bg-red-600',
-                info: 'bg-blue-600',
+                info: 'bg-green-600',
                 warning: 'bg-yellow-600'
             };
             toast.className = `${colors[type]} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-[slideUp_0.3s] z-50`;
@@ -1698,7 +2060,7 @@
 
                     if (data.name) {
                         document.getElementById('login-company-name').textContent = data.name;
-                        document.getElementById('sidebar-company-name').innerHTML = data.name.replace(/(\S+)/, '$1<span class="text-blue-500">Portal</span>');
+                        document.getElementById('sidebar-company-name').innerHTML = data.name.replace(/(\S+)/, '$1<span class="text-green-500">Portal</span>');
                     }
 
                     if (data.logo) {
@@ -1846,7 +2208,7 @@
                                     if (title && Notification.permission === 'granted') {
                                         const opts = {
                                             body: body,
-                                            icon: 'cropped-ipec-logo-32x32.png',
+                                            icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                             vibrate: [200, 100, 200]
                                         };
                                         if (navigator.serviceWorker && navigator.serviceWorker.controller) {
@@ -1871,7 +2233,7 @@
                                                 if (Notification.permission === 'granted') {
                                                     const opts = {
                                                         body: data.lastMessage || 'New message',
-                                                        icon: 'cropped-ipec-logo-32x32.png',
+                                                        icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                                         vibrate: [200, 100, 200],
                                                         tag: change.doc.id,
                                                         renotify: true
@@ -1903,7 +2265,7 @@
                                             if (Notification.permission === 'granted') {
                                                 const opts = {
                                                     body: `${data.sender}: ${data.text}`,
-                                                    icon: 'cropped-ipec-logo-32x32.png',
+                                                    icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                                     tag: 'global_chat'
                                                 };
                                                 if (navigator.serviceWorker?.controller) {
@@ -1946,7 +2308,7 @@
                                         if (Notification.permission === 'granted') {
                                             const opts = {
                                                 body: d.body,
-                                                icon: 'cropped-ipec-logo-32x32.png',
+                                                icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                                 tag: change.doc.id,
                                                 vibrate: [200, 100, 200]
                                             };
@@ -2403,7 +2765,7 @@
         async function renderOverview() {
             document.getElementById('page-title').textContent = "System Overview";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 const expensesSnap = await getDocs(collection(db, "expenses"));
@@ -2444,7 +2806,7 @@
                             <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">₹${totalPaid.toLocaleString()}</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-50 rounded-full transition-transform group-hover:scale-110"></div>
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full transition-transform group-hover:scale-110"></div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider relative">Pending Action</p>
                             <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">${pending}</p>
                         </div>
@@ -2475,7 +2837,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-blue-500"></i> Quick Stats</h3>
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-green-500"></i> Quick Stats</h3>
                             <div class="space-y-3">
                                 <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
                                     <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Total Expenses</span>
@@ -2493,7 +2855,7 @@
                         </div>
 
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-clock text-blue-500"></i> Recent Activity</h3>
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-clock text-green-500"></i> Recent Activity</h3>
                             <div class="space-y-3 max-h-60 overflow-y-auto">
                                 ${expenses.slice(0, 5).map(e => `
                                     <div class="flex items-center gap-3 p-2 hover:bg-slate-50 dark:bg-slate-900 rounded-lg transition">
@@ -2512,7 +2874,7 @@
                     </div>
 
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2"><i class="fa-solid fa-rss text-blue-500"></i> Live Activity Feed</h3>
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2"><i class="fa-solid fa-rss text-green-500"></i> Live Activity Feed</h3>
                             ${expenses.slice(0, 50).map((e, i) => `
                                 <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:bg-slate-900 transition border-b border-slate-50 last:border-0 ${i % 2 === 0 ? 'bg-slate-50 dark:bg-slate-900/50' : ''} ${i >= 3 ? 'hidden extra-activity' : ''}">
                                     <div class="flex items-center gap-4">
@@ -2537,7 +2899,7 @@
                         </div>
                         ${expenses.length > 3 ? `
                             <div class="text-center pt-3 border-t border-slate-50 dark:border-slate-800 mt-1">
-                                <button onclick="document.querySelectorAll('.extra-activity').forEach(el => el.classList.remove('hidden')); this.parentElement.remove();" class="text-xs font-bold text-blue-600 hover:text-brand-800 transition py-1 px-3 rounded hover:bg-blue-50">View All Activity <i class="fa-solid fa-chevron-down ml-1"></i></button>
+                                <button onclick="document.querySelectorAll('.extra-activity').forEach(el => el.classList.remove('hidden')); this.parentElement.remove();" class="text-xs font-bold text-green-600 hover:text-brand-800 transition py-1 px-3 rounded hover:bg-green-50">View All Activity <i class="fa-solid fa-chevron-down ml-1"></i></button>
                             </div>
                         ` : ''}
                     </div>
@@ -2596,7 +2958,7 @@
         async function renderReports() {
             document.getElementById('page-title').textContent = "Financial Reports";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 const expensesSnap = await getDocs(collection(db, "expenses"));
@@ -2628,7 +2990,7 @@
                                     <div class="flex items-center gap-4">
                                         <span class="text-sm font-semibold text-slate-600 dark:text-slate-300 w-32">${month}</span>
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-blue-600 rounded-full" style="width: ${(total / Math.max(...Object.values(monthlyTotals)) * 100)}%"></div>
+                                            <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(monthlyTotals)) * 100)}%"></div>
                                         </div>
                                         <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">₹${total.toLocaleString()}</span>
                                     </div>
@@ -2643,7 +3005,7 @@
                                     <div class="flex items-center gap-4">
                                         <span class="text-sm font-semibold text-slate-600 dark:text-slate-300 w-40">${category}</span>
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-blue-600 rounded-full" style="width: ${(total / Math.max(...Object.values(categoryTotals)) * 100)}%"></div>
+                                            <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(categoryTotals)) * 100)}%"></div>
                                         </div>
                                         <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">₹${total.toLocaleString()}</span>
                                     </div>
@@ -2654,13 +3016,13 @@
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                             <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6">Export Options</h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button onclick="exportReport('csv')" class="p-4 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition group">
-                                    <i class="fa-solid fa-file-csv text-2xl text-slate-400 group-hover:text-blue-600 mb-2"></i>
-                                    <p class="text-sm font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-700">Export as CSV</p>
+                                <button onclick="exportReport('csv')" class="p-4 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:border-green-500 hover:bg-green-50 transition group">
+                                    <i class="fa-solid fa-file-csv text-2xl text-slate-400 group-hover:text-green-600 mb-2"></i>
+                                    <p class="text-sm font-bold text-slate-600 dark:text-slate-300 group-hover:text-green-700">Export as CSV</p>
                                 </button>
-                                <button onclick="exportReport('pdf')" class="p-4 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition group">
-                                    <i class="fa-solid fa-file-pdf text-2xl text-slate-400 group-hover:text-blue-600 mb-2"></i>
-                                    <p class="text-sm font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-700">Export as PDF</p>
+                                <button onclick="exportReport('pdf')" class="p-4 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:border-green-500 hover:bg-green-50 transition group">
+                                    <i class="fa-solid fa-file-pdf text-2xl text-slate-400 group-hover:text-green-600 mb-2"></i>
+                                    <p class="text-sm font-bold text-slate-600 dark:text-slate-300 group-hover:text-green-700">Export as PDF</p>
                                 </button>
                             </div>
                         </div>
@@ -2674,7 +3036,7 @@
         async function renderAuditLogs() {
             document.getElementById('page-title').textContent = "Audit Logs";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 // Get recent actions from expenses history
@@ -2714,7 +3076,7 @@
                 content.innerHTML = `
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                         <div class="p-6 border-b border-slate-100 dark:border-slate-800">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center audit-header-flex">
                                 <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">System Activity Log</h3>
                                 <div class="flex gap-2">
                                     <button onclick="downloadAuditCSV()" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded transition font-bold flex items-center gap-2">
@@ -2727,7 +3089,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto audit-table-wrap">
                             <table class="w-full text-sm">
                                 <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 text-xs">
                                     <tr>
@@ -2745,14 +3107,14 @@
                                         <tr class="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:bg-slate-900">
                                             <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">${new Date(log.date?.toDate ? log.date.toDate() : log.date).toLocaleString()}</td>
                                             <td class="px-6 py-4">
-                                                <span class="badge ${log.action.includes('APPROVE') ? 'bg-green-100 text-green-700' : log.action.includes('REJECT') ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${log.action}</span>
+                                                <span class="badge ${log.action.includes('APPROVE') ? 'bg-green-100 text-green-700' : log.action.includes('REJECT') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${log.action}</span>
                                             </td>
                                             <td class="px-6 py-4 font-medium">${log.by}</td>
                                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">${log.role}</td>
                                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">${log.expenseTitle || 'N/A'}</td>
                                             <td class="px-6 py-4 text-slate-400 text-xs italic">${log.comment || '-'}</td>
                                             <td class="px-6 py-4 text-center">
-                                                <button onclick="openExpenseModal('${log.expenseId}')" class="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-blue-600 transition flex items-center justify-center mx-auto" title="View Expense">
+                                                <button onclick="openExpenseModal('${log.expenseId}')" class="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-green-600 transition flex items-center justify-center mx-auto" title="View Expense">
                                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                                 </button>
                                             </td>
@@ -2864,7 +3226,7 @@
                     <div class="w-full lg:w-1/3 fade-in">
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 sticky top-4">
                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-plus-circle text-blue-600"></i> Assign New Task
+                                <i class="fa-solid fa-plus-circle text-green-600"></i> Assign New Task
                             </h3>
                             <form id="create-task-form" onsubmit="handleCreateTask(event)" class="space-y-4">
                                 <div>
@@ -2910,7 +3272,7 @@
                         </div>
                         
                         <div id="admin-tasks-list" class="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-2">
-                            <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>
+                            <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>
                         </div>
                     </div>
                 </div>
@@ -2986,7 +3348,7 @@
                         <span class="badge ${getTaskStatusClass(t.status)}">${t.status.replace('_', ' ')}</span>
                     </div>
                     <div class="mt-4 pt-3 border-t border-slate-50 dark:border-slate-700/50 flex flex-wrap gap-4 text-[10px] text-slate-500 dark:text-slate-400 items-center">
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-user text-blue-500"></i> Assignee: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedTo}</span></span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-user text-green-500"></i> Assignee: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedTo}</span></span>
                         <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-check text-red-400"></i> Due: <span class="font-bold ${new Date(t.dueDate) < new Date() && t.status !== 'COMPLETED' ? 'text-red-500' : 'text-slate-700 dark:text-slate-300'}">${new Date(t.dueDate).toLocaleDateString()}</span></span>
                         <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-slate-400"></i> Created: ${t.createdAt?.toDate ? t.createdAt.toDate().toLocaleDateString() : 'Unknown'}</span>
                         ${t.status !== 'COMPLETED' ? `<button onclick="updateTaskStatus('${t.id}', 'COMPLETED')" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold transition ml-auto"><i class="fa-solid fa-check"></i> Mark Done</button>` : ''}
@@ -3059,7 +3421,7 @@
         function getTaskStatusClass(status) {
             switch (status) {
                 case 'COMPLETED': return 'bg-green-100 text-green-700 border-green-200';
-                case 'IN_PROGRESS': return 'bg-blue-100 text-blue-700 border-blue-200';
+                case 'IN_PROGRESS': return 'bg-green-100 text-green-700 border-green-200';
                 default: return 'bg-amber-100 text-amber-700 border-amber-200';
             }
         }
@@ -3098,7 +3460,7 @@
                                     </div>
                                     <div class="flex-1">
                                         <input type="file" id="logo-upload" class="hidden" accept="image/*" onchange="handleLogoPreview(this)">
-                                        <button onclick="document.getElementById('logo-upload').click()" class="text-sm text-blue-600 font-bold hover:underline mb-1">Upload New Logo</button>
+                                        <button onclick="document.getElementById('logo-upload').click()" class="text-sm text-green-600 font-bold hover:underline mb-1">Upload New Logo</button>
                                         <p class="text-xs text-slate-400">Recommended: 200x200px PNG. Max 1MB.</p>
                                         <input type="hidden" id="logo-base64" value="${settings.logo || ''}">
                                     </div>
@@ -3149,7 +3511,7 @@
                                 <input type="number" id="receipt-limit" value="${settings.receiptLimit || 0}" class="input-primary w-32 text-right">
                             </div>
                             <div class="flex items-center gap-3">
-                                <input type="checkbox" id="email-notifications" ${settings.emailNotifications ? 'checked' : ''} class="w-4 h-4 text-blue-600 rounded">
+                                <input type="checkbox" id="email-notifications" ${settings.emailNotifications ? 'checked' : ''} class="w-4 h-4 text-green-600 rounded">
                                 <label for="email-notifications" class="text-sm font-bold text-slate-600 dark:text-slate-300">Enable email notifications for approvals</label>
                             </div>
                             <div class="flex items-center gap-3 pt-2">
@@ -3163,17 +3525,17 @@
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                         <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">Legal & Compliance</h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <a href="privacy.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition group">
-                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-blue-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-shield-halved"></i></div>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-700">Privacy Policy</span>
+                            <a href="privacy.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-green-500 hover:bg-green-50 transition group">
+                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-green-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-shield-halved"></i></div>
+                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-green-700">Privacy Policy</span>
                             </a>
-                            <a href="terms.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition group">
-                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-blue-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-file-contract"></i></div>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-700">Terms of Service</span>
+                            <a href="terms.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-green-500 hover:bg-green-50 transition group">
+                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-green-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-file-contract"></i></div>
+                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-green-700">Terms of Service</span>
                             </a>
-                            <a href="license.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition group">
-                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-blue-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-scale-balanced"></i></div>
-                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-700">License Info</span>
+                            <a href="license.html" target="_blank" class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-green-500 hover:bg-green-50 transition group">
+                                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-green-600 group-hover:bg-white dark:bg-slate-800"><i class="fa-solid fa-scale-balanced"></i></div>
+                                <span class="font-bold text-slate-600 dark:text-slate-300 group-hover:text-green-700">License Info</span>
                             </a>
                         </div>
                         </div>
@@ -3181,14 +3543,14 @@
 
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                         <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-robot text-blue-600"></i> AI Support Assistant
+                            <i class="fa-solid fa-robot text-green-600"></i> AI Support Assistant
                         </h3>
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-bold text-slate-600 dark:text-slate-300">Enable AI Chat Support</p>
                                 <p class="text-xs text-slate-400">Allow the AI to assist with policy questions and data analysis.</p>
                             </div>
-                            <button onclick="aiAssistant.toggleChat()" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-blue-200 hover:shadow-xl transition">
+                            <button onclick="aiAssistant.toggleChat()" class="bg-gradient-to-r from-green-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-green-200 hover:shadow-xl transition">
                                 <i class="fa-solid fa-comment-dots mr-2"></i> Launch Assistant
                             </button>
                         </div>
@@ -3252,7 +3614,7 @@
                              <div class="relative flex min-w-[240px]">
                                 <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                                 <input type="text" id="approval-search" onkeyup="if(event.key === 'Enter') applyApprovalFilters()" class="w-full bg-slate-50 dark:bg-slate-900 border border-r-0 border-slate-200 dark:border-slate-700 rounded-l-lg py-2 pl-9 pr-3 text-xs focus:ring-1 focus:ring-brand-500 outline-none" placeholder="Search by name, ID, amount...">
-                                <button onclick="applyApprovalFilters()" class="bg-blue-600 hover:bg-brand-700 text-white px-3 py-2 rounded-r-lg text-xs font-bold transition border border-blue-600"><i class="fa-solid fa-search"></i></button>
+                                <button onclick="applyApprovalFilters()" class="bg-green-600 hover:bg-brand-700 text-white px-3 py-2 rounded-r-lg text-xs font-bold transition border border-green-600"><i class="fa-solid fa-search"></i></button>
                             </div>
                             <select id="filter-project" onchange="applyApprovalFilters()" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-xs outline-none">
                                 ${projectOptions}
@@ -3275,13 +3637,13 @@
 
                         <div id="bulk-actions" class="hidden flex gap-2 items-center w-full md:w-auto justify-end animate-[slideUp_0.1s_ease-out]">
                             <span class="text-xs font-bold text-slate-500 mr-2"><span id="selected-count">0</span> Selected</span>
-                            <button onclick="handleBulkAction('APPROVE')" class="bg-blue-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fa-solid fa-check mr-1"></i> Approve</button>
+                            <button onclick="handleBulkAction('APPROVE')" class="bg-green-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition shadow-sm"><i class="fa-solid fa-check mr-1"></i> Approve</button>
                             ${['ADMIN', 'MANAGER'].includes(userData.role) ? `<button onclick="handleBulkAction('REJECT')" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-xmark mr-1"></i> Refund</button>` : ''}
                         </div>
                     </div>
 
                     <div id="approvals-list" class="flex-1 overflow-y-auto pb-20">
-                        <div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>
+                        <div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>
                     </div>
                 </div>
                         `;
@@ -3390,13 +3752,13 @@
                         ${filtered.map(d => `
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border ${d.isSpam ? 'border-red-400 bg-red-50/50 dark:bg-red-900/20' : 'border-slate-100 dark:border-slate-800'} shadow-sm hover:shadow-md transition group relative overflow-hidden flex gap-4 items-center">
                         <div class="flex items-center justify-center pl-2">
-                             <input type="checkbox" onchange="toggleSelection('${d.id}')" class="approval-check w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-brand-500 transition cursor-pointer" ${window.selectedApprovals.has(d.id) ? 'checked' : ''}>
+                             <input type="checkbox" onchange="toggleSelection('${d.id}')" class="approval-check w-5 h-5 rounded border-slate-300 text-green-600 focus:ring-brand-500 transition cursor-pointer" ${window.selectedApprovals.has(d.id) ? 'checked' : ''}>
                         </div>
                         
                         <div class="flex-1 cursor-pointer" onclick="if(!event.target.type) openExpenseModal('${d.id}')">
                             <div class="flex justify-between items-start mb-1">
                                 <div>
-                                    <h4 class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition text-sm md:text-base flex items-center gap-2">
+                                    <h4 class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-green-600 transition text-sm md:text-base flex items-center gap-2">
                                         ${d.title}
                                         ${d.isSpam ? '<span class="px-2 py-0.5 bg-red-100 text-red-600 rounded text-[10px] font-bold uppercase border border-red-200"><i class="fa-solid fa-triangle-exclamation"></i> SPAM</span>' : ''}
                                         ${d.reviewRequested ? '<span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold uppercase border border-amber-200 animate-pulse"><i class="fa-solid fa-rotate"></i> Re-Review</span>' : ''}
@@ -3404,8 +3766,8 @@
                                     <div class="flex gap-2 mt-1 flex-wrap">
                                         <span class="text-[10px] bg-slate-100 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded font-mono border border-slate-200 dark:border-slate-700">${d.projectCode || 'No-Code'}</span>
                                         <div class="inline-flex flex-col">
-                                            <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-t font-bold border border-blue-100 flex items-center gap-1"><i class="fa-solid fa-user-circle"></i> ${d.userName}</span>
-                                            ${d.userEmail ? `<a href="mailto:${d.userEmail}" class="text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-b font-mono border-x border-b border-blue-200 hover:bg-blue-200 transition flex items-center gap-1" title="Send Email"><i class="fa-solid fa-envelope"></i> ${d.userEmail}</a>` : ''}
+                                            <span class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-t font-bold border border-green-100 flex items-center gap-1"><i class="fa-solid fa-user-circle"></i> ${d.userName}</span>
+                                            ${d.userEmail ? `<a href="mailto:${d.userEmail}" class="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded-b font-mono border-x border-b border-green-200 hover:bg-green-200 transition flex items-center gap-1" title="Send Email"><i class="fa-solid fa-envelope"></i> ${d.userEmail}</a>` : ''}
                                             ${d.userPhone ? `<a href="tel:${d.userPhone}" class="text-[9px] text-slate-500 hover:text-slate-700 ml-1" title="Call"><i class="fa-solid fa-phone"></i></a>` : ''}
                                         </div>
                                         ${d.type === 'REQUEST' ? '<span class="text-[10px] bg-purple-50 text-purple-600 px-2 py-0.5 rounded font-bold border border-purple-100 uppercase"><i class="fa-solid fa-box mr-1"></i> Request</span>' : ''}
@@ -3427,12 +3789,12 @@
                     const hasInsecure = urls.some(u => !u.startsWith('https://') && !u.startsWith('blob:'));
                     return hasInsecure
                         ? '<span class="text-[9px] text-red-500 bg-red-50 px-1.5 py-0.5 rounded border border-red-100" title="Unsecured Attachment (HTTP)"><i class="fa-solid fa-unlock-keyhole"></i> Insecure</span>'
-                        : '<span class="text-[9px] text-blue-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100" title="Secured Attachment (HTTPS)"><i class="fa-solid fa-lock"></i> Secure</span>';
+                        : '<span class="text-[9px] text-green-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100" title="Secured Attachment (HTTPS)"><i class="fa-solid fa-lock"></i> Secure</span>';
                 })() : ''}
                                 </div>
                             </div>
                         </div>
-                         <div class="absolute top-0 left-0 w-1 h-full ${d.preApproved ? 'bg-green-400' : 'bg-blue-500'}"></div>
+                         <div class="absolute top-0 left-0 w-1 h-full ${d.preApproved ? 'bg-green-400' : 'bg-green-500'}"></div>
                     </div>
                 `).join('')
                 }
@@ -3858,7 +4220,7 @@
 
                 newRow.innerHTML = `
                         <td colspan="8" class="p-0 border-b border-slate-200 dark:border-slate-800 shadow-inner">
-                            <div class="border-l-4 border-blue-500 m-2 rounded bg-white dark:bg-slate-800">
+                            <div class="border-l-4 border-green-500 m-2 rounded bg-white dark:bg-slate-800">
                                 ${detailsHtml}
                             </div>
                     </td >
@@ -3879,7 +4241,7 @@
         async function renderUserManagement() {
             document.getElementById('page-title').textContent = "User Management";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 const usersSnap = await getDocs(collection(db, "users"));
@@ -3898,7 +4260,7 @@
 
                 content.innerHTML = `
                         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in" >
-                        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center user-mgmt-header">
                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">System Users <span id="user-count-badge" class="ml-2 bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full text-xs">${users.length}</span></h3>
                             
                             <div class="flex gap-3 w-full md:w-auto">
@@ -3910,7 +4272,7 @@
                                 ${myRank > 1 ? `<button onclick="showAddUserModal()" class="btn-primary py-2 text-xs shrink-0"><i class="fa-solid fa-plus mr-1"></i> Add User</button>` : ''}
                             </div>
                         </div>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto user-mgmt-table-wrap">
                             <table class="w-full text-sm">
                                 <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 text-xs">
                                     <tr>
@@ -3986,7 +4348,7 @@
                                 </div>
                                 <div class="font-medium text-slate-700 dark:text-slate-200">
                                     ${u.name || 'N/A'}
-                                    ${u.id === currentUser.uid ? '<span class="ml-2 text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-bold">YOU</span>' : ''}
+                                    ${u.id === currentUser.uid ? '<span class="ml-2 text-[10px] bg-green-50 text-green-600 px-1.5 py-0.5 rounded font-bold">YOU</span>' : ''}
                                     ${u.email === MAIN_ADMIN_EMAIL ? '<span class="ml-2 text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-bold border border-purple-200"><i class="fa-solid fa-code mr-0.5"></i> DEVELOPER</span>' : ''}
                                 </div>
                             </div>
@@ -3997,7 +4359,7 @@
                         </td>
                         <td class="px-6 py-4">
                             <span class="px-2 py-1 rounded-full text-[10px] font-bold ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' :
-                        u.role === 'MANAGER' ? 'bg-blue-100 text-blue-700' :
+                        u.role === 'MANAGER' ? 'bg-green-100 text-green-700' :
                             u.role === 'SENIOR_MANAGER' ? 'bg-indigo-100 text-indigo-700' :
                                 u.role === 'TREASURY' ? 'bg-yellow-100 text-yellow-700' :
                                     'bg-slate-100 text-slate-700 dark:text-slate-200'
@@ -4016,7 +4378,7 @@
                         <td class="px-6 py-4">
                             <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition duration-200">
                                 ${canEdit ? `
-                                <button onclick="editUser('${u.id}')" class="w-7 h-7 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit">
+                                <button onclick="editUser('${u.id}')" class="w-7 h-7 rounded bg-green-50 text-green-600 hover:bg-green-100 flex items-center justify-center transition" title="Edit">
                                     <i class="fa-solid fa-pen text-[10px]"></i>
                                 </button>
                                 ${u.email !== currentUser?.email ? `
@@ -4294,7 +4656,7 @@
                     // Security Badge
                     const isSecure = proofVal && proofVal.startsWith('https://');
                     const badge = document.createElement('span');
-                    badge.className = `ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-blue-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`;
+                    badge.className = `ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-green-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`;
                     badge.innerHTML = isSecure ? '<i class="fa-solid fa-lock mr-1"></i> Secure' : '<i class="fa-solid fa-lock-open mr-1"></i> Insecure';
 
                     // Clear old badge
@@ -4312,12 +4674,23 @@
                 statusEl.className = `mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold uppercase border ${getStatusBadgeClass(data.status)}`;
                 statusEl.textContent = data.status.replace('_', ' ');
 
+                // Show employee notes/description
+                const notesContainer = document.getElementById('modal-notes-container');
+                const notesEl = document.getElementById('modal-notes');
+                if (data.notes && data.notes.trim()) {
+                    notesContainer.classList.remove('hidden');
+                    notesEl.textContent = data.notes;
+                } else {
+                    notesContainer.classList.add('hidden');
+                    notesEl.textContent = '';
+                }
+
                 document.getElementById('modal-items').innerHTML = (data.lineItems || []).map(item => {
                     const isSecure = item.receiptUrl && (item.receiptUrl.startsWith('https://') || item.receiptUrl.startsWith('blob:'));
-                    const badgeHtml = item.receiptUrl ? `<span class="ml-2 text-[8px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-blue-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}">${isSecure ? '<i class="fa-solid fa-lock mr-1"></i> Secure' : '<i class="fa-solid fa-lock-open mr-1"></i> Insecure'}</span>` : '';
+                    const badgeHtml = item.receiptUrl ? `<span class="ml-2 text-[8px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-green-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}">${isSecure ? '<i class="fa-solid fa-lock mr-1"></i> Secure' : '<i class="fa-solid fa-lock-open mr-1"></i> Insecure'}</span>` : '';
 
                     return `
-                    <div class="flex gap-4 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-blue-100 transition">
+                    <div class="flex gap-4 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-green-100 transition">
                         <div class="w-16 h-16 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 group relative">
                             ${item.receiptUrl ?
                             `<img src="${item.receiptUrl}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100?text=File'; this.classList.add('p-2', 'opacity-50');">
@@ -4332,12 +4705,12 @@
                                     <span class="font-bold text-slate-700 dark:text-slate-200 text-sm block truncate">${item.category}</span>
                                     <div class="flex items-center gap-2 mt-1">
                                         ${badgeHtml}
-                                        ${item.receiptUrl ? `<a href="${item.receiptUrl}" target="_blank" class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100 border border-blue-100 flex items-center gap-1 transition"><i class="fa-solid fa-external-link-alt"></i> Open Proof</a>` : ''}
+                                        ${item.receiptUrl ? `<a href="${item.receiptUrl}" target="_blank" class="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded hover:bg-green-100 border border-green-100 flex items-center gap-1 transition"><i class="fa-solid fa-external-link-alt"></i> Open Proof</a>` : ''}
                                     </div>
                                 </div>
                                 <span class="font-mono font-bold text-slate-600 dark:text-slate-300 text-sm whitespace-nowrap">${getSymbol(data.currency)}${parseFloat(item.amount).toFixed(2)}</span>
                             </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">${item.description}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">${item.description || item.desc || 'No description'}</p>
                         </div>
                     </div>
                 `;
@@ -4347,13 +4720,13 @@
                     let proofHtml = '';
                     if (h.paymentProofUrl) {
                         const isSecure = h.paymentProofUrl.startsWith('https://') || h.paymentProofUrl.startsWith('blob:');
-                        const badgeClass = isSecure ? 'bg-emerald-100 text-blue-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200';
+                        const badgeClass = isSecure ? 'bg-emerald-100 text-green-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200';
                         const icon = isSecure ? '<i class="fa-solid fa-lock mr-1"></i>' : '<i class="fa-solid fa-lock-open mr-1"></i>';
                         const text = isSecure ? 'Secure' : 'Insecure';
 
                         proofHtml = `
                     <div class="mt-1 flex items-center gap-2">
-                       <a href="${h.paymentProofUrl}" target="_blank" class="text-[10px] text-blue-600 hover:underline flex items-center gap-1"><i class="fa-solid fa-paperclip"></i> View Proof</a>
+                       <a href="${h.paymentProofUrl}" target="_blank" class="text-[10px] text-green-600 hover:underline flex items-center gap-1"><i class="fa-solid fa-paperclip"></i> View Proof</a>
                        <span class="text-[8px] uppercase font-bold px-1.5 py-0.5 rounded border ${badgeClass}">${icon} ${text}</span>
                     </div>`;
                     }
@@ -4373,7 +4746,7 @@
                 const actionPanel = document.getElementById('action-panel');
                 // Clear previous dynamic content
                 actionPanel.innerHTML = `
-                    <h4 class="text-xs font-bold text-blue-600 uppercase mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+                    <h4 class="text-xs font-bold text-green-600 uppercase mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
                         Approver Action</h4>
                     <textarea id="decision-comment" placeholder="Add comments or rejection reason..."
                         class="input-primary h-20 resize-none mb-3 text-xs"></textarea>
@@ -4381,7 +4754,7 @@
                         <button onclick="handleDecision('REJECT')"
                             class="bg-white dark:bg-slate-800 border border-red-200 text-red-600 hover:bg-red-50 py-2 rounded-lg text-xs font-bold transition">Reject</button>
                         <button onclick="handleDecision('APPROVE')" id="btn-approve"
-                            class="bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg shadow-blue-200">Approve</button>
+                            class="bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg shadow-green-200">Approve</button>
                     </div>
                 `;
 
@@ -4779,7 +5152,7 @@
         window.renderProjects = async () => {
             document.getElementById('page-title').textContent = "Project Management";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 const snap = await getDocs(collection(db, "projects"));
@@ -4822,7 +5195,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="px-6 py-4 text-right">
-                                                    <button onclick="toggleProjectStatus('${p.id}', ${p.active !== false})" class="text-xs font-bold text-blue-600 hover:underline">
+                                                    <button onclick="toggleProjectStatus('${p.id}', ${p.active !== false})" class="text-xs font-bold text-green-600 hover:underline">
                                                         ${p.active !== false ? 'Deactivate' : 'Activate'}
                                                     </button>
                                                     <button onclick="deleteProject('${p.id}')" class="ml-3 text-xs font-bold text-red-600 hover:underline">Delete</button>
@@ -4964,7 +5337,7 @@
         window.renderWorkflow = async () => {
             document.getElementById('page-title').textContent = "Workflow Configuration";
             const content = document.getElementById('content-area');
-            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl"></i></div>';
+            content.innerHTML = '<div class="flex justify-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-green-500 text-3xl"></i></div>';
 
             try {
                 // Fetch existing config or use default
@@ -5002,7 +5375,7 @@
                                 This configuration is locked by <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">${config.accessControl.allowedEmail}</span>.
                                 <br>You cannot modify or view the details.
                             </p>
-                            <button onclick="renderOverview()" class="text-blue-600 hover:text-blue-700 font-bold text-sm">Return to Dashboard</button>
+                            <button onclick="renderOverview()" class="text-green-600 hover:text-green-700 font-bold text-sm">Return to Dashboard</button>
                         </div>
                     `;
                     return;
@@ -5014,7 +5387,7 @@
                         <div class="lg:col-span-2 space-y-6">
                             <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
                                 <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100"><i class="fa-solid fa-route text-blue-500 mr-2"></i> Approval Chains</h3>
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100"><i class="fa-solid fa-route text-green-500 mr-2"></i> Approval Chains</h3>
                                     <select id="workflow-role-select" onchange="renderWorkflowChain(this.value)" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500">
                                         <option value="DEFAULT">Default (Employees)</option>
                                         <option value="MANAGER">Manager</option>
@@ -5028,7 +5401,7 @@
                                 </div>
 
                                 <div class="mt-8 flex justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-                                    <button onclick="saveWorkflowConfig()" class="bg-blue-600 hover:bg-brand-700 text-white py-2.5 px-6 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition transform active:scale-95 flex items-center gap-2">
+                                    <button onclick="saveWorkflowConfig()" class="bg-green-600 hover:bg-brand-700 text-white py-2.5 px-6 rounded-xl text-sm font-bold shadow-lg shadow-green-200 transition transform active:scale-95 flex items-center gap-2">
                                         <i class="fa-solid fa-save"></i> Save Configuration
                                     </button>
                                 </div>
@@ -5039,7 +5412,7 @@
                                 <div class="flex justify-between items-center">
                                     <div class="pr-4">
                                         <h4 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                                            <i class="fa-solid fa-user-shield text-blue-600"></i> Secure Workflow
+                                            <i class="fa-solid fa-user-shield text-green-600"></i> Secure Workflow
                                         </h4>
                                         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                                             Enable this to prevent other admins from modifying this configuration. Only you will be able to unlock it.
@@ -5048,7 +5421,7 @@
                                     ${userData.role === 'MAIN_ADMIN' ? `
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" id="workflow-lock-eval" class="sr-only peer" ${config.accessControl?.locked ? 'checked' : ''} onchange="toggleWorkflowLock(this)">
-                                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-300 dark:peer-focus:ring-brand-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-300 dark:peer-focus:ring-brand-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                                     </label>` : `<span class="text-xs font-bold text-slate-400 bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded border border-slate-200 dark:border-slate-800"><i class="fa-solid fa-lock mr-1"></i> Restricted</span>`}
                                 </div>
                                 ${config.accessControl?.locked ? `<div class="mt-4 p-3 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800 rounded-lg flex items-center gap-3 text-xs text-red-700 dark:text-red-400 font-bold animate-[fadeIn_0.3s_ease-out]"><i class="fa-solid fa-lock"></i> Currently locked to: ${config.accessControl.allowedEmail}</div>` : ''}
@@ -5057,12 +5430,12 @@
 
                         <!-- Info Panel -->
                         <div class="space-y-6">
-                            <div class="bg-blue-50 dark:bg-slate-800 p-6 rounded-2xl border border-blue-100 dark:border-slate-700">
-                                <h4 class="font-bold text-blue-900 dark:text-blue-100 mb-2"><i class="fa-solid fa-circle-info mr-2"></i> How it works</h4>
-                                <p class="text-sm text-blue-800 dark:text-blue-200 leading-relaxed mb-4">
+                            <div class="bg-green-50 dark:bg-slate-800 p-6 rounded-2xl border border-green-100 dark:border-slate-700">
+                                <h4 class="font-bold text-green-900 dark:text-green-100 mb-2"><i class="fa-solid fa-circle-info mr-2"></i> How it works</h4>
+                                <p class="text-sm text-green-800 dark:text-green-200 leading-relaxed mb-4">
                                     Configure the journey an expense claim takes from submission to completion.
                                 </p>
-                                <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-2 list-disc pl-4">
+                                <ul class="text-sm text-green-800 dark:text-green-200 space-y-2 list-disc pl-4">
                                     <li><strong>Stages</strong> define the status of the expense.</li>
                                     <li><strong>Approver Roles</strong> define who can act on that stage.</li>
                                     <li>The system moves to the <em>next</em> stage automatically upon approval.</li>
@@ -5152,7 +5525,7 @@
                 container.innerHTML = `
                     <div class="text-center py-10 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
                         <p class="text-slate-400 text-sm font-bold mb-4">No stages defined.</p>
-                        <button onclick="addStage(0)" class="text-blue-600 font-bold hover:underline text-xs">+ Add First Stage</button>
+                        <button onclick="addStage(0)" class="text-green-600 font-bold hover:underline text-xs">+ Add First Stage</button>
                     </div>
                  `;
                 return;
@@ -5165,24 +5538,24 @@
                     `<div class="absolute left-[15px] top-8 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-700 group-last:hidden"></div>` : ''}
                     
                     <!-- Node Circle -->
-                    <div class="absolute left-0 top-1 w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-slate-800 border-2 border-blue-500 z-10 shadow-sm">
-                        <span class="text-xs font-bold text-blue-600">${index + 1}</span>
+                    <div class="absolute left-0 top-1 w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-slate-800 border-2 border-green-500 z-10 shadow-sm">
+                        <span class="text-xs font-bold text-green-600">${index + 1}</span>
                     </div>
 
                     <!-- Content Card -->
-                    <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 transition hover:border-blue-300 relative">
+                    <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 transition hover:border-green-300 relative">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                             <div class="md:col-span-4">
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Stage Status Code</label>
-                                <input type="text" value="${step.stage}" onchange="updateStage(${index}, 'stage', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-mono font-bold text-slate-700 dark:text-slate-200 focus:border-blue-500 outline-none" placeholder="e.g. PENDING_MANAGER">
+                                <input type="text" value="${step.stage}" onchange="updateStage(${index}, 'stage', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-mono font-bold text-slate-700 dark:text-slate-200 focus:border-green-500 outline-none" placeholder="e.g. PENDING_MANAGER">
                             </div>
                              <div class="md:col-span-4">
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Display Label</label>
-                                <input type="text" value="${step.label}" onchange="updateStage(${index}, 'label', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 focus:border-blue-500 outline-none" placeholder="e.g. Manager Approval">
+                                <input type="text" value="${step.label}" onchange="updateStage(${index}, 'label', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 focus:border-green-500 outline-none" placeholder="e.g. Manager Approval">
                             </div>
                              <div class="md:col-span-3">
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Approver Role</label>
-                                <select onchange="updateStage(${index}, 'approverRole', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 focus:border-blue-500 outline-none">
+                                <select onchange="updateStage(${index}, 'approverRole', this.value)" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 focus:border-green-500 outline-none">
                                     <option value="null" ${step.approverRole === null ? 'selected' : ''}>None (End)</option>
                                     <option value="MANAGER" ${step.approverRole === 'MANAGER' ? 'selected' : ''}>MANAGER</option>
                                     <option value="SENIOR_MANAGER" ${step.approverRole === 'SENIOR_MANAGER' ? 'selected' : ''}>SENIOR MANAGER</option>
@@ -5201,7 +5574,7 @@
                         
                          <!-- Add Button Between -->
                         <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 hover:opacity-100 transition-opacity z-20">
-                            <button onclick="addStage(${index + 1})" class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:scale-110 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                            <button onclick="addStage(${index + 1})" class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:scale-110 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
                         </div>
                     </div>
                 </div>
@@ -5210,7 +5583,7 @@
             // Final Add Button
             container.innerHTML += `
                 <div class="flex justify-center pt-4">
-                     <button onclick="addStage(${chain.length})" class="text-xs font-bold text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg border border-dashed border-blue-200 transition">+ Add Final Stage</button>
+                     <button onclick="addStage(${chain.length})" class="text-xs font-bold text-green-600 hover:bg-green-50 px-3 py-1.5 rounded-lg border border-dashed border-green-200 transition">+ Add Final Stage</button>
                 </div>
             `;
         };
@@ -5330,7 +5703,7 @@
                 icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
             }
             else {
-                icon.className = "w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-4 text-xl";
+                icon.className = "w-12 h-12 rounded-full bg-green-50 text-green-500 flex items-center justify-center mx-auto mb-4 text-xl";
                 icon.innerHTML = '<i class="fa-solid fa-info"></i>';
             }
 
@@ -5353,7 +5726,7 @@
 
         const getStatusBadgeClass = (s) => {
             const map = {
-                'PENDING_MANAGER': 'bg-blue-50 text-blue-600 border-blue-200',
+                'PENDING_MANAGER': 'bg-green-50 text-green-600 border-green-200',
                 'PENDING_FINANCE': 'bg-indigo-50 text-indigo-600 border-indigo-200',
                 'FINANCE_APPROVED': 'bg-purple-50 text-purple-600 border-purple-200',
                 'PENDING_ACCOUNTS': 'bg-orange-50 text-orange-600 border-orange-200',
@@ -5446,7 +5819,7 @@
                     return `
                         <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center hover:shadow-md transition group relative">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400 font-bold group-hover:bg-blue-50 group-hover:text-blue-600 transition">
+                                <div class="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400 font-bold group-hover:bg-green-50 group-hover:text-green-600 transition">
                                     ${getSymbol(d.currency)}
                                 </div>
                                 <div>
@@ -5525,7 +5898,7 @@
 
             const originalLabel = label.innerHTML;
             label.classList.add('opacity-50', 'pointer-events-none');
-            label.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i> Processing...';
+            label.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-green-500"></i> Processing...';
 
             try {
                 let imageUrl = '';
@@ -5574,7 +5947,7 @@
 
                 label.innerHTML = `<span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">${file.name}</span>`;
                 label.classList.remove('border-dashed', 'border-slate-300');
-                label.classList.add('border-solid', 'border-blue-500', 'bg-emerald-50');
+                label.classList.add('border-solid', 'border-green-500', 'bg-emerald-50');
 
                 if (status) status.classList.remove('hidden');
                 if (btnRemove) btnRemove.classList.remove('hidden');
@@ -5607,7 +5980,7 @@
                 <span class="text-xs text-slate-500 dark:text-slate-400 truncate">Upload / Snap</span>
                 <input type="file" accept="image/*" class="hidden item-file" onchange="handleFileSelect(this)">
             `;
-            label.classList.remove('border-solid', 'border-blue-500', 'bg-emerald-50');
+            label.classList.remove('border-solid', 'border-green-500', 'bg-emerald-50');
             label.classList.add('border-dashed', 'border-slate-300');
 
             if (status) status.classList.add('hidden');
@@ -5807,17 +6180,17 @@
                             <h3 class="font-bold text-slate-800 dark:text-slate-100">Chats</h3>
                         </div>
                         <div id="chat-user-list" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
-                             <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i></div>
+                             <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-green-500"></i></div>
                         </div>
                     </div>
                     <!-- Main Chat Area -->
                     <div class="flex-1 flex flex-col absolute md:relative inset-0 bg-white dark:bg-slate-800 transform transition-transform duration-300 translate-x-full md:translate-x-0 z-20" id="chat-main-area">
                         <div class="h-16 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between px-4 sm:px-6 bg-slate-50 dark:bg-slate-900/50 shrink-0">
                             <div class="flex items-center gap-3 min-w-0">
-                                <button class="md:hidden text-slate-500 hover:text-blue-600 transition p-2" onclick="hideMobileChatArea()">
+                                <button class="md:hidden text-slate-500 hover:text-green-600 transition p-2" onclick="hideMobileChatArea()">
                                     <i class="fa-solid fa-arrow-left text-xl"></i>
                                 </button>
-                                <div id="active-chat-avatar" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold shrink-0 overflow-hidden">
+                                <div id="active-chat-avatar" class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold shrink-0 overflow-hidden">
                                     <i class="fa-solid fa-globe"></i>
                                 </div>
                                 <div class="overflow-hidden">
@@ -5829,17 +6202,17 @@
                                 <button onclick="initiateCall('voice')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center shadow-sm" title="Voice Call">
                                     <i class="fa-solid fa-phone text-xs"></i>
                                 </button>
-                                <button onclick="initiateCall('video')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-50 dark:bg-brand-900/20 text-blue-600 hover:bg-blue-100 dark:hover:bg-brand-900/40 transition flex items-center justify-center shadow-sm" title="Video Call">
+                                <button onclick="initiateCall('video')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-green-50 dark:bg-brand-900/20 text-green-600 hover:bg-green-100 dark:hover:bg-brand-900/40 transition flex items-center justify-center shadow-sm" title="Video Call">
                                     <i class="fa-solid fa-video text-xs"></i>
                                 </button>
                             </div>
                         </div>
                         <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-                            <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i></div>
+                            <div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-green-500"></i></div>
                         </div>
                         <form onsubmit="sendChatMessage(event)" class="p-3 sm:p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex gap-2 shrink-0">
                             <input type="text" id="chat-input" class="input-primary flex-1 bg-white dark:bg-slate-800 text-sm" placeholder="Type a message..." required autocomplete="off">
-                            <button type="submit" class="bg-blue-600 hover:bg-brand-700 text-white px-4 sm:px-6 py-2 rounded-lg font-bold transition shadow-sm flex items-center justify-center min-w-[60px]">
+                            <button type="submit" class="bg-green-600 hover:bg-brand-700 text-white px-4 sm:px-6 py-2 rounded-lg font-bold transition shadow-sm flex items-center justify-center min-w-[60px]">
                                 <i class="fa-solid fa-paper-plane"></i>
                             </button>
                         </form>
@@ -5881,15 +6254,15 @@
                 });
 
                 let html = `
-                    <div onclick="selectChat(null)" class="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition mb-1 bg-blue-50 dark:bg-brand-900/20 relative" id="chat-tgt-global">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
+                    <div onclick="selectChat(null)" class="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition mb-1 bg-green-50 dark:bg-brand-900/20 relative" id="chat-tgt-global">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
                             <i class="fa-solid fa-users text-xs"></i>
                         </div>
                         <div class="flex-1 overflow-hidden">
                             <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">Global Group</p>
                             <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${globalLast}</p>
                         </div>
-                        <span id="global-unread-dot" class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-blue-500 rounded-full shadow-sm animate-pulse hidden"></span>
+                        <span id="global-unread-dot" class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm animate-pulse hidden"></span>
                     </div>
                 `;
 
@@ -5913,7 +6286,7 @@
                                 <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">${u.name || 'User'}</p>
                                 <p class="text-[10px] text-slate-500 truncate">${lastMsg}</p>
                             </div>
-                            ${isUnread ? `<span class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-blue-500 rounded-full shadow-sm animate-pulse"></span>` : ''}
+                            ${isUnread ? `<span class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm animate-pulse"></span>` : ''}
                         </div>
                     `;
                 });
@@ -5949,7 +6322,7 @@
                 nameEl.textContent = 'Global Group';
                 statusEl.textContent = 'Company Wide';
                 avatarEl.innerHTML = '<i class="fa-solid fa-globe text-sm"></i>';
-                avatarEl.className = 'w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold shrink-0 shadow-sm';
+                avatarEl.className = 'w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold shrink-0 shadow-sm';
                 callsEl.classList.add('hidden');
             }
 
@@ -5983,11 +6356,11 @@
 
         function updateActiveChatHighlight() {
             document.querySelectorAll('#chat-user-list > div').forEach(el => {
-                el.classList.remove('bg-blue-50', 'dark:bg-brand-900/20');
+                el.classList.remove('bg-green-50', 'dark:bg-brand-900/20');
             });
             const activeId = currentChatUser ? currentChatUser.docId : 'global';
             const activeEl = document.getElementById('chat-tgt-' + activeId);
-            if (activeEl) activeEl.classList.add('bg-blue-50', 'dark:bg-brand-900/20');
+            if (activeEl) activeEl.classList.add('bg-green-50', 'dark:bg-brand-900/20');
         }
 
         function loadMessages() {
@@ -5995,7 +6368,7 @@
 
             const container = document.getElementById('chat-messages');
             if (!container) return;
-            container.innerHTML = '<div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i></div>';
+            container.innerHTML = '<div class="flex justify-center mt-10"><i class="fa-solid fa-circle-notch fa-spin text-green-500"></i></div>';
 
             try {
                 let q;
@@ -6043,12 +6416,12 @@
                                 `<img src="${data.senderPhotoUrl}" class="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm border border-slate-200 dark:border-slate-700">` :
                                 `<div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 bg-slate-400 uppercase shadow-sm sm:flex hidden">${data.sender ? data.sender[0] : '?'}</div>`
                             ) : ''}
-                                 <div class="relative ${isMe ? 'bg-blue-600 text-white font-medium' : 'bg-white dark:bg-slate-800 dark:text-slate-50 border border-slate-100 dark:border-slate-700 shadow-sm text-slate-900'} p-3 rounded-2xl ${isMe ? 'rounded-br-none' : 'rounded-bl-none'} shadow-sm">
+                                 <div class="relative ${isMe ? 'bg-green-600 text-white font-medium' : 'bg-white dark:bg-slate-800 dark:text-slate-50 border border-slate-100 dark:border-slate-700 shadow-sm text-slate-900'} p-3 rounded-2xl ${isMe ? 'rounded-br-none' : 'rounded-bl-none'} shadow-sm">
                                     ${!isMe && lastUser !== data.email && currentChatId === 'global_chat' ? `<p class="text-[9px] font-bold ${isMe ? 'text-brand-100' : 'text-slate-500 dark:text-slate-400'} mb-1">${data.sender || data.email}</p>` : ''}
                                     <p class="text-sm leading-relaxed whitespace-pre-wrap break-words">${data.text}</p>
                                     <div class="flex items-center justify-end gap-1 mt-1">
                                         <p class="text-[9px] ${isMe ? 'text-brand-100' : 'text-slate-400 dark:text-slate-500'} font-mono">${time}</p>
-                                        ${isMe ? `<span class="text-[10px] ${data.read ? 'text-blue-300' : 'text-brand-200'}"><i class="fa-solid fa-check-double"></i></span>` : ''}
+                                        ${isMe ? `<span class="text-[10px] ${data.read ? 'text-green-300' : 'text-brand-200'}"><i class="fa-solid fa-check-double"></i></span>` : ''}
                                     </div>
                                     ${canDelete ? `
                                         <button onclick="deleteChatMessage('${msgId}')" class="absolute -top-2 ${isMe ? '-left-2' : '-right-2'} w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
@@ -6622,7 +6995,7 @@
             const statusText = document.getElementById('call-status-text');
             if (statusText) {
                 statusText.textContent = 'Ringing...';
-                statusText.className = 'text-blue-400 animate-pulse';
+                statusText.className = 'text-green-400 animate-pulse';
             }
 
             clearInterval(window.callInterval);
@@ -6682,7 +7055,7 @@
             const statusText = document.getElementById('call-status-text');
             if (statusText) {
                 statusText.textContent = 'Ringing...';
-                statusText.className = 'text-blue-400 animate-pulse';
+                statusText.className = 'text-green-400 animate-pulse';
             }
 
             // Reset ringing/connected screens
@@ -6803,7 +7176,7 @@
             </div>
         </div>
     </div>
-    <script src="admin-helper.js"></script>
+    <script src="js/admin-helper.js"></script>
 
 
     <!-- View Modal (Ported from emp.html for My Claims) -->
@@ -6828,7 +7201,7 @@
                         <div class="mt-2 flex items-center gap-2 text-xs text-slate-500 font-mono">
                             <span class="bg-slate-100 px-1.5 rounded" id="view-project">CODE</span>
                             <span class="bg-slate-100 px-1.5 rounded" id="view-currency">INR</span>
-                            <span id="view-pre-approved" class="text-blue-600 hidden"><i
+                            <span id="view-pre-approved" class="text-green-600 hidden"><i
                                     class="fa-solid fa-check-circle"></i> Pre-Aprvd</span>
                         </div>
                     </div>
@@ -6838,10 +7211,10 @@
                 <div id="view-approval-proof"
                     class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-6 hidden">
                     <p class="text-xs text-emerald-800 font-bold mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-file-shield text-blue-600"></i> Pre-Approval Proof
+                        <i class="fa-solid fa-file-shield text-green-600"></i> Pre-Approval Proof
                     </p>
                     <a id="view-approval-link" href="#" target="_blank"
-                        class="text-xs text-blue-600 underline break-all hover:text-emerald-800 transition block"></a>
+                        class="text-xs text-green-600 underline break-all hover:text-emerald-800 transition block"></a>
                 </div>
 
                 <!-- Rejection Message -->
@@ -6899,13 +7272,13 @@
                 // But emp.html logic was specific. I'll rely on admin helper if possible or custom map
                 // Helper map from emp.html ported here for accuracy:
                 const colors = {
-                    'PENDING_MANAGER': 'bg-blue-100 text-blue-700 border border-blue-200',
+                    'PENDING_MANAGER': 'bg-green-100 text-green-700 border border-green-200',
                     'PENDING_FINANCE': 'bg-indigo-100 text-indigo-700 border border-indigo-200',
                     'FINANCE_APPROVED': 'bg-purple-100 text-purple-700 border border-purple-200',
                     'PENDING_ACCOUNTS': 'bg-orange-100 text-orange-700 border border-orange-200',
                     'PENDING_COMPLIANCE': 'bg-pink-100 text-pink-700 border border-pink-200',
                     'PENDING_TREASURY': 'bg-amber-100 text-amber-700 border border-amber-200',
-                    'PAID': 'bg-emerald-100 text-blue-700 border border-emerald-200',
+                    'PAID': 'bg-emerald-100 text-green-700 border border-emerald-200',
                     'AUDITED': 'bg-teal-100 text-green-700 border border-teal-200',
                     'REJECTED': 'bg-red-100 text-red-700 border border-red-200',
                 };
@@ -7058,7 +7431,7 @@
                             const btn = el.querySelector('.receipt-label');
                             if (btn) {
                                 btn.classList.add('bg-emerald-50', 'border-emerald-300');
-                                btn.innerHTML = '<i class="fa-solid fa-check text-blue-600"></i> <span class="text-xs text-blue-600">Attached</span>';
+                                btn.innerHTML = '<i class="fa-solid fa-check text-green-600"></i> <span class="text-xs text-green-600">Attached</span>';
                             }
                         }
                         container.appendChild(clone);
@@ -7106,7 +7479,7 @@
                     // Restore default
                     const mb = document.getElementById('btn-submit');
                     mb.innerHTML = '<span>Update Claim</span> <i class="fa-solid fa-save"></i>';
-                    mb.className = "bg-blue-600 hover:bg-brand-700 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-200 transition transform active:scale-95 flex items-center justify-center gap-2 w-full";
+                    mb.className = "bg-green-600 hover:bg-brand-700 text-white py-3 rounded-xl font-bold shadow-lg shadow-green-200 transition transform active:scale-95 flex items-center justify-center gap-2 w-full";
                     mb.onclick = () => submitMyClaim(false);
                 }
 

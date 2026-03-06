@@ -19,7 +19,7 @@ class CustomModal {
 
                     <div id="custom-modal-actions" class="flex gap-3 justify-center">
                         <button id="custom-modal-cancel" class="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl text-sm font-bold transition hidden">Cancel</button>
-                        <button id="custom-modal-confirm" class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-2.5 rounded-xl text-sm font-bold transition shadow-lg shadow-blue-200 dark:shadow-none">OK</button>
+                        <button id="custom-modal-confirm" class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-2.5 rounded-xl text-sm font-bold transition shadow-lg shadow-green-200 dark:shadow-none">OK</button>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@ class CustomModal {
             this.icon.className = 'w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm ' +
                 (type === 'error' ? 'bg-red-50 text-red-500' :
                     type === 'success' ? 'bg-green-50 text-green-500' :
-                        type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-blue-50 text-blue-500');
+                        type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-green-50 text-green-500');
 
             this.icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
 

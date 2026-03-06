@@ -12,8 +12,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="IPEC Consulting">
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
     <link rel="manifest" href="manifest.json">
 
     <!-- Tailwind CSS & Config -->
@@ -28,7 +28,6 @@
                         ipec: {
                             red: '#D93025',
                             green: '#1E8E3E',
-                            blue: '#1A73E8',
                             dark: '#0F172A'
                         }
                     },
@@ -46,7 +45,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="theme.js"></script>
+    <script src="js/theme.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -83,7 +82,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img src="ipec.jpg" alt="IPEC Logo" class="h-10 w-auto">
+                    <img src="assets/images/ipec.jpg" alt="IPEC Logo" class="h-10 w-auto">
                     <div class="flex flex-col">
                         <span class="font-bold text-lg leading-tight text-slate-900 dark:text-white">IPEC
                             Consulting</span>
@@ -93,10 +92,10 @@
                 </div>
                 <!-- Links -->
                 <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600 dark:text-slate-400 items-center">
-                    <a href="index.html" class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Home</a>
+                    <a href="index.html" class="hover:text-ipec-green dark:hover:text-green-400 transition">Home</a>
                     <a href="https://ipecconsulting.org" target="_blank"
-                        class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Official Website</a>
-                    <a href="contact.html" class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Contact</a>
+                        class="hover:text-ipec-green dark:hover:text-green-400 transition">Official Website</a>
+                    <a href="contact.html" class="hover:text-ipec-green dark:hover:text-green-400 transition">Contact</a>
                     <button onclick="toggleTheme()"
                         class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
                         <i class="fa-solid fa-moon theme-toggle-icon"></i>
@@ -128,7 +127,7 @@
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="index.html"
-                    class="px-8 py-3 rounded-lg bg-ipec-blue hover:bg-blue-700 text-white font-semibold transition shadow-lg shadow-blue-200 dark:shadow-none flex items-center justify-center gap-2 transform hover:scale-105 duration-200">
+                    class="px-8 py-3 rounded-lg bg-ipec-green hover:bg-green-700 text-white font-semibold transition shadow-lg shadow-green-200 dark:shadow-none flex items-center justify-center gap-2 transform hover:scale-105 duration-200">
                     <i class="fa-solid fa-house"></i> Go Home
                 </a>
                 <button onclick="history.back()"
@@ -148,9 +147,9 @@
                 </p>
                 <p class="text-xs text-slate-500">Registered Section 8 Nonprofit</p>
                 <div class="flex justify-center gap-4 mt-3 text-sm text-slate-600 dark:text-slate-400">
-                    <a href="mailto:info@ipecconsulting.org" class="hover:text-blue-600"><i
+                    <a href="mailto:info@ipecconsulting.org" class="hover:text-green-600"><i
                             class="fa-solid fa-envelope mr-1"></i> info@ipecconsulting.org</a>
-                    <a href="tel:+919990071450" class="hover:text-blue-600"><i class="fa-solid fa-phone mr-1"></i>
+                    <a href="tel:+919990071450" class="hover:text-green-600"><i class="fa-solid fa-phone mr-1"></i>
                         +91-9990071450</a>
                 </div>
             </div>
@@ -168,7 +167,7 @@
 
     <!-- AI Support Widget -->
     <script type="module">
-        import { AISupport } from './ai-support.js';
+        import { AISupport } from './js/ai-support.js';
         window.addEventListener('load', () => {
             // Optional: You might want to disable AI on 404 or provide a "Help" role
             new AISupport({

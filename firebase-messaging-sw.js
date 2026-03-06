@@ -21,8 +21,8 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.notification?.title || 'IPEC Notification';
     const notificationOptions = {
         body: payload.notification?.body || '',
-        icon: '/cropped-ipec-logo-32x32.png',
-        badge: '/cropped-ipec-logo-32x32.png',
+        icon: '/assets/images/cropped-ipec-logo-32x32.png',
+        badge: '/assets/images/cropped-ipec-logo-32x32.png',
         vibrate: [200, 100, 200],
         tag: payload.data?.type || 'general',
         data: payload.data || {}

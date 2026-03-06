@@ -1,7 +1,7 @@
 // IPEC Consulting PWA Service Worker v4
 // Strategies: Network-first for navigations, Stale-while-revalidate for assets, Cache-first for CDNs
 
-const CACHE_NAME = 'ipec-consulting-cache-v4';
+const CACHE_NAME = 'ipec-consulting-cache-v5';
 const OFFLINE_URL = './offline.html';
 
 // Core app shell to precache (local files only — no CDN URLs that may fail)
@@ -12,14 +12,14 @@ const APP_SHELL = [
     './admin.html',
     './offline.html',
     './manifest.json',
-    './ipec.jpg',
-    './cropped-ipec-logo-32x32.png',
-    './theme.js',
-    './admin-helper.js',
-    './utils.js',
-    './common.css',
-    './env.js',
-    './firebase-config.js'
+    './assets/images/ipec.jpg',
+    './assets/images/cropped-ipec-logo-32x32.png',
+    './js/theme.js',
+    './js/admin-helper.js',
+    './js/utils.js',
+    './css/common.css',
+    './js/env.js',
+    './js/firebase-config.js'
 ];
 
 // CDN domains to cache at runtime

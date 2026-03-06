@@ -10,18 +10,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="IPEC Consulting">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
     <meta name="description"
-        content="IPEC Employee Portal - Manage your expenses, submit claims, and track reimbursement status.">
-    <meta name="keywords" content="IPEC, Employee, Expense, Claims, Reimbursement">
-    <meta name="author" content="IPEC Consulting">
+        content="IPEC Employee Portal by IPEC Consulting & Sangeet Malhotra. Submit expense claims and track reimbursements efficiently and securely.">
+    <meta name="keywords" content="IPEC, Employee, Expense, Claims, Reimbursement, Sangeet Malhotra, IPEC Consulting">
+    <meta name="author" content="Sangeet Malhotra, IPEC Consulting">
     <link rel="canonical" href="https://ipecconsulting.netlify.app/emp.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="IPEC Employee Portal">
-    <meta property="og:description" content="Submit and track your expense claims easily.">
+    <meta property="og:title" content="Employee Portal - IPEC Expense Manager">
+    <meta property="og:description"
+        content="IPEC Employee Portal by IPEC Consulting & Sangeet Malhotra. Submit expense claims and track reimbursements efficiently and securely.">
     <meta property="og:url" content="https://ipecconsulting.netlify.app/emp.html">
     <meta property="og:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
 
@@ -49,7 +50,7 @@
     }
     </script>
 
-    <title>IPEC Consulting | Employee Portal</title>
+    <title>Employee Portal - IPEC Expense Manager | IPEC Consulting</title>
     <script>
         (function () {
             const theme = localStorage.getItem('theme') || 'light';
@@ -85,7 +86,6 @@
                         ipec: {
                             red: '#D93025',
                             green: '#1E8E3E',
-                            blue: '#1A73E8',
                             dark: '#0F172A'
                         }
                     }
@@ -93,10 +93,43 @@
             }
         }
     </script>
-    <script src="theme.js"></script>
-    <script src="utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/utils.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Theme Custom Cursors */
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%231E8E3E"/><stop offset="0.5" stop-color="%23F9AB00"/><stop offset="1" stop-color="%23D93025"/></linearGradient></defs><path d="M4 2.5l11 11.43-4.5 1.5 3.38 5.73-2.58 1.34-3.46-5.83-4.84 4.83Z" fill="url(%23g)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 2, auto;
+        }
+
+        a,
+        button,
+        [role="button"],
+        input[type="submit"],
+        input[type="button"],
+        input[type="reset"],
+        select,
+        .cursor-pointer {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%231E8E3E"/><stop offset="0.5" stop-color="%23F9AB00"/><stop offset="1" stop-color="%23D93025"/></linearGradient></defs><path d="M10.5 2a2 2 0 0 1 2 2v5a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v2a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7.5a6.5 6.5 0 0 1-13 0V4a2 2 0 0 1 2-2z" fill="url(%23p)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 10 2, pointer !important;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        .cursor-text {
+            cursor: text;
+        }
+
+        .cursor-not-allowed,
+        :disabled {
+            cursor: not-allowed !important;
+        }
+    </style>
     <style type="text/tailwindcss">
         body {
             font-family: 'Inter', sans-serif;
@@ -182,7 +215,7 @@
         /* Distinct Gradient Background */
         /* Logo Gradient Text Effect */
         .gradient-text {
-            background: linear-gradient(to right, #D93025, #1E8E3E, #1A73E8);
+            background: linear-gradient(to right, #D93025, #F9AB00, #1E8E3E);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -224,7 +257,7 @@
                                     const title = "Test Notification";
                                     const opts = {
                                         body: "This is a test notification to confirm setup.",
-                                        icon: "cropped-ipec-logo-32x32.png"
+                                        icon: "assets/images/cropped-ipec-logo-32x32.png"
                                     };
                                     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
                                         navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts));
@@ -239,7 +272,7 @@
             });
         }
     </script>
-    <script src="env.js"></script>
+    <script src="js/env.js"></script>
 </head>
 
 <body
@@ -258,7 +291,7 @@
                 class="card p-6 md:p-8 rounded-2xl w-full max-w-md z-10 relative bg-white/90 dark:bg-slate-800/90 backdrop-blur mb-8 shadow-xl border border-slate-100 dark:border-slate-700">
                 <div class="text-center mb-8">
                     <div id="login-logo-container"
-                        class="w-20 h-20 bg-gradient-to-br from-blue-600 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-200 overflow-hidden">
+                        class="w-20 h-20 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200 overflow-hidden">
                         <img id="login-logo-img" class="w-full h-full object-contain hidden" src="ipec_logo.jpg"
                             alt="Company Logo">
                         <i id="login-logo-fallback" class="fa-solid fa-seedling text-3xl text-white"></i>
@@ -293,18 +326,19 @@
                         </div>
                         <div class="text-right mt-1">
                             <button type="button" onclick="forgotPassword()"
-                                class="text-xs text-blue-600 hover:text-emerald-800 font-semibold hover:underline">Forgot
+                                class="text-xs text-green-600 hover:text-emerald-800 font-semibold hover:underline">Forgot
                                 Password?</button>
                         </div>
                     </div>
                     <button type="submit" id="login-btn"
-                        class="w-full bg-gradient-to-r from-blue-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-2.5 px-4 rounded-lg transition-all shadow-md shadow-blue-200 dark:shadow-none py-3 rounded-lg transition shadow-lg shadow-blue-200 transform hover:translate-y-[-1px]">
+                        class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-2.5 px-4 rounded-lg transition-all shadow-md shadow-green-200 dark:shadow-none py-3 rounded-lg transition shadow-lg shadow-green-200 transform hover:translate-y-[-1px]">
                         Sign In
                     </button>
                     <div class="flex justify-between mt-3 text-xs">
                         <a href="index.html" onclick="localStorage.removeItem('ipec_portal_preference')"
-                            class="text-slate-400 hover:text-blue-600 transition">Back to Website</a>
-                        <a href="support.html" class="text-blue-500 hover:text-blue-700 transition">Contact Support</a>
+                            class="text-slate-400 hover:text-green-600 transition">Back to Website</a>
+                        <a href="support.html" class="text-green-500 hover:text-green-700 transition">Contact
+                            Support</a>
                     </div>
             </div>
             </form>
@@ -350,19 +384,19 @@
             <div class="mt-6 text-center border-t border-slate-100 dark:border-slate-800 pt-6">
                 <div id="login-footer" class="flex flex-col gap-4 mt-2">
                     <p class="text-[10px] text-slate-400 max-w-xs mx-auto leading-relaxed">
-                        <i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> First time user? You <span
+                        <i class="fa-solid fa-circle-info mr-1 text-green-500"></i> First time user? You <span
                             class="font-bold text-slate-500 dark:text-slate-300">must</span> activate your account
                         here.
                     </p>
                     <button onclick="toggleAuthMode('signup')"
-                        class="block w-full text-center text-xs text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors py-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                        class="block w-full text-center text-xs text-green-600 font-bold hover:text-green-700 hover:underline transition-colors py-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                         Create / Activate Account
                     </button>
                 </div>
                 <div id="signup-footer" class="hidden space-y-4">
                     <p class="text-[10px] text-slate-400 mb-2">Already activated your account?</p>
                     <button onclick="toggleAuthMode('login')"
-                        class="block w-full text-center text-xs text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors py-2">Back
+                        class="block w-full text-center text-xs text-green-600 font-bold hover:text-green-700 hover:underline transition-colors py-2">Back
                         to Login</button>
                 </div>
             </div>
@@ -373,13 +407,13 @@
             <p class="font-bold mb-1 opacity-70">IPEC Expenze System</p>
             <p class="opacity-60">Authorized Access Only. All activities are monitored.</p>
             <div class="flex gap-4 justify-center mt-3 opacity-60">
-                <a href="privacy.html" class="hover:text-blue-600 transition">Privacy</a>
+                <a href="privacy.html" class="hover:text-green-600 transition">Privacy</a>
                 <span class="text-slate-300">•</span>
-                <a href="terms.html" class="hover:text-blue-600 transition">Terms</a>
+                <a href="terms.html" class="hover:text-green-600 transition">Terms</a>
                 <span class="text-slate-300">•</span>
-                <a href="contact.html" class="hover:text-blue-600 transition">Support</a>
+                <a href="contact.html" class="hover:text-green-600 transition">Support</a>
                 <span class="text-slate-300">•</span>
-                <a href="admin.html" class="hover:text-blue-600 transition flex items-center gap-1"><i
+                <a href="admin.html" class="hover:text-green-600 transition flex items-center gap-1"><i
                         class="fa-solid fa-shield-halved text-[10px]"></i> Admin Access</a>
             </div>
         </div>
@@ -391,7 +425,7 @@
             class="absolute top-[10%] left-[10%] w-96 h-96 bg-green-200/50 rounded-full blur-3xl mix-blend-multiply filter dark:bg-green-900/20">
         </div>
         <div
-            class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-blue-200/50 rounded-full blur-3xl mix-blend-multiply filter dark:bg-blue-900/20">
+            class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-green-200/50 rounded-full blur-3xl mix-blend-multiply filter dark:bg-green-900/20">
         </div>
         <div
             class="absolute top-[40%] left-[60%] w-72 h-72 bg-red-200/50 rounded-full blur-3xl mix-blend-multiply filter dark:bg-red-900/20">
@@ -406,13 +440,13 @@
             class="h-16 glass-header fixed top-0 w-full z-30 px-4 md:px-8 flex items-center justify-between border-b border-white/40 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-sm">
             <div class="flex items-center gap-3">
                 <div id="header-logo-container"
-                    class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-blue-600 text-sm shadow-sm overflow-hidden border border-slate-100">
+                    class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-green-600 text-sm shadow-sm overflow-hidden border border-slate-100">
                     <img id="header-logo-img" class="w-full h-full object-contain hidden" src="">
                     <i id="header-logo-fallback" class="fa-solid fa-bolt"></i>
                 </div>
                 <div class="flex flex-col">
                     <span class="font-bold text-slate-800 dark:text-slate-100 text-lg tracking-tight leading-none"
-                        id="header-company-name">IPEC <span class="text-blue-600">Expense Manager</span></span>
+                        id="header-company-name">IPEC <span class="text-green-600">Expense Manager</span></span>
                     <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider hidden sm:block">Employee
                         Dashboard</span>
                 </div>
@@ -420,7 +454,7 @@
 
             <div class="flex items-center gap-3">
                 <button id="pwa-install-btn-emp"
-                    class="hidden text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition font-bold shadow-sm animate-pulse">
+                    class="hidden text-xs bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 transition font-bold shadow-sm animate-pulse">
                     <i class="fa-solid fa-download mr-1"></i> Install
                 </button>
 
@@ -434,7 +468,7 @@
                 <div
                     class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700">
                     <button onclick="openChatModal()"
-                        class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-blue-600 transition flex items-center justify-center relative">
+                        class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-green-600 transition flex items-center justify-center relative">
                         <i class="fa-solid fa-comments text-xs"></i>
                         <span id="chat-badge"
                             class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-slate-100 dark:border-slate-800 hidden"></span>
@@ -444,7 +478,7 @@
                         <i class="fa-solid fa-moon theme-toggle-icon text-xs"></i>
                     </button>
                     <button onclick="openProfileModal()" id="header-profile-btn"
-                        class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-blue-600 transition flex items-center justify-center p-0 overflow-hidden">
+                        class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-green-600 transition flex items-center justify-center p-0 overflow-hidden">
                         <div id="header-profile-avatar" class="w-full h-full flex items-center justify-center">
                             <i class="fa-solid fa-user-gear text-xs"></i>
                         </div>
@@ -474,7 +508,7 @@
                                 id="stat-paid">₹0</p>
                         </div>
                         <div
-                            class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                            class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
                             <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
@@ -500,7 +534,7 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="openCreateModal('EXPENSE')"
-                        class="group bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-slate-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
+                        class="group bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-slate-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
                         <div class="flex justify-between items-start w-full">
                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
                                 <i class="fa-solid fa-receipt text-emerald-300"></i>
@@ -519,14 +553,14 @@
                         class="group bg-green-600 hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-teal-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
                         <div class="flex justify-between items-start w-full">
                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                                <i class="fa-solid fa-box-open text-blue-200"></i>
+                                <i class="fa-solid fa-box-open text-green-200"></i>
                             </div>
                             <i
                                 class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition duration-300 opacity-50"></i>
                         </div>
                         <div class="mt-3 text-left">
                             <p data-i18n="btn_request_item" class="text-sm font-bold text-white mb-0.5">Request Item</p>
-                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-blue-100">Software / Hardware
+                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-green-100">Software / Hardware
                             </p>
                         </div>
                     </button>
@@ -538,8 +572,8 @@
                 style="animation-delay: 0.1s">
                 <div class="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
                     <button onclick="toggleEmpView('claims')" id="btn-view-claims"
-                        class="flex-1 py-4 font-bold text-slate-800 dark:text-slate-100 text-sm uppercase tracking-wide border-b-2 border-blue-500 bg-white dark:bg-slate-800 transition">
-                        <i class="fa-solid fa-receipt mr-2 text-blue-500"></i> Your Claims
+                        class="flex-1 py-4 font-bold text-slate-800 dark:text-slate-100 text-sm uppercase tracking-wide border-b-2 border-green-500 bg-white dark:bg-slate-800 transition">
+                        <i class="fa-solid fa-receipt mr-2 text-green-500"></i> Your Claims
                     </button>
                     <button onclick="toggleEmpView('tasks')" id="btn-view-tasks"
                         class="flex-1 py-4 font-bold text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wide border-b-2 border-transparent hover:bg-white dark:hover:bg-slate-800 transition">
@@ -555,11 +589,11 @@
                             <div class="relative">
                                 <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                                 <input type="text" id="emp-search" onkeyup="filterExpenses(this.value)"
-                                    class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:ring-1 focus:ring-blue-500 outline-none"
+                                    class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:ring-1 focus:ring-green-500 outline-none"
                                     placeholder="Search...">
                             </div>
                             <button onclick="fetchExpenses()"
-                                class="text-slate-400 hover:text-blue-600 transition p-2"><i
+                                class="text-slate-400 hover:text-green-600 transition p-2"><i
                                     class="fa-solid fa-rotate-right"></i></button>
                         </div>
                     </div>
@@ -580,11 +614,11 @@
                             <div class="relative w-full md:w-auto flex-1">
                                 <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                                 <input type="text" id="emp-task-search" onkeyup="filterEmpTasks()"
-                                    class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:ring-1 focus:ring-blue-500 outline-none"
+                                    class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:ring-1 focus:ring-green-500 outline-none"
                                     placeholder="Search tasks...">
                             </div>
                             <button type="button" onclick="openEmpTaskModal()"
-                                class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                                class="shrink-0 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-sm">
                                 <i class="fa-solid fa-plus"></i>
                                 New Task
                             </button>
@@ -652,7 +686,7 @@
                         Cancel
                     </button>
                     <button type="submit" id="btn-emp-create-task"
-                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm font-bold transition shadow-lg shadow-blue-200 dark:shadow-none flex items-center justify-center gap-2">
+                        class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-sm font-bold transition shadow-lg shadow-green-200 dark:shadow-none flex items-center justify-center gap-2">
                         <span>Send</span>
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -685,7 +719,7 @@
                         <div class="md:col-span-2">
                             <label id="label-report-id"
                                 class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Report
-                                ID <span class="text-blue-500 text-[10px] font-normal">(Auto-Generated)</span></label>
+                                ID <span class="text-green-500 text-[10px] font-normal">(Auto-Generated)</span></label>
                             <input type="text" id="report-title"
                                 class="input-field w-full rounded-lg p-3 text-sm font-bold text-slate-600 bg-slate-100 cursor-not-allowed"
                                 placeholder="Generating..." readonly>
@@ -727,7 +761,7 @@
                             <label
                                 class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 cursor-pointer transition">
                                 <input type="checkbox" id="pre-approved"
-                                    class="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
+                                    class="mt-1 w-4 h-4 text-green-600 rounded focus:ring-green-500 border-gray-300">
                                 <div>
                                     <span
                                         class="block text-sm font-bold text-slate-700 dark:text-slate-200">Pre-Approved
@@ -739,7 +773,7 @@
 
                             <div id="pre-approved-proof-container"
                                 class="hidden mt-3 pl-2 border-l-2 border-emerald-200 ml-2">
-                                <label class="block text-xs font-bold text-blue-600 uppercase mb-1">Approval
+                                <label class="block text-xs font-bold text-green-600 uppercase mb-1">Approval
                                     Proof</label>
 
                                 <div class="flex flex-col gap-2">
@@ -748,13 +782,13 @@
                                         <label id="proof-upload-label"
                                             class="flex items-center gap-2 w-full p-2 border border-dashed border-emerald-300 rounded cursor-pointer hover:bg-emerald-50 transition bg-emerald-50/50">
                                             <div
-                                                class="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center text-blue-600">
+                                                class="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center text-green-600">
                                                 <i class="fa-solid fa-file-arrow-up"></i>
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <span class="block text-xs font-bold text-blue-700">Upload
+                                                <span class="block text-xs font-bold text-green-700">Upload
                                                     Proof</span>
-                                                <span class="block text-[10px] text-blue-600/70 truncate">Image or
+                                                <span class="block text-[10px] text-green-600/70 truncate">Image or
                                                     PDF</span>
                                             </div>
                                             <input type="file" id="proof-file-input" accept="image/*,application/pdf"
@@ -795,7 +829,7 @@
                             class="flex justify-between items-end border-b border-slate-200 dark:border-slate-700 pb-2">
                             <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase"><i
                                     class="fa-solid fa-receipt mr-1"></i> Expenses</label>
-                            <span class="text-xs font-bold text-blue-600 bg-emerald-50 px-2 py-1 rounded">Total:
+                            <span class="text-xs font-bold text-green-600 bg-emerald-50 px-2 py-1 rounded">Total:
                                 <span id="running-total">0.00</span></span>
                         </div>
 
@@ -803,7 +837,7 @@
                         </div>
 
                         <button type="button" onclick="addLineItem()"
-                            class="w-full py-3 border border-dashed border-slate-300 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:border-blue-400 hover:bg-emerald-50 transition text-xs font-bold uppercase flex items-center justify-center gap-2">
+                            class="w-full py-3 border border-dashed border-slate-300 rounded-lg text-slate-500 dark:text-slate-400 hover:text-green-600 hover:border-green-400 hover:bg-emerald-50 transition text-xs font-bold uppercase flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus-circle"></i> Add Another Expense
                         </button>
                     </div>
@@ -815,7 +849,7 @@
                 <button onclick="closeModal('modal-create')"
                     class="px-5 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 text-sm font-bold transition">Cancel</button>
                 <button onclick="submitExpense()" id="btn-submit"
-                    class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]">
+                    class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]">
                     <span>Submit Claim</span> <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
@@ -846,13 +880,13 @@
                 <!-- Pre-Approval Info (Optional) -->
                 <div id="view-pre-approved"
                     class="hidden bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
-                    <p class="text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center gap-2">
+                    <p class="text-xs font-bold text-green-700 dark:text-green-400 flex items-center gap-2">
                         <i class="fa-solid fa-check-circle"></i> PRE-APPROVED ACTIVITY
                     </p>
                     <div id="view-approval-proof" class="hidden mt-2 pt-2 border-t border-emerald-100/50">
-                        <p class="text-[10px] text-blue-600 font-bold uppercase mb-1">Approval Proof</p>
+                        <p class="text-[10px] text-green-600 font-bold uppercase mb-1">Approval Proof</p>
                         <a id="view-approval-link" href="#" target="_blank"
-                            class="text-xs text-blue-600 dark:text-blue-400 hover:underline break-all block">...</a>
+                            class="text-xs text-green-600 dark:text-green-400 hover:underline break-all block">...</a>
                     </div>
                 </div>
 
@@ -966,11 +1000,11 @@
                 <div class="flex items-center gap-2">
                     <span class="text-[10px] font-bold text-slate-400 uppercase">OR</span>
                     <input type="url"
-                        class="item-url-input w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                        class="item-url-input w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-green-500 outline-none"
                         placeholder="Paste Image URL if upload fails..." onchange="handleUrlInput(this)">
                     <input type="hidden" class="item-img-url">
                 </div>
-                <div class="file-status hidden text-[10px] text-blue-600 font-bold ml-1"><i
+                <div class="file-status hidden text-[10px] text-green-600 font-bold ml-1"><i
                         class="fa-solid fa-check-circle"></i> Attached</div>
             </div>
         </div>
@@ -1059,7 +1093,7 @@
                     </div>
                     <button type="button"
                         onclick="if(window.aiAssistant) window.aiAssistant.toggleChat(); closeModal('modal-profile');"
-                        class="w-full px-4 py-2.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 border border-blue-100">
+                        class="w-full px-4 py-2.5 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 border border-green-100">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI
                     </button>
 
@@ -1069,7 +1103,7 @@
                             Reset Password
                         </button>
                         <button type="submit"
-                            class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition shadow-lg shadow-blue-200 dark:shadow-none flex-1">
+                            class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-bold transition shadow-lg shadow-green-200 dark:shadow-none flex-1">
                             Save Changes
                         </button>
                     </div>
@@ -1080,17 +1114,17 @@
                             <i class="fa-solid fa-power-off"></i> Sign Out
                         </button>
                         <a href="support.html"
-                            class="w-full px-4 py-2.5 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-100 dark:border-blue-900/50 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+                            class="w-full px-4 py-2.5 bg-green-50 text-green-600 hover:bg-green-100 border border-green-100 dark:border-green-900/50 dark:bg-green-900/20 dark:hover:bg-green-900/40 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
                             <i class="fa-solid fa-headset"></i> Support
                         </a>
                     </div>
 
                     <div class="flex justify-between items-center text-xs text-slate-400 mt-2">
                         <button type="button" onclick="downloadMyData(event)"
-                            class="hover:text-blue-600 transition flex items-center gap-1">
+                            class="hover:text-green-600 transition flex items-center gap-1">
                             <i class="fa-solid fa-download"></i> Download My Data
                         </button>
-                        <a href="privacy.html" target="_blank" class="hover:text-blue-600 transition">Privacy
+                        <a href="privacy.html" target="_blank" class="hover:text-green-600 transition">Privacy
                             Policy</a>
                     </div>
                 </div>
@@ -1106,8 +1140,8 @@
         import { getFirestore, collection, query, where, getDocs, doc, addDoc, onSnapshot, serverTimestamp, orderBy, getDoc, updateDoc, deleteDoc, setDoc, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
         import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging.js";
-        import { AISupport } from './ai-support.js';
-        import { checkSpam } from './spam-filter.js';
+        import { AISupport } from './js/ai-support.js';
+        import { checkSpam } from './js/spam-filter.js';
         // Google Translate Widget Logic
         window.triggerGoogleTranslate = (lang) => {
             const select = document.querySelector('.goog-te-combo');
@@ -1141,24 +1175,24 @@
             const secTasks = document.getElementById('section-tasks');
 
             if (view === 'claims') {
-                btnClaims.classList.add('border-blue-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+                btnClaims.classList.add('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
                 btnClaims.classList.remove('border-transparent', 'text-slate-500', 'dark:text-slate-400');
-                btnClaims.querySelector('i').classList.add('text-blue-500');
+                btnClaims.querySelector('i').classList.add('text-green-500');
 
-                btnTasks.classList.remove('border-blue-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+                btnTasks.classList.remove('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
                 btnTasks.classList.add('border-transparent', 'text-slate-500', 'dark:text-slate-400');
-                btnTasks.querySelector('i').classList.remove('text-blue-500');
+                btnTasks.querySelector('i').classList.remove('text-green-500');
 
                 secClaims.classList.remove('hidden');
                 secTasks.classList.add('hidden');
             } else {
-                btnTasks.classList.add('border-blue-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+                btnTasks.classList.add('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
                 btnTasks.classList.remove('border-transparent', 'text-slate-500', 'dark:text-slate-400');
-                btnTasks.querySelector('i').classList.add('text-blue-500');
+                btnTasks.querySelector('i').classList.add('text-green-500');
 
-                btnClaims.classList.remove('border-blue-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
+                btnClaims.classList.remove('border-green-500', 'bg-white', 'dark:bg-slate-800', 'text-slate-800', 'dark:text-slate-100');
                 btnClaims.classList.add('border-transparent', 'text-slate-500', 'dark:text-slate-400');
-                btnClaims.querySelector('i').classList.remove('text-blue-500');
+                btnClaims.querySelector('i').classList.remove('text-green-500');
 
                 secClaims.classList.add('hidden');
                 secTasks.classList.remove('hidden');
@@ -1291,7 +1325,7 @@
             const colors = {
                 success: 'bg-green-600',
                 error: 'bg-red-600',
-                info: 'bg-blue-600',
+                info: 'bg-green-600',
                 warning: 'bg-yellow-600'
             };
             toast.className = `${colors[type]} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-[slideUp_0.3s] z-50`;
@@ -1313,7 +1347,7 @@
 
                     if (data.name) {
                         document.getElementById('login-company-name').textContent = data.name;
-                        document.getElementById('header-company-name').innerHTML = data.name.replace(/(\S+)/, '$1<span class="text-blue-600">Expense</span>');
+                        document.getElementById('header-company-name').innerHTML = data.name.replace(/(\S+)/, '$1<span class="text-green-600">Expense</span>');
                     }
 
                     if (data.logo) {
@@ -1351,7 +1385,7 @@
 
             // Loading UI
             label.classList.add('opacity-50', 'pointer-events-none');
-            label.innerHTML = '<div class="flex items-center justify-center gap-2 p-2"><i class="fa-solid fa-circle-notch fa-spin text-blue-600"></i> <span class="text-xs font-bold text-blue-700">Uploading...</span></div>';
+            label.innerHTML = '<div class="flex items-center justify-center gap-2 p-2"><i class="fa-solid fa-circle-notch fa-spin text-green-600"></i> <span class="text-xs font-bold text-green-700">Uploading...</span></div>';
 
             let imageUrl = '';
 
@@ -1382,12 +1416,12 @@
                 label.classList.add('border-solid', 'bg-emerald-100');
                 label.innerHTML = `
                     <div class="flex items-center gap-3 p-1">
-                        <div class="w-8 h-8 bg-emerald-200 rounded flex items-center justify-center text-blue-700">
+                        <div class="w-8 h-8 bg-emerald-200 rounded flex items-center justify-center text-green-700">
                              <i class="fa-solid fa-check"></i>
                         </div>
                         <div class="flex-1 min-w-0">
                             <span class="block text-xs font-bold text-emerald-800">Attached</span>
-                            <span class="block text-[10px] text-blue-700 truncate">${file.name}</span>
+                            <span class="block text-[10px] text-green-700 truncate">${file.name}</span>
                         </div>
                     </div>`;
 
@@ -1412,12 +1446,12 @@
 
             label.className = 'flex items-center gap-2 w-full p-2 border border-dashed border-emerald-300 rounded cursor-pointer hover:bg-emerald-50 transition bg-emerald-50/50';
             label.innerHTML = `
-                <div class="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center text-blue-600">
+                <div class="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center text-green-600">
                     <i class="fa-solid fa-file-arrow-up"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <span class="block text-xs font-bold text-blue-700">Upload Proof</span>
-                    <span class="block text-[10px] text-blue-600/70 truncate">Image or PDF</span>
+                    <span class="block text-xs font-bold text-green-700">Upload Proof</span>
+                    <span class="block text-[10px] text-green-600/70 truncate">Image or PDF</span>
                 </div>
                 <input type="file" id="proof-file-input" accept="image/*,application/pdf" class="hidden" onchange="handleProofUpload(this)">
              `;
@@ -1701,7 +1735,7 @@
 
         window.getStatusColor = (status) => {
             if (status.includes('PENDING')) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-            if (status.includes('APPROVED')) return 'bg-blue-100 text-blue-700 border-blue-200';
+            if (status.includes('APPROVED')) return 'bg-green-100 text-green-700 border-green-200';
             if (status === 'PAID') return 'bg-green-100 text-green-700 border-green-200';
             if (status === 'AUDITED') return 'bg-purple-100 text-purple-700 border-purple-200';
             if (status === 'REJECTED') return 'bg-red-100 text-red-700 border-red-200';
@@ -1743,11 +1777,11 @@
                             <span class="text-lg font-bold text-slate-700 dark:text-slate-200">${dateStr.split(' ')[0] || ''}</span>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-blue-600 transition truncate max-w-[150px] sm:max-w-xs">${data.title}</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-green-600 transition truncate max-w-[150px] sm:max-w-xs">${data.title}</p>
                             <div class="flex gap-2 text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 flex-wrap">
                                 <span class="bg-slate-100 px-1.5 rounded text-slate-600 dark:text-slate-300 font-medium"><i class="fa-solid fa-hashtag"></i> ${data.projectCode || 'N/A'}</span>
                                 <span class="bg-slate-100 px-1.5 rounded">${data.currency || 'INR'}</span>
-                                ${data.preApproved ? '<span class="text-blue-600"><i class="fa-solid fa-check-circle"></i> Pre-Aprvd</span>' : ''}
+                                ${data.preApproved ? '<span class="text-green-600"><i class="fa-solid fa-check-circle"></i> Pre-Aprvd</span>' : ''}
                             </div>
                         </div>
                     </div>
@@ -1758,7 +1792,7 @@
                         </div>
                         ${canEdit ? `
                         <div class="flex flex-col gap-1 transition">
-                            <button onclick="editExpense('${data.id}')" class="w-6 h-6 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center" title="Edit"><i class="fa-solid fa-pen text-xs"></i></button>
+                            <button onclick="editExpense('${data.id}')" class="w-6 h-6 rounded bg-green-50 text-green-600 hover:bg-green-100 flex items-center justify-center" title="Edit"><i class="fa-solid fa-pen text-xs"></i></button>
                             <button onclick="deleteExpense('${data.id}')" class="w-6 h-6 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center" title="Delete"><i class="fa-solid fa-trash text-xs"></i></button>
                         </div>
                         ` : ''}
@@ -1801,7 +1835,7 @@
 
             // UI Loading State
             label.classList.add('opacity-50', 'pointer-events-none');
-            label.innerHTML = '<div class="flex items-center justify-center gap-2"><i class="fa-solid fa-circle-notch fa-spin text-blue-600"></i> <span class="text-xs">Uploading...</span></div>';
+            label.innerHTML = '<div class="flex items-center justify-center gap-2"><i class="fa-solid fa-circle-notch fa-spin text-green-600"></i> <span class="text-xs">Uploading...</span></div>';
 
             let imageUrl = '';
 
@@ -1870,10 +1904,10 @@
                 hiddenInput.value = imageUrl;
 
                 label.classList.remove('border-dashed', 'border-slate-300');
-                label.classList.add('border-solid', 'border-blue-500', 'bg-emerald-50');
+                label.classList.add('border-solid', 'border-green-500', 'bg-emerald-50');
                 label.innerHTML = `
                     <div class="flex items-center gap-2 overflow-hidden">
-                        <i class="fa-solid fa-check-circle text-blue-500"></i>
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
                         <span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">${file.name}</span>
                     </div>`;
 
@@ -1889,7 +1923,7 @@
 
                 // Reset UI on Failure
                 label.innerHTML = originalLabelHtml;
-                label.classList.remove('border-solid', 'border-blue-500', 'bg-emerald-50');
+                label.classList.remove('border-solid', 'border-green-500', 'bg-emerald-50');
                 label.classList.add('border-dashed', 'border-slate-300');
                 if (statusSpan) statusSpan.classList.add('hidden');
                 hiddenInput.value = '';
@@ -1991,7 +2025,7 @@
             const modalTitle = document.querySelector('#modal-create h3');
             const submitBtn = document.getElementById('btn-submit');
             submitBtn.disabled = false;
-            submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
+            submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
             const projectContainer = document.getElementById('project-code').closest('div');
             const preApprovedContainer = document.getElementById('pre-approved').closest('div');
 
@@ -2028,7 +2062,7 @@
                 if (preApprovedContainer) preApprovedContainer.classList.remove('hidden');
 
                 // Reset to Report ID
-                reportTitleLabel.innerHTML = 'Report ID <span class="text-blue-500 text-[10px] font-normal">(Auto-Generated)</span>';
+                reportTitleLabel.innerHTML = 'Report ID <span class="text-green-500 text-[10px] font-normal">(Auto-Generated)</span>';
                 reportTitleInput.value = reportId;
                 reportTitleInput.readOnly = true;
                 reportTitleInput.classList.add('bg-slate-100', 'cursor-not-allowed');
@@ -2121,7 +2155,7 @@
 
                 // Reset Submit Button to default
                 submitBtn.innerHTML = '<span>Update Claim</span> <i class="fa-solid fa-paper-plane"></i>';
-                submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
+                submitBtn.className = "px-6 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-slate-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]";
                 submitBtn.disabled = false;
             }
 
@@ -2147,7 +2181,7 @@
 
                     if (item.receiptUrl) {
                         const container = el.querySelector('.receipt-label');
-                        container.innerHTML = `<i class="fa-solid fa-image text-blue-500"></i> <span class="text-xs text-blue-600 font-bold">Attached</span>`;
+                        container.innerHTML = `<i class="fa-solid fa-image text-green-500"></i> <span class="text-xs text-green-600 font-bold">Attached</span>`;
                         container.classList.add('border-emerald-300', 'bg-emerald-50');
                         el.querySelector('.file-status').classList.remove('hidden');
                     }
@@ -2555,7 +2589,7 @@
             // Dynamic color class based on keyword
             let statusColor = 'bg-slate-100 text-slate-600';
             if (data.status.includes('PENDING')) statusColor = 'bg-yellow-100 text-yellow-700';
-            if (data.status.includes('APPROVED')) statusColor = 'bg-blue-100 text-blue-700';
+            if (data.status.includes('APPROVED')) statusColor = 'bg-green-100 text-green-700';
             if (data.status === 'PAID') statusColor = 'bg-green-100 text-green-700';
             if (data.status === 'AUDITED') statusColor = 'bg-purple-100 text-purple-700';
             if (data.status === 'REJECTED') statusColor = 'bg-red-100 text-red-700';
@@ -2580,7 +2614,7 @@
                     // Security Check Badge
                     const isSecure = proofVal.startsWith('https://');
                     const badge = document.createElement('span');
-                    badge.className = `ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-blue-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`;
+                    badge.className = `ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${isSecure ? 'bg-emerald-100 text-green-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`;
                     badge.innerHTML = isSecure ? '<i class="fa-solid fa-lock mr-1"></i> Secure' : '<i class="fa-solid fa-lock-open mr-1"></i> Insecure';
 
                     // Clear previous badge if any
@@ -2761,7 +2795,7 @@
             const list = document.getElementById('chat-user-list');
             list.innerHTML = `
                 <button onclick="selectChat('global')" class="w-full text-left p-3 hover:bg-white dark:hover:bg-slate-800 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50 transition relative">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
                         <i class="fa-solid fa-users text-sm"></i>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -2792,7 +2826,7 @@
                         </div>
                         <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${lastMsg}</p>
                     </div>
-                    ${isUnread ? `<span class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-blue-500 rounded-full shadow-sm animate-pulse"></span>` : ''}
+                    ${isUnread ? `<span class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm animate-pulse"></span>` : ''}
                 `;
                 list.appendChild(btn);
             });
@@ -2817,7 +2851,7 @@
                 headerName.textContent = 'Global Group';
                 headerStatus.textContent = 'Company Chat';
                 headerAvatar.innerHTML = '<i class="fa-solid fa-users text-sm"></i>';
-                headerAvatar.className = 'w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0 font-bold shadow-sm';
+                headerAvatar.className = 'w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 font-bold shadow-sm';
                 callActions.classList.add('hidden');
                 runChatListener('global_chat', null);
             } else {
@@ -2887,12 +2921,12 @@
                             `<div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-200 shadow-sm mt-auto border border-white dark:border-slate-800 uppercase">${(data.sender || data.email || '?')[0]}</div>`
                         ) : ''}
                             
-                            <div class="relative ${isMe ? 'bg-blue-600 text-white font-medium shadow-md shadow-blue-100' : 'bg-white dark:bg-slate-800 dark:text-slate-50 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-800'} p-3 rounded-2xl ${isMe ? 'rounded-br-none' : 'rounded-bl-none'} sm:text-sm text-xs relative overflow-hidden break-words break-all">
+                            <div class="relative ${isMe ? 'bg-green-600 text-white font-medium shadow-md shadow-green-100' : 'bg-white dark:bg-slate-800 dark:text-slate-50 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-800'} p-3 rounded-2xl ${isMe ? 'rounded-br-none' : 'rounded-bl-none'} sm:text-sm text-xs relative overflow-hidden break-words break-all">
                                 ${!isMe && subCollectionId === null && lastSenderId !== data.email ? `<p class="text-[9px] font-bold ${isMe ? 'text-brand-100' : 'text-slate-400 dark:text-slate-400'} mb-1">${data.sender || data.email}</p>` : ''}
                                 <span class="leading-relaxed relative z-10 break-words" style="word-break: break-word;">${data.text}</span>
                                 <div class="flex items-center justify-end gap-1 mt-1">
                                     <div class="text-[9px] ${isMe ? 'text-brand-200' : 'text-slate-400 dark:text-slate-400'} text-right font-mono">${time}</div>
-                                    ${isMe ? `<span class="text-[10px] ${data.read ? 'text-blue-200' : 'text-brand-200'}"><i class="fa-solid fa-check-double"></i></span>` : ''}
+                                    ${isMe ? `<span class="text-[10px] ${data.read ? 'text-green-200' : 'text-brand-200'}"><i class="fa-solid fa-check-double"></i></span>` : ''}
                                 </div>
                                 ${canDelete ? `
                                     <button onclick="deleteChatMessage('${msgId}', '${subCollectionId}')" class="absolute -top-1 ${isMe ? '-left-1' : '-right-1'} w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
@@ -3248,7 +3282,7 @@
             const statusText = document.getElementById('call-status-text');
             if (statusText) {
                 statusText.textContent = 'Ringing...';
-                statusText.className = 'text-blue-400 animate-pulse';
+                statusText.className = 'text-green-400 animate-pulse';
             }
 
             clearInterval(window.callInterval);
@@ -3308,7 +3342,7 @@
             const statusText = document.getElementById('call-status-text');
             if (statusText) {
                 statusText.textContent = 'Ringing...';
-                statusText.className = 'text-blue-400 animate-pulse';
+                statusText.className = 'text-green-400 animate-pulse';
             }
 
             // Reset ringing/connected screens
@@ -3400,13 +3434,13 @@
 
         function getStatusColor(status) {
             const colors = {
-                'PENDING_MANAGER': 'bg-blue-100 text-blue-700 border border-blue-200',
+                'PENDING_MANAGER': 'bg-green-100 text-green-700 border border-green-200',
                 'PENDING_FINANCE': 'bg-indigo-100 text-indigo-700 border border-indigo-200',
                 'FINANCE_APPROVED': 'bg-purple-100 text-purple-700 border border-purple-200',
                 'PENDING_ACCOUNTS': 'bg-orange-100 text-orange-700 border border-orange-200',
                 'PENDING_COMPLIANCE': 'bg-pink-100 text-pink-700 border border-pink-200',
                 'PENDING_TREASURY': 'bg-amber-100 text-amber-700 border border-amber-200',
-                'PAID': 'bg-emerald-100 text-blue-700 border border-emerald-200',
+                'PAID': 'bg-emerald-100 text-green-700 border border-emerald-200',
                 'AUDITED': 'bg-teal-100 text-green-700 border border-teal-200',
                 'REJECTED': 'bg-red-100 text-red-700 border border-red-200',
             };
@@ -3555,7 +3589,7 @@
                                         if (Notification.permission === 'granted') {
                                             const opts = {
                                                 body: d.body,
-                                                icon: 'cropped-ipec-logo-32x32.png',
+                                                icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                                 tag: change.doc.id,
                                                 vibrate: [200, 100, 200]
                                             };
@@ -3582,7 +3616,7 @@
                                                 if (Notification.permission === 'granted') {
                                                     const opts = {
                                                         body: data.lastMessage || 'New message',
-                                                        icon: 'cropped-ipec-logo-32x32.png',
+                                                        icon: 'assets/images/cropped-ipec-logo-32x32.png',
                                                         vibrate: [200, 100, 200],
                                                         tag: change.doc.id,
                                                         renotify: true
@@ -3611,7 +3645,7 @@
                                     if (data.email !== userData.email) {
                                         if (document.hidden || (typeof currentChatContext !== 'undefined' && currentChatContext !== 'global')) {
                                             if (Notification.permission === 'granted') {
-                                                const opts = { body: `${data.sender}: ${data.text}`, icon: 'cropped-ipec-logo-32x32.png', tag: 'global_chat' };
+                                                const opts = { body: `${data.sender}: ${data.text}`, icon: 'assets/images/cropped-ipec-logo-32x32.png', tag: 'global_chat' };
                                                 if (navigator.serviceWorker?.controller) {
                                                     navigator.serviceWorker.ready.then(reg => reg.showNotification('Global Group Message', opts));
                                                 } else {
@@ -3673,9 +3707,9 @@
                                 const body = `Your claim "${d.title}" is now ${s}.`;
 
                                 if (navigator.serviceWorker.controller) {
-                                    navigator.serviceWorker.ready.then(r => r.showNotification(title, { body, icon: 'cropped-ipec-logo-32x32.png', vibration: [200] }));
+                                    navigator.serviceWorker.ready.then(r => r.showNotification(title, { body, icon: 'assets/images/cropped-ipec-logo-32x32.png', vibration: [200] }));
                                 } else {
-                                    new Notification(title, { body, icon: 'cropped-ipec-logo-32x32.png' });
+                                    new Notification(title, { body, icon: 'assets/images/cropped-ipec-logo-32x32.png' });
                                 }
                             }
                         });
@@ -3799,7 +3833,7 @@
             list.innerHTML = filtered.map(t => {
                 const statusColors = {
                     'PENDING': 'bg-amber-100 text-amber-700 border-amber-200 cursor-pointer hover:bg-amber-200',
-                    'IN_PROGRESS': 'bg-blue-100 text-blue-700 border-blue-200 cursor-pointer hover:bg-blue-200',
+                    'IN_PROGRESS': 'bg-green-100 text-green-700 border-green-200 cursor-pointer hover:bg-green-200',
                     'COMPLETED': 'bg-green-100 text-green-700 border-green-200 cursor-pointer hover:bg-green-200'
                 };
                 const statusColor = statusColors[t.status] || 'bg-slate-100 text-slate-700 cursor-pointer hover:bg-slate-200';
@@ -3817,7 +3851,7 @@
                         </select>
                     </div>
                     <div class="mt-3 pt-3 border-t border-slate-50 dark:border-slate-700/50 flex flex-wrap gap-4 text-[10px] text-slate-500 dark:text-slate-400 items-center">
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-user text-blue-500"></i> Assigned By: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedBy}</span></span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-user text-green-500"></i> Assigned By: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedBy}</span></span>
                         <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-check text-red-400"></i> Due: <span class="font-bold ${new Date(t.dueDate) < new Date() && t.status !== 'COMPLETED' ? 'text-red-500' : 'text-slate-700 dark:text-slate-300'}">${new Date(t.dueDate).toLocaleDateString()}</span></span>
                         ${t.status !== 'COMPLETED' ? `<button onclick="updateTaskStatus('${t.id}', 'COMPLETED')" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold transition ml-auto shadow-sm"><i class="fa-solid fa-check"></i> Mark Done</button>` : ''}
                     </div>
@@ -3939,7 +3973,7 @@
                 <div
                     class="p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex justify-between items-center shrink-0">
                     <h3 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-comments text-blue-600"></i> Chats
+                        <i class="fa-solid fa-comments text-green-600"></i> Chats
                     </h3>
                     <button onclick="document.getElementById('modal-chat').classList.add('hidden')"
                         class="md:hidden w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-400 transition flex items-center justify-center">
@@ -3961,7 +3995,7 @@
                     <button onclick="selectChat('global')"
                         class="w-full text-left p-3 hover:bg-white dark:hover:bg-slate-800 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50 transition">
                         <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
+                            class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-600 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm relative">
                             <i class="fa-solid fa-users text-sm"></i>
                             <span id="global-unread-badge"
                                 class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 border-2 border-white rounded-full hidden"></span>
@@ -3986,24 +4020,24 @@
                             <i class="fa-solid fa-arrow-left"></i>
                         </button>
                         <div id="active-chat-avatar"
-                            class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0 font-bold shadow-sm">
+                            class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 font-bold shadow-sm">
                             <i class="fa-solid fa-users text-sm"></i>
                         </div>
                         <div class="min-w-0 truncate">
                             <h3 id="active-chat-name"
                                 class="font-bold text-slate-800 dark:text-slate-100 text-base truncate">Global Group
                             </h3>
-                            <p id="active-chat-status" class="text-[10px] sm:text-xs text-blue-600 font-medium">Company
+                            <p id="active-chat-status" class="text-[10px] sm:text-xs text-green-600 font-medium">Company
                                 Chat</p>
                         </div>
                     </div>
                     <div id="chat-call-actions" class="flex items-center gap-2 hidden shrink-0 ml-2">
                         <button onclick="initiateCall('voice')"
-                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-brand-900/30 dark:hover:text-blue-400 text-slate-500 dark:text-slate-300 transition flex items-center justify-center">
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-green-50 hover:text-green-600 dark:hover:bg-brand-900/30 dark:hover:text-green-400 text-slate-500 dark:text-slate-300 transition flex items-center justify-center">
                             <i class="fa-solid fa-phone"></i>
                         </button>
                         <button onclick="initiateCall('video')"
-                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-brand-900/30 dark:hover:text-blue-400 text-slate-500 dark:text-slate-300 transition flex items-center justify-center">
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-green-50 hover:text-green-600 dark:hover:bg-brand-900/30 dark:hover:text-green-400 text-slate-500 dark:text-slate-300 transition flex items-center justify-center">
                             <i class="fa-solid fa-video"></i>
                         </button>
                     </div>
@@ -4024,10 +4058,10 @@
                     class="p-3 sm:p-4 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-800 shrink-0">
                     <form onsubmit="sendChatMessage(event)" class="relative flex items-center gap-2">
                         <input type="text" id="chat-input-emp"
-                            class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full pl-5 pr-12 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-blue-500 transition outline-none text-slate-700 dark:text-slate-200 placeholder-slate-400"
+                            class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full pl-5 pr-12 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-green-500 transition outline-none text-slate-700 dark:text-slate-200 placeholder-slate-400"
                             placeholder="Type a message..." autocomplete="off">
                         <button type="submit"
-                            class="absolute right-[5px] top-[5px] w-[38px] h-[38px] bg-blue-600 hover:bg-brand-700 text-white rounded-full shadow-md flex items-center justify-center transition active:scale-95 z-10">
+                            class="absolute right-[5px] top-[5px] w-[38px] h-[38px] bg-green-600 hover:bg-brand-700 text-white rounded-full shadow-md flex items-center justify-center transition active:scale-95 z-10">
                             <i class="fa-solid fa-paper-plane text-xs translate-x-[-1px] translate-y-[1px]"></i>
                         </button>
                     </form>
@@ -4042,11 +4076,11 @@
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center transform transition-all scale-95 opacity-0 animate-[slideUp_0.3s_ease-out] border border-slate-100 dark:border-slate-700"
             id="modal-incoming-call-content">
             <div class="relative mx-auto mb-6 w-28 h-28">
-                <div class="absolute inset-0 rounded-full border-4 border-blue-500 animate-ping opacity-20"></div>
-                <div class="absolute inset-0 rounded-full border-2 border-blue-400/40 animate-[pulse_2s_infinite]">
+                <div class="absolute inset-0 rounded-full border-4 border-green-500 animate-ping opacity-20"></div>
+                <div class="absolute inset-0 rounded-full border-2 border-green-400/40 animate-[pulse_2s_infinite]">
                 </div>
                 <div id="incoming-caller-photo"
-                    class="w-28 h-28 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 text-white flex items-center justify-center text-4xl shadow-lg shadow-blue-500/40 overflow-hidden font-bold relative z-10">
+                    class="w-28 h-28 rounded-full bg-gradient-to-tr from-green-500 to-indigo-500 text-white flex items-center justify-center text-4xl shadow-lg shadow-green-500/40 overflow-hidden font-bold relative z-10">
                     <i class="fa-solid fa-phone-volume"></i>
                 </div>
             </div>
@@ -4067,7 +4101,7 @@
                     <i class="fa-solid fa-phone-slash"></i>
                 </button>
                 <button onclick="acceptCall()"
-                    class="w-16 h-16 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center text-2xl transition shadow-lg shadow-blue-500/30 hover:scale-105 active:scale-95">
+                    class="w-16 h-16 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center text-2xl transition shadow-lg shadow-green-500/30 hover:scale-105 active:scale-95">
                     <i class="fa-solid fa-phone"></i>
                 </button>
             </div>
@@ -4087,7 +4121,7 @@
                 <div>
                     <h3 class="font-bold text-lg md:text-xl drop-shadow-md" id="active-call-name">User</h3>
                     <p class="text-xs font-mono" id="active-call-duration">
-                        <span id="call-status-text" class="text-blue-400 animate-pulse">Ringing...</span>
+                        <span id="call-status-text" class="text-green-400 animate-pulse">Ringing...</span>
                     </p>
                 </div>
             </div>
@@ -4102,17 +4136,17 @@
             class="flex-1 relative bg-slate-950 flex items-center justify-center overflow-hidden">
             <div class="text-center">
                 <div class="relative mx-auto mb-6 w-32 h-32">
-                    <div class="absolute inset-0 rounded-full border-4 border-blue-500/40 animate-ping"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-green-500/40 animate-ping"></div>
                     <div
-                        class="absolute inset-[-8px] rounded-full border-2 border-blue-400/20 animate-[pulse_2s_infinite]">
+                        class="absolute inset-[-8px] rounded-full border-2 border-green-400/20 animate-[pulse_2s_infinite]">
                     </div>
                     <div id="ringing-avatar"
-                        class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-5xl shadow-2xl shadow-blue-500/30 overflow-hidden font-bold relative z-10">
+                        class="w-32 h-32 rounded-full bg-gradient-to-tr from-green-600 to-indigo-600 text-white flex items-center justify-center text-5xl shadow-2xl shadow-green-500/30 overflow-hidden font-bold relative z-10">
                         ?
                     </div>
                 </div>
                 <h2 id="ringing-name" class="text-2xl font-bold text-white mb-2">User</h2>
-                <p id="ringing-status" class="text-blue-400 text-sm font-medium animate-pulse"><i
+                <p id="ringing-status" class="text-green-400 text-sm font-medium animate-pulse"><i
                         class="fa-solid fa-phone fa-shake mr-2"></i>Ringing...</p>
             </div>
         </div>
@@ -4125,7 +4159,7 @@
             <div id="remote-audio-indicator"
                 class="hidden absolute inset-0 flex items-center justify-center bg-slate-900 z-0">
                 <div
-                    class="w-32 h-32 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-5xl">
+                    class="w-32 h-32 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-5xl">
                     <i class="fa-solid fa-microphone"></i>
                 </div>
             </div>
@@ -4215,13 +4249,13 @@
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-4" id="input-modal-message"></p>
             <input type="text" id="input-modal-value"
-                class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4 dark:bg-slate-700 dark:border-slate-600 dark:text-white outline-none transition"
+                class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 mb-4 dark:bg-slate-700 dark:border-slate-600 dark:text-white outline-none transition"
                 placeholder="">
             <div class="flex gap-3">
                 <button onclick="closeInputModal(null)"
                     class="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-lg text-sm font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-600">Cancel</button>
                 <button onclick="confirmInputModal()"
-                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-blue-200">Confirm</button>
+                    class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-sm font-semibold transition shadow-md shadow-green-200">Confirm</button>
             </div>
         </div>
     </div>
@@ -4229,12 +4263,12 @@
 
     <!-- Mobile FAB -->
     <button onclick="openCreateModal()"
-        class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg shadow-emerald-300 flex items-center justify-center z-40 transition transform active:scale-95 hover:bg-blue-700">
+        class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-green-600 text-white rounded-full shadow-lg shadow-emerald-300 flex items-center justify-center z-40 transition transform active:scale-95 hover:bg-green-700">
         <i class="fa-solid fa-plus text-xl"></i>
     </button>
     <!-- AI Chat Widget Initialization -->
     <script type="module">
-        import { AISupport } from './ai-support.js';
+        import { AISupport } from './js/ai-support.js';
 
         window.addEventListener('load', () => {
             // Retrieve current user info for AI Context

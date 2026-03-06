@@ -1,5 +1,5 @@
 # ── Environment Variables ────────────────────────
-env.js
+js/env.js
 
 # ── IDE / Editor ─────────────────────────────────
 .vscode/

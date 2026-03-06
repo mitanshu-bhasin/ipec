@@ -25,25 +25,47 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "cropped-ipec-logo-32x32.png",
+      "src": "assets/images/cropped-ipec-logo-32x32.png",
       "sizes": "32x32",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "ipec.jpg",
+      "src": "assets/images/ipec.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "ipec.jpg",
+      "src": "assets/images/ipec.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "assets/images/s1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Comprehensive Dashboard Overview"
+    },
+    {
+      "src": "assets/images/s2.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Simple Expense Submission"
+    },
+    {
+      "src": "assets/images/s3.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Real-time Approval Tracking"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Submit Claim",
@@ -52,7 +74,7 @@
       "url": "./emp.html?action=create",
       "icons": [
         {
-          "src": "ipec.jpg",
+          "src": "assets/images/ipec.jpg",
           "sizes": "192x192",
           "type": "image/jpeg"
         }
@@ -65,7 +87,7 @@
       "url": "./admin.html",
       "icons": [
         {
-          "src": "ipec.jpg",
+          "src": "assets/images/ipec.jpg",
           "sizes": "192x192",
           "type": "image/jpeg"
         }

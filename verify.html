@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1A73E8">
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <meta name="theme-color" content="#1E8E3E">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
 
     <title>IPEC Expense Manager | Reset Password</title>
     <meta name="description" content="Reset your IPEC Expense Manager password securely.">
@@ -30,7 +30,6 @@
                         ipec: {
                             red: '#D93025',
                             green: '#1E8E3E',
-                            blue: '#1A73E8',
                             dark: '#0F172A'
                         }
                     }
@@ -39,9 +38,9 @@
         }
     </script>
 
-    <script src="env.js"></script>
-    <script src="theme.js"></script>
-    <script src="utils.js"></script>
+    <script src="js/env.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/utils.js"></script>
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -67,14 +66,14 @@
 
         /* Dot pattern like index.html */
         .hero-pattern {
-            background-image: radial-gradient(#1A73E8 1px, transparent 1px);
+            background-image: radial-gradient(#1E8E3E 1px, transparent 1px);
             background-size: 24px 24px;
             opacity: 0.1;
         }
 
         /* Gradient text like index.html */
         .gradient-text {
-            background: linear-gradient(to right, #D93025, #1E8E3E, #1A73E8);
+            background: linear-gradient(to right, #D93025, #F9AB00, #1E8E3E);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -112,7 +111,7 @@
 
         .input-field:focus {
             background: white;
-            border-color: #1A73E8;
+            border-color: #1E8E3E;
             outline: none;
             box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
         }
@@ -239,7 +238,7 @@
     <!-- Background Effects (matching index.html) -->
     <div class="absolute inset-0 hero-pattern pointer-events-none opacity-20 dark:opacity-10"></div>
     <div
-        class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-500/20 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob pointer-events-none">
+        class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-green-500/20 dark:bg-green-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob pointer-events-none">
     </div>
     <div
         class="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-amber-400/20 dark:bg-amber-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-2000 pointer-events-none">
@@ -253,20 +252,20 @@
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <a href="index.html" class="flex items-center gap-3 group">
                         <div
-                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-blue-600 shadow-lg overflow-hidden border border-blue-100">
-                            <img src="cropped-ipec-logo-32x32.png" alt="IPEC Logo" class="w-8 h-8 object-contain">
+                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-green-600 shadow-lg overflow-hidden border border-green-100">
+                            <img src="assets/images/cropped-ipec-logo-32x32.png" alt="IPEC Logo" class="w-8 h-8 object-contain">
                         </div>
                         <div>
                             <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">IPEC</span>
                             <span
-                                class="block text-[10px] font-bold text-blue-600 uppercase tracking-wider relative -top-1">Expense
+                                class="block text-[10px] font-bold text-green-600 uppercase tracking-wider relative -top-1">Expense
                                 Manager</span>
                         </div>
                     </a>
                 </div>
                 <div class="flex items-center gap-3">
                     <a href="emp.html"
-                        class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition px-3 py-2 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                        class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-green-600 dark:text-slate-400 dark:hover:text-green-400 transition px-3 py-2 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                         <i class="fa-solid fa-arrow-left"></i>
                         <span class="hidden sm:inline">Back to Login</span>
                     </a>
@@ -288,7 +287,7 @@
                 <div class="card-glass rounded-2xl p-7 md:p-9 backdrop-blur-xl">
                     <div class="text-center mb-7">
                         <div
-                            class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600 dark:text-blue-400 text-2xl border border-blue-100 dark:border-blue-900/50 shadow-sm">
+                            class="w-16 h-16 bg-green-50 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-green-600 dark:text-green-400 text-2xl border border-green-100 dark:border-green-900/50 shadow-sm">
                             <i class="fa-solid fa-envelope-open-text"></i>
                         </div>
                         <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Forgot Password?</h1>
@@ -310,22 +309,22 @@
                         </div>
 
                         <button type="submit" id="reset-btn"
-                            class="btn-primary w-full bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-800 hover:to-green-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-200/50 dark:shadow-none transform hover:translate-y-[-1px] disabled:opacity-60 disabled:cursor-not-allowed border border-blue-400/30">
+                            class="btn-primary w-full bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-green-200/50 dark:shadow-none transform hover:translate-y-[-1px] disabled:opacity-60 disabled:cursor-not-allowed border border-green-400/30">
                             <i class="fa-solid fa-paper-plane mr-2"></i>Send Reset Link
                         </button>
 
                         <div class="flex justify-between mt-3 text-xs">
-                            <a href="emp.html" class="text-slate-400 hover:text-blue-600 transition font-medium"><i
+                            <a href="emp.html" class="text-slate-400 hover:text-green-600 transition font-medium"><i
                                     class="fa-solid fa-arrow-left mr-1"></i>Back to Login</a>
                             <a href="support.html"
-                                class="text-blue-500 hover:text-blue-700 transition font-medium">Contact Support <i
+                                class="text-green-500 hover:text-green-700 transition font-medium">Contact Support <i
                                     class="fa-solid fa-headset ml-1"></i></a>
                         </div>
                     </form>
 
                     <div
                         class="mt-6 text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 border border-slate-100 dark:border-slate-700/50">
-                        <i class="fa-solid fa-circle-info text-blue-400 mr-1"></i>
+                        <i class="fa-solid fa-circle-info text-green-400 mr-1"></i>
                         If you don't receive an email, check your spam folder. For locked accounts, contact the Admin
                         team.
                     </div>
@@ -337,7 +336,7 @@
                 <div class="card-glass rounded-2xl p-7 md:p-9 backdrop-blur-xl animate-fade-in-up">
                     <div class="text-center mb-7">
                         <div
-                            class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600 dark:text-blue-400 text-2xl border border-blue-100 dark:border-blue-900/50 shadow-sm">
+                            class="w-16 h-16 bg-gradient-to-br from-green-50 to-indigo-50 dark:from-green-900/30 dark:to-indigo-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-green-600 dark:text-green-400 text-2xl border border-green-100 dark:border-green-900/50 shadow-sm">
                             <i class="fa-solid fa-key"></i>
                         </div>
                         <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Create New Password</h1>
@@ -356,7 +355,7 @@
                                     class="input-field w-full rounded-xl py-3 pl-11 pr-12 text-sm"
                                     placeholder="Enter new password" autocomplete="new-password" required minlength="6">
                                 <button type="button" onclick="togglePasswordVisibility('new-password', this)"
-                                    class="absolute right-3 top-3 text-slate-400 hover:text-blue-600 transition p-0.5">
+                                    class="absolute right-3 top-3 text-slate-400 hover:text-green-600 transition p-0.5">
                                     <i class="fa-solid fa-eye text-sm"></i>
                                 </button>
                             </div>
@@ -381,7 +380,7 @@
                                     placeholder="Confirm new password" autocomplete="new-password" required
                                     minlength="6">
                                 <button type="button" onclick="togglePasswordVisibility('confirm-password', this)"
-                                    class="absolute right-3 top-3 text-slate-400 hover:text-blue-600 transition p-0.5">
+                                    class="absolute right-3 top-3 text-slate-400 hover:text-green-600 transition p-0.5">
                                     <i class="fa-solid fa-eye text-sm"></i>
                                 </button>
                             </div>
@@ -389,14 +388,14 @@
                         </div>
 
                         <button type="submit" id="confirm-btn"
-                            class="btn-primary w-full bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-800 hover:to-green-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-200/50 dark:shadow-none transform hover:translate-y-[-1px] disabled:opacity-60 disabled:cursor-not-allowed border border-blue-400/30">
+                            class="btn-primary w-full bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-green-200/50 dark:shadow-none transform hover:translate-y-[-1px] disabled:opacity-60 disabled:cursor-not-allowed border border-green-400/30">
                             <i class="fa-solid fa-check-circle mr-2"></i>Reset Password
                         </button>
                     </form>
 
                     <div
                         class="mt-5 text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 border border-slate-100 dark:border-slate-700/50">
-                        <i class="fa-solid fa-shield-halved text-blue-400 mr-1"></i>
+                        <i class="fa-solid fa-shield-halved text-green-400 mr-1"></i>
                         Use 6+ characters with a mix of uppercase, lowercase, numbers, and symbols for a strong
                         password.
                     </div>
@@ -420,7 +419,7 @@
                     <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6">Your password has been
                         updated. You can now log in with your new credentials.</p>
                     <a href="emp.html"
-                        class="btn-primary inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-800 hover:to-green-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-blue-200/50 dark:shadow-none transform hover:translate-y-[-1px] border border-blue-400/30">
+                        class="btn-primary inline-flex items-center gap-2 bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-green-200/50 dark:shadow-none transform hover:translate-y-[-1px] border border-green-400/30">
                         <i class="fa-solid fa-right-to-bracket"></i>
                         Go to Login
                     </a>
@@ -438,7 +437,7 @@
                     <p id="error-message" class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6">This
                         password reset link is invalid or has expired. Please request a new one.</p>
                     <a href="verify.html"
-                        class="btn-primary inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-800 hover:to-green-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-blue-200/50 dark:shadow-none transform hover:translate-y-[-1px] border border-blue-400/30">
+                        class="btn-primary inline-flex items-center gap-2 bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-green-200/50 dark:shadow-none transform hover:translate-y-[-1px] border border-green-400/30">
                         <i class="fa-solid fa-rotate-right"></i>
                         Request New Link
                     </a>

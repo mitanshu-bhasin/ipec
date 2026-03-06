@@ -78,9 +78,9 @@
 
 2. **Configure environment variables**
    ```bash
-   cp env.example.js env.js
+   cp js/env.example.js js/env.js
    ```
-   Open `env.js` and replace the placeholder values with your Firebase project credentials:
+   Open `js/env.js` and replace the placeholder values with your Firebase project credentials:
    ```js
    window.ENV = {
        FIREBASE_API_KEY: "your-api-key",
@@ -117,40 +117,50 @@
 ## 📂 Project Structure
 
 ```
-├── index.html               # Landing page (public entry point)
-├── emp.html                 # Employee portal
-├── admin.html               # Admin command center
-├── sw.js                    # Service worker (PWA offline support)
-├── firebase-messaging-sw.js # Firebase Cloud Messaging worker
-├── manifest.json            # Web App Manifest (PWA config)
-├── firebase-config.js       # Firebase initialization
-├── env.js                   # Runtime environment variables (gitignored)
-├── env.example.js           # Env template for new developers
-├── firestore.rules          # Firestore security rules
+├── assets/
+│   └── images/              # All image assets
+│       ├── ipec.jpg         # Brand logo (PWA icon, apple-touch-icon)
+│       ├── ipec_logo.jpeg   # Secondary logo
+│       ├── cropped-ipec-logo-32x32.png  # Favicon
+│       └── s1.png, s2.png, s3.png       # PWA screenshots
 │
-├── common.css               # Shared styles
-├── theme.js                 # Dark/Light mode toggle
-├── utils.js                 # Shared utility functions
-├── admin-helper.js          # Admin-specific calculations
-├── ai-support.js            # AI chatbot widget logic
-├── spam-filter.js           # Spam detection for messaging
+├── css/
+│   └── common.css           # Shared styles
 │
-├── 404.html                 # Custom "Page Not Found"
-├── offline.html             # Offline fallback page
-├── mitanshu.html            # Developer profile page
-├── help.html / support.html # Help desk & ticket tracking
-├── privacy.html / terms.html# Legal pages
+├── js/
+│   ├── theme.js             # Dark/Light mode toggle
+│   ├── utils.js             # Shared utility functions
+│   ├── admin-helper.js      # Admin-specific calculations
+│   ├── ai-support.js        # AI chatbot widget logic
+│   ├── firebase-config.js   # Firebase initialization
+│   ├── spam-filter.js       # Spam detection for messaging
+│   ├── env.js               # Runtime environment variables (gitignored)
+│   └── env.example.js       # Env template for new developers
+│
+├── scripts/                 # Build & maintenance scripts (Python)
+│   ├── make_common_css.py
+│   ├── update_admin_emp.py
+│   └── update_index.py
 │
 ├── functions/               # Firebase Cloud Functions
 │   ├── index.js
 │   └── package.json
 │
+├── index.html               # Landing page (public entry point)
+├── emp.html                 # Employee portal
+├── admin.html               # Admin command center
+├── 404.html                 # Custom "Page Not Found"
+├── offline.html             # Offline fallback page
+│
+├── sw.js                    # Service worker (PWA)
+├── firebase-messaging-sw.js # FCM worker
+├── manifest.json            # Web App Manifest
+├── firestore.rules          # Firestore security rules
+│
 ├── .well-known/             # security.txt
-├── robots.txt               # Search engine directives
-├── sitemap.xml              # XML sitemap
-├── _redirects               # Netlify redirect rules
-├── feed.xml                 # RSS feed
-├── opensearch.xml           # Browser search integration
+├── robots.txt, sitemap.xml  # SEO
+├── _redirects               # Netlify routing
+├── feed.xml, opensearch.xml # RSS & search
 ├── browserconfig.xml        # Windows tile config
 ├── humans.txt               # Team credits
 └── LICENSE                  # MIT License
@@ -162,7 +172,7 @@
 
 - **Firebase Rules** — Firestore rules (`firestore.rules`) ensure authenticated access only
 - **Security Policy** — Standardized `security.txt` in `.well-known/`
-- **Environment Isolation** — API keys stored in `env.js` (gitignored), with `env.example.js` as a safe template
+- **Environment Isolation** — API keys stored in `js/env.js` (gitignored), with `js/env.example.js` as a safe template
 - **Input Validation** — Spam filtering on messaging features
 
 ---

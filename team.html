@@ -24,8 +24,8 @@
     <title>Leadership Team | IPEC Consulting</title>
 
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,7 +38,6 @@
                         ipec: {
                             red: '#D93025',
                             green: '#1E8E3E',
-                            blue: '#1A73E8',
                             dark: '#0F172A'
                         }
                     }
@@ -47,7 +46,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="theme.js"></script>
+    <script src="js/theme.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -82,158 +81,139 @@
         .dark .modal-scroll::-webkit-scrollbar-thumb {
             background-color: #475569;
         }
+
+        /* Glass Effect for Navbar */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .dark .glass-effect {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 
 <body
     class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased flex flex-col min-h-screen transition-colors duration-300 hero-bg">
 
-    <!-- Navigation -->
-    <nav
-        class="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-500 glass-effect border-b border-white/40 dark:border-slate-700/50 shadow-sm backdrop-blur-xl bg-white/60 dark:bg-slate-900/60"
+        id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-3">
-                    <a href="index.html" class="flex items-center gap-3">
-                        <img src="ipec.jpg" alt="IPEC Logo" class="h-10 w-auto">
-                        <div class="flex flex-col">
-                            <span class="font-bold text-lg leading-tight text-slate-900 dark:text-white">IPEC
-                                Consulting</span>
-                            <span class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">International
-                                Process Excellence Council</span>
-                        </div>
-                    </a>
-                </div>
-                <!-- Links -->
-                <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600 dark:text-slate-400 items-center">
-                    <a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
-
-                    <!-- Council Verticals Dropdown -->
-                    <div class="relative group">
-                        <button
-                            class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition py-2">
-                            Council Verticals <i
-                                class="fa-solid fa-chevron-down text-[10px] ml-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
-                        </button>
-                        <div
-                            class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0 z-50">
-                            <div
-                                class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
-                                <a href="#"
-                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition border-b border-slate-50 dark:border-slate-700/50 last:border-0">PP</a>
-                                <a href="#"
-                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">CC</a>
-                            </div>
-                        </div>
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-green-600 shadow-lg overflow-hidden border border-green-100">
+                        <img src="assets/images/cropped-ipec-logo-32x32.png" alt="IPEC Logo"
+                            class="w-8 h-8 object-contain">
                     </div>
-
-                    <!-- Services Dropdown -->
-                    <div class="relative group">
-                        <button
-                            class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition py-2">
-                            Services <i
-                                class="fa-solid fa-chevron-down text-[10px] ml-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
-                        </button>
-                        <div
-                            class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0 z-50">
-                            <div
-                                class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
-                                <a href="#"
-                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition border-b border-slate-50 dark:border-slate-700/50 last:border-0">Lean
-                                    Six Sigma</a>
-                                <a href="#"
-                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Cybersecurity</a>
-                            </div>
-                        </div>
+                    <div>
+                        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">IPEC</span>
+                        <span
+                            class="block text-[10px] font-bold text-green-600 uppercase tracking-wider relative -top-1">Expense
+                            Manager</span>
                     </div>
-
-                    <a href="event.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Events</a>
-                    <a href="https://ipecconsulting.org" target="_blank"
-                        class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Official Website</a>
-                    <a href="team.html" class="text-indigo-600 dark:text-indigo-400 font-bold transition">Leadership
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition text-sm">Home</a>
+                    <a href="team.html" class="text-green-600 dark:text-green-400 font-bold transition text-sm">Leadership
                         Team</a>
-                    <a href="contact.html"
-                        class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Contact</a>
+                    <a href="help.html"
+                        class="text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition text-sm">Help
+                        Center</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="help.html"
+                        class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition md:hidden">
+                        <i class="fa-regular fa-circle-question text-lg"></i>
+                    </a>
                     <button onclick="toggleTheme()"
                         class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
                         <i class="fa-solid fa-moon theme-toggle-icon"></i>
                     </button>
-                </div>
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleTheme()"
-                        class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
-                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
-                    </button>
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
-                        class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()"
+                        class="md:hidden text-slate-600 dark:text-slate-300 hover:text-green-600 transition">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu"
-            class="hidden md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
-            <div class="px-4 pt-2 pb-4 space-y-1">
-                <a href="index.html" class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Home</a>
-
-                <!-- Mobile Council Verticals -->
-                <div x-data="{ open: false }">
-                    <button onclick="document.getElementById('mobile-council-dropdown').classList.toggle('hidden')"
-                        class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                        Council Verticals <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <div id="mobile-council-dropdown"
-                        class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
-                        <a href="#"
-                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">PP</a>
-                        <a href="#"
-                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">CC</a>
-                    </div>
-                </div>
-
-                <!-- Mobile Services -->
-                <div>
-                    <button onclick="document.getElementById('mobile-services-dropdown').classList.toggle('hidden')"
-                        class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                        Services <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <div id="mobile-services-dropdown"
-                        class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
-                        <a href="#"
-                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Lean
-                            Six Sigma</a>
-                        <a href="#"
-                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Cybersecurity</a>
-                    </div>
-                </div>
-
-                <a href="event.html"
-                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Events</a>
-                <a href="https://ipecconsulting.org" target="_blank"
-                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Official
-                    Website</a>
-                <a href="team.html"
-                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Leadership
-                    Team</a>
-                <a href="contact.html"
-                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
             </div>
         </div>
     </nav>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"
+        onclick="toggleMobileMenu()"></div>
+
+    <!-- Mobile Sidebar Menu -->
+    <div id="mobile-menu"
+        class="fixed top-0 right-0 w-[280px] h-full bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col md:hidden">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-green-50 dark:bg-green-900/30 rounded flex items-center justify-center">
+                    <img src="assets/images/cropped-ipec-logo-32x32.png" alt="Logo" class="w-6 h-6 object-contain">
+                </div>
+                <span class="font-bold text-slate-800 dark:text-white">IPEC Menu</span>
+            </div>
+            <button onclick="toggleMobileMenu()"
+                class="text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-8">
+            <nav class="space-y-6">
+                <a href="index.html"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-bold text-lg transition">Home</a>
+                <a href="team.html"
+                    class="block text-green-600 dark:text-green-400 font-bold text-lg transition">Leadership Team</a>
+                <a href="help.html"
+                    class="block text-slate-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-bold text-lg transition">Help
+                    Center</a>
+            </nav>
+
+            <hr class="border-slate-100 dark:border-slate-800">
+
+            <div class="space-y-4">
+                <a href="https://ipecconsulting.org" target="_blank"
+                    class="flex items-center gap-3 text-slate-500 hover:text-green-600 transition">
+                    <i class="fa-solid fa-globe opacity-70"></i>
+                    <span>Official Website</span>
+                </a>
+                <a href="support.html" class="flex items-center gap-3 text-slate-500 hover:text-green-600 transition">
+                    <i class="fa-solid fa-headset opacity-70"></i>
+                    <span>Support Center</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <div class="flex flex-col gap-3">
+                <a href="emp.html"
+                    class="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl text-center text-sm font-bold shadow-lg shadow-green-500/20 transition-all active:scale-95">Employee
+                    Portal</a>
+                <a href="admin.html"
+                    class="px-4 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl text-center text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95">Admin
+                    Console</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
-    <main class="flex-grow">
+    <main class="flex-grow pt-20">
         <!-- Hero Section -->
         <div class="text-center py-16 px-4">
             <span
-                class="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold mb-4 border border-blue-100 dark:border-blue-800">
+                class="inline-block py-1 px-3 rounded-full bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold mb-4 border border-green-100 dark:border-green-800">
                 Visionaries & Experts
             </span>
             <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Meet the <span
-                    class="text-blue-600 dark:text-blue-400">Leadership</span></h1>
+                    class="text-green-600 dark:text-green-400">Leadership</span></h1>
             <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
                 Stewards of India’s Industry Certification Standards and leaders in global process excellence.
             </p>
@@ -247,16 +227,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-10-300x278.png"
                             alt="Col. Raj Kalra"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Col. Raj Kalra</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Founder
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Founder
                         Chairman</p>
                     <button onclick="openBio('bio-kalra')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -265,16 +245,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-12-300x282.png"
                             alt="Brajesh Kumar Singh"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Brajesh Kumar Singh</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">
                         Co-Founder</p>
                     <button onclick="openBio('bio-singh')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -283,16 +263,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-14-1-300x278.png"
                             alt="Uttam Biswas"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Uttam Biswas</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
                         Executive Officer</p>
                     <button onclick="openBio('bio-biswas')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -301,16 +281,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-16-1-300x278.png"
                             alt="Sangeet Malhotra"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Sangeet Malhotra</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Chief
                         Operating Officer</p>
                     <button onclick="openBio('bio-malhotra')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -319,16 +299,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-15-1-300x282.png"
                             alt="Cdr. M. Ramanathan Kumar"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Cdr. M. Ramanathan Kumar</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
                         Intl. Certifications</p>
                     <button onclick="openBio('bio-kumar')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -337,16 +317,16 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-19-300x278.png"
                             alt="Cdr. Lingesh"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Cdr. Lingesh</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
                         Cybersecurity</p>
                     <button onclick="openBio('bio-lingesh')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -355,16 +335,33 @@
                 <div
                     class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
                     <div
-                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-900/50 transition-colors">
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
                         <img src="https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-18-300x278.png"
                             alt="Deepak Dwivedi"
                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Deepak Dwivedi</h3>
-                    <p class="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">Head,
                         Education Policy</p>
                     <button onclick="openBio('bio-dwivedi')"
-                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition">
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
+                        View Biography
+                    </button>
+                </div>
+
+                <!-- Mitanshu Bhasin -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group text-center flex flex-col">
+                    <div
+                        class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-700 group-hover:border-green-100 dark:group-hover:border-green-900/50 transition-colors">
+                        <img src="https://mitanshubhasin.netlify.app/mitanshu.jpg" alt="Mitanshu Bhasin"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Mitanshu Bhasin</h3>
+                    <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide mb-4">
+                        Developer & Tech Associate</p>
+                    <button onclick="openBio('bio-mitanshu')"
+                        class="mt-auto w-full py-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400 transition">
                         View Biography
                     </button>
                 </div>
@@ -373,54 +370,46 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer
-        class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12 mt-auto transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="mb-6">
-                <p class="font-bold text-slate-700 dark:text-slate-200 mb-1">International Process Excellence Council
-                </p>
-                <p class="text-xs text-slate-500">Registered Section 8 Nonprofit</p>
-                <div
-                    class="flex flex-col items-center justify-center gap-1 mt-3 text-sm text-slate-600 dark:text-slate-400">
-                    <div class="flex justify-center gap-4">
-                        <a href="mailto:info@ipecconsulting.org" class="hover:text-blue-600"><i
-                                class="fa-solid fa-envelope mr-1"></i> info@ipecconsulting.org</a>
-                        <a href="tel:+919990071450" class="hover:text-blue-600"><i class="fa-solid fa-phone mr-1"></i>
-                            +91-9990071450</a>
-                    </div>
-                    <p class="mt-2"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> 1,982/2 Ward 7,
-                        Mehrauli, New Delhi – 110030</p>
-                    <p class="text-xs text-slate-500"><i class="fa-regular fa-clock mr-1"></i> Mon–Fri, 10:00–18:00 IST
-                    </p>
+    <!-- Developer Footer & Legal -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs border border-slate-700">
+                        IPEC</div>
+                    <span class="font-semibold text-sm">© 2026 IPEC Expense Manager</span>
+                </div>
+                <div class="flex gap-6 text-xs font-medium text-slate-400">
+                    <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                    <a href="help.html" class="hover:text-white transition">Help Center</a>
                 </div>
             </div>
 
-            <!-- Social Media Links -->
-            <div class="flex justify-center gap-6 mb-8 text-slate-500 dark:text-slate-400">
-                <a href="https://www.linkedin.com/company/international-process-excellence-council/" target="_blank"
-                    aria-label="LinkedIn"
-                    class="hover:text-[#0077b5] transition-colors duration-300 transform hover:scale-110">
-                    <i class="fa-brands fa-linkedin text-2xl"></i>
+            <div class="pt-8 border-t border-slate-800 text-center relative overflow-hidden group">
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMTAwLCAxMTYsIDEzOSwgMC4xKSIvPjwvc3ZnPg==')] opacity-20">
+                </div>
+
+                <p class="text-[10px] text-slate-500 tracking-[0.2em] uppercase mb-4 font-mono">
+                    <span class="text-green-500">&lt;</span> ARCHITECTED & DEPLOYED <span
+                        class="text-green-500">/&gt;</span>
+                </p>
+
+                <a href="https://mitanshubhasin.netlify.app" target="_blank"
+                    class="inline-flex items-center gap-3 relative z-10 group-hover:scale-105 transition-transform duration-300">
+                    <div class="h-px w-8 bg-gradient-to-r from-transparent to-green-500/50"></div>
+                    <span
+                        class="font-mono text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-green-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">
+                        Mitanshu_Bhasin<span class="text-white animate-pulse">_</span>
+                    </span>
+                    <div class="h-px w-8 bg-gradient-to-l from-transparent to-green-500/50"></div>
                 </a>
-                <a href="https://www.youtube.com/@ipecconsulting" target="_blank" aria-label="YouTube"
-                    class="hover:text-[#FF0000] transition-colors duration-300 transform hover:scale-110">
-                    <i class="fa-brands fa-youtube text-2xl"></i>
-                </a>
-            </div>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">&copy; 2026 IPEC Council. All rights reserved.
-            </p>
-            <div class="flex justify-center gap-8 text-sm text-slate-500 dark:text-slate-400">
-                <a href="par.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Payments and
-                    Refunds</a>
-                <a href="privacy.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Privacy
-                    Policy</a>
-                <a href="terms.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Terms of
-                    Service</a>
-                <a href="license.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">License</a>
-                <a href="support.html"
-                    class="hover:text-indigo-600 dark:hover:text-indigo-400 transition font-medium text-blue-600 dark:text-blue-400">Support
-                    Center</a>
+
+                <p class="text-[10px] text-slate-600 mt-4 font-mono">
+                    <span class="opacity-50">INITIALIZED_AT:</span> <span class="text-green-500">2026.02.17</span>
+                </p>
             </div>
         </div>
     </footer>
@@ -450,7 +439,7 @@
                     </div>
                     <div>
                         <p id="modal-role"
-                            class="text-blue-600 dark:text-blue-400 text-sm font-bold uppercase tracking-wide mb-4"></p>
+                            class="text-green-600 dark:text-green-400 text-sm font-bold uppercase tracking-wide mb-4"></p>
                         <div id="modal-bio"
                             class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed space-y-4"></div>
                     </div>
@@ -522,10 +511,22 @@
                 Model. A Six Sigma Black Belt from the Indian Statistical Institute and a Certified Knowledge Manager.
             </p>
         </div>
+        <div id="bio-mitanshu-data">
+            <p><strong>Mitanshu Bhasin</strong> is the Developer & Tech Associate at IPEC and the architect behind the
+                IPEC Expense Manager platform. A dynamic member of the technical team, he specializes in Python
+                development, full-stack web engineering, and cybersecurity protocols.</p>
+            <p>Mitanshu bridges the gap between theoretical computer science and real-world deployment. He is
+                responsible
+                for developing automated Python scripts for data handling, maintaining cyber hygiene standards across
+                internal communications, and researching emerging STEM technologies for team integration.</p>
+            <p>Currently preparing for advanced engineering entrance examinations (JEE), he applies rigorous analytical
+                training in Physics and Mathematics directly to algorithm optimization and software architecture.
+                His work ethic aligns with professional standards far beyond his years.</p>
+        </div>
     </div>
 
     <script type="module">
-        import { AISupport } from './ai-support.js';
+        import { AISupport } from './js/ai-support.js';
         window.addEventListener('load', () => {
             new AISupport({
                 name: 'Visitor',
@@ -543,7 +544,8 @@
             'bio-malhotra': { name: 'Sangeet Malhotra', role: 'Chief Operating Officer', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-16-1-300x278.png' },
             'bio-kumar': { name: 'Cdr. M. Ramanathan Kumar', role: 'Head, Intl. Certifications', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-15-1-300x282.png' },
             'bio-lingesh': { name: 'Cdr. Lingesh', role: 'Head, Cybersecurity', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-19-300x278.png' },
-            'bio-dwivedi': { name: 'Deepak Dwivedi', role: 'Head, Education Policy', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-18-300x278.png' }
+            'bio-dwivedi': { name: 'Deepak Dwivedi', role: 'Head, Education Policy', img: 'https://ipecconsulting.org/wp-content/uploads/2025/09/Artboard-18-300x278.png' },
+            'bio-mitanshu': { name: 'Mitanshu Bhasin', role: 'Developer & Tech Associate', img: 'https://mitanshubhasin.netlify.app/mitanshu.jpg' }
         };
 
         function openBio(id) {
@@ -568,6 +570,34 @@
             if (event.key === "Escape") {
                 closeBio();
             }
+        });
+    </script>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                menu.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            } else {
+                overlay.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    menu.classList.remove('translate-x-full');
+                });
+            }
+        }
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
         });
     </script>
 </body>

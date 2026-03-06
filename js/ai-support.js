@@ -36,9 +36,9 @@ export class AISupport {
                 right: 20px;
                 width: 60px;
                 height: 60px;
-                background: linear-gradient(135deg, #0ea5e9, #2563eb);
+                background: linear-gradient(135deg, #34d399, #1E8E3E);
                 border-radius: 50%;
-                box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+                box-shadow: 0 10px 25px rgba(30, 142, 62, 0.4);
                 color: white;
                 display: flex;
                 align-items: center;
@@ -50,7 +50,7 @@ export class AISupport {
             }
             .ai-widget-btn:hover {
                 transform: scale(1.1);
-                box-shadow: 0 15px 35px rgba(37, 99, 235, 0.5);
+                box-shadow: 0 15px 35px rgba(30, 142, 62, 0.5);
             }
             .ai-chat-window {
                 position: fixed;
@@ -80,7 +80,7 @@ export class AISupport {
                 pointer-events: all;
             }
             .ai-header {
-                background: linear-gradient(135deg, #0ea5e9, #2563eb);
+                background: linear-gradient(135deg, #34d399, #1E8E3E);
                 padding: 16px;
                 color: white;
                 display: flex;
@@ -107,7 +107,7 @@ export class AISupport {
             }
             .ai-message.user {
                 align-self: flex-end;
-                background: #2563eb;
+                background: #1E8E3E;
                 color: white;
                 border-bottom-right-radius: 2px;
             }
@@ -135,10 +135,10 @@ export class AISupport {
                 transition: border-color 0.2s;
             }
             .ai-input:focus {
-                border-color: #2563eb;
+                border-color: #1E8E3E;
             }
             .ai-send-btn {
-                background: #2563eb;
+                background: #1E8E3E;
                 color: white;
                 border: none;
                 width: 36px;
@@ -151,7 +151,7 @@ export class AISupport {
                 transition: background 0.2s;
             }
             .ai-send-btn:hover {
-                background: #1d4ed8;
+                background: #15803d;
             }
             .ai-send-btn:disabled {
                 background: #94a3b8;
@@ -238,9 +238,9 @@ export class AISupport {
                 <div class="typing-dot"></div>
             </div>
             <div class="p-2 flex gap-2 overflow-x-auto bg-gray-50 border-t border-gray-100">
-                <button class="text-xs bg-white border border-indigo-200 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 whitespace-nowrap transition" onclick="window.triggerAIAction('policy')">Expense Policy?</button>
-                <button class="text-xs bg-white border border-indigo-200 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 whitespace-nowrap transition" onclick="window.triggerAIAction('about')">About IPEC?</button>
-                <button class="text-xs bg-white border border-indigo-200 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 whitespace-nowrap transition" onclick="window.triggerAIAction('analyze')">Analyze Spending</button>
+                <button class="text-xs bg-white border border-green-200 text-green-600 px-3 py-1 rounded-full hover:bg-green-50 whitespace-nowrap transition" onclick="window.triggerAIAction('policy')">Expense Policy?</button>
+                <button class="text-xs bg-white border border-green-200 text-green-600 px-3 py-1 rounded-full hover:bg-green-50 whitespace-nowrap transition" onclick="window.triggerAIAction('about')">About IPEC?</button>
+                <button class="text-xs bg-white border border-green-200 text-green-600 px-3 py-1 rounded-full hover:bg-green-50 whitespace-nowrap transition" onclick="window.triggerAIAction('analyze')">Analyze Spending</button>
             </div>
             <div class="ai-input-area">
                 <input type="text" class="ai-input" placeholder="Ask me anything..." id="ai-input">

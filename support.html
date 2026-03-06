@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support Center | IPEC Consulting</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
-    <link rel="apple-touch-icon" href="ipec.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="assets/images/ipec.jpg">
 
     <!-- SEO & Metadata -->
     <meta name="description" content="Submit a support ticket for IPEC Consulting issues.">
@@ -20,7 +20,7 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        ipec: { blue: '#1A73E8', green: '#1E8E3E', red: '#D93025' }
+                        ipec: { green: '#1E8E3E', red: '#D93025' }
                     }
                 }
             }
@@ -28,8 +28,8 @@
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="theme.js"></script>
-    <link rel="stylesheet" href="common.css">
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/common.css">
 </head>
 
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white transition-colors duration-300 font-sans">
@@ -40,12 +40,12 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center gap-3">
                     <a href="index.html" class="flex items-center gap-2">
-                        <img src="ipec.jpg" alt="IPEC" class="h-8 w-8 rounded">
+                        <img src="assets/images/ipec.jpg" alt="IPEC" class="h-8 w-8 rounded">
                         <span class="font-bold text-lg tracking-tight">IPEC Support</span>
                     </a>
                 </div>
                 <div class="flex items-center gap-4">
-                    <a href="index.html" class="text-sm font-medium hover:text-blue-600 transition">Back to Home</a>
+                    <a href="index.html" class="text-sm font-medium hover:text-green-600 transition">Back to Home</a>
                     <button onclick="toggleTheme()"
                         class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition">
                         <i class="fa-solid fa-moon"></i>
@@ -71,19 +71,19 @@
                         <div>
                             <label class="block text-sm font-medium mb-2">Full Name</label>
                             <input type="text" id="name" required
-                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-2">Email Address</label>
                             <input type="email" id="email" required
-                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-2">Issue Category</label>
                         <select id="category" required
-                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
                             <option value="General Inquiry">General Inquiry</option>
                             <option value="Login Issue">Login / Account Issue</option>
                             <option value="Expense Claim">Expense Claim Problem</option>
@@ -97,9 +97,9 @@
                         <div class="flex gap-4">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="priority" value="Low"
-                                    class="text-blue-600 focus:ring-blue-500" checked>
+                                    class="text-green-600 focus:ring-green-500" checked>
                                 <span
-                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Low</span>
+                                    class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-800">Low</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="priority" value="Medium"
@@ -119,12 +119,12 @@
                     <div>
                         <label class="block text-sm font-medium mb-2">Description</label>
                         <textarea id="message" rows="5" required
-                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
                             placeholder="Please describe your issue in detail..."></textarea>
                     </div>
 
                     <button type="submit" id="submitBtn"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition transform active:scale-95 flex items-center justify-center gap-2">
                         <span>Submit Ticket</span>
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -141,7 +141,7 @@
                 <h2 class="text-xl font-bold mb-4">Track Existing Ticket</h2>
                 <form id="trackForm" class="flex flex-col sm:flex-row gap-4">
                     <input type="text" id="trackId" required placeholder="Enter Ticket Reference ID"
-                        class="flex-1 px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        class="flex-1 px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
                     <button type="submit" id="trackBtn"
                         class="bg-gray-800 hover:bg-gray-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-lg transition shadow-sm">
                         Track Ticket
@@ -152,7 +152,7 @@
                     <div class="flex justify-between items-start mb-4">
                         <div>
                             <span id="resStatus"
-                                class="inline-block px-3 py-1 text-xs font-bold uppercase rounded-full bg-blue-100 text-blue-700">Open</span>
+                                class="inline-block px-3 py-1 text-xs font-bold uppercase rounded-full bg-green-100 text-green-700">Open</span>
                         </div>
                         <span id="resPriority"
                             class="text-xs font-bold text-gray-500 bg-gray-200 dark:bg-slate-700 px-2 py-1 rounded">Medium</span>
@@ -179,14 +179,14 @@
             </div>
             <h3 class="text-xl font-bold mb-2">Ticket Created!</h3>
             <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm">Your support request has been recorded. Reference
-                ID: <span id="ticketRef" class="font-mono text-blue-500"></span></p>
+                ID: <span id="ticketRef" class="font-mono text-green-500"></span></p>
             <button onclick="window.location.reload()"
                 class="w-full bg-slate-900 dark:bg-slate-700 text-white py-2 rounded-lg hover:opacity-90 transition">Close</button>
         </div>
     </div>
 
     <!-- Firebase Logic -->
-    <script src="env.js"></script>
+    <script src="js/env.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -283,7 +283,7 @@
                     statusEl.className = 'inline-block px-3 py-1 text-xs font-bold uppercase rounded-full ' +
                         (st === 'closed' ? 'bg-gray-100 text-gray-700' :
                             st === 'in progress' ? 'bg-orange-100 text-orange-700' :
-                                'bg-blue-100 text-blue-700');
+                                'bg-green-100 text-green-700');
 
                     document.getElementById('resPriority').textContent = foundDoc.priority || 'Normal';
                     document.getElementById('resCategory').textContent = foundDoc.category || 'General';
@@ -307,7 +307,7 @@
         });
     </script>
     <script type="module">
-        import { AISupport } from './ai-support.js';
+        import { AISupport } from './js/ai-support.js';
         window.addEventListener('load', () => {
             new AISupport({
                 name: 'Guest',
