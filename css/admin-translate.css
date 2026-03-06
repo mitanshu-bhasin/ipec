@@ -1,0 +1,30 @@
+/* admin-translate.css - Google Translate banner-hiding CSS */
+
+/* Hide Google Translate Banner */
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+}
+
+body {
+    top: 0px !important;
+}
+
+/* Hide Tooltip */
+.goog-tooltip {
+    display: none !important;
+}
+
+.goog-tooltip:hover {
+    display: none !important;
+}
+
+.goog-text-highlight {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Specific Fix for Google Top Bar pushing content down */
+iframe.goog-te-banner-frame {
+    display: none !important;
+}

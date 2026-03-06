@@ -3,7 +3,7 @@
  * Provides a chat interface for users to get support and insights.
  */
 
-const GEMINI_API_KEY = window.ENV?.FIREBASE_API_KEY || '';
+const GEMINI_API_KEY = window.ENV?.GEMINI_API_KEY || '';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 export class AISupport {
@@ -222,7 +222,7 @@ export class AISupport {
                     <i class="fa-solid fa-sparkles"></i>
                     <span class="font-bold">IPEC AI Assistant</span>
                 </div>
-                <button class="text-white hover:text-gray-200" onclick="document.getElementById('ai-widget-trigger').click()">
+                <button class="text-white hover:text-gray-200" id="ai-close-btn">
                     <i class="fa-solid fa-times"></i>
                 </button>
             </div>
@@ -254,6 +254,11 @@ export class AISupport {
         setTimeout(() => {
             const input = this.chatWindow.querySelector('#ai-input');
             const sendBtn = this.chatWindow.querySelector('#ai-send-btn');
+            const closeBtn = this.chatWindow.querySelector('#ai-close-btn');
+
+            if (closeBtn) {
+                closeBtn.onclick = () => this.toggleChat();
+            }
 
             const sendMessage = () => {
                 const text = input.value.trim();

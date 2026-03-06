@@ -1,0 +1,132 @@
+<!-- Admin Sidebar Component -->
+<!-- Mobile Sidebar Overlay -->
+<div id="mobile-sidebar-overlay" onclick="toggleSidebar()"
+    class="fixed inset-0 bg-slate-900/50 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar"
+    class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-white flex flex-col justify-between transition-transform duration-300 shadow-2xl z-30 transform -translate-x-full lg:translate-x-0 lg:static lg:flex">
+    <div class="h-16 flex items-center justify-between px-6 border-b border-slate-800 bg-slate-950 flex-shrink-0">
+        <div class="flex items-center">
+            <i class="fa-solid fa-bolt text-green-500 text-xl mr-3"></i>
+            <span class="font-bold text-lg tracking-tight" id="sidebar-company-name">IPEC <span
+                    class="text-green-500">Expense Manager</span></span>
+        </div>
+        <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white"><i
+                class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto p-3 space-y-1 custom-scrollbar">
+        <button onclick="switchTab('overview')"
+            class="nav-item w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise active"
+            data-tab="overview">
+            <i class="fa-solid fa-chart-pie w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Overview</span>
+        </button>
+
+        <button onclick="switchTab('approvals')"
+            class="nav-item w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise relative"
+            data-tab="approvals">
+            <i class="fa-solid fa-stamp w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Approvals</span>
+            <span id="pending-count"
+                class="absolute right-3 w-2 h-2 rounded-full bg-green-500 hidden lg:block animate-pulse"></span>
+        </button>
+
+        <button onclick="switchTab('my-claims')"
+            class="nav-item w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="my-claims">
+            <i class="fa-solid fa-list-check w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">My Claims</span>
+        </button>
+
+        <button onclick="switchTab('users')" id="nav-users"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="users">
+            <i class="fa-solid fa-users w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">User Mgmt</span>
+        </button>
+
+        <button onclick="switchTab('projects')" id="nav-projects"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="projects">
+            <i class="fa-solid fa-folder-tree w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Projects</span>
+        </button>
+
+        <button onclick="switchTab('workflow')" id="nav-workflow"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="workflow">
+            <i class="fa-solid fa-route w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Workflow</span>
+        </button>
+
+        <button onclick="switchTab('settings')" id="nav-settings"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="settings">
+            <i class="fa-solid fa-sliders w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Company Settings</span>
+        </button>
+
+        <button onclick="switchTab('reports')" id="nav-reports"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="reports">
+            <i class="fa-solid fa-chart-line w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Reports</span>
+        </button>
+
+        <button onclick="switchTab('audit')" id="nav-audit"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="audit">
+            <i class="fa-solid fa-clock-rotate-left w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Audit Logs</span>
+        </button>
+
+        <!-- NEW TASK MANAGER TAB -->
+        <button onclick="switchTab('tasks')" id="nav-tasks"
+            class="nav-item hidden w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="tasks">
+            <i class="fa-solid fa-list-check w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Task Manager</span>
+        </button>
+
+        <button onclick="switchTab('chat')" id="nav-chat"
+            class="nav-item w-full flex items-center p-3 rounded-xl text-slate-400 hover:bg-white/10 hover:text-white transition-enterprise"
+            data-tab="chat">
+            <i class="fa-solid fa-comments w-6 text-center group-hover:scale-110 transition"></i>
+            <span class="ml-3 font-medium text-sm">Chat</span>
+        </button>
+    </nav>
+
+    <div class="p-4 border-t border-slate-800 space-y-4 bg-slate-900 flex-shrink-0">
+        <button id="pwa-install-btn-admin"
+            class="hidden w-full flex items-center justify-start px-3 py-2 text-green-400 hover:text-emerald-300 hover:bg-emerald-900/20 rounded-lg transition border border-emerald-900/30">
+            <i class="fa-solid fa-download"></i>
+            <span class="ml-3 text-xs font-bold">INSTALL APP</span>
+        </button>
+
+        <div class="flex items-center gap-3 px-2">
+            <div id="sidebar-user-avatar"
+                class="w-9 h-9 min-w-[36px] rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold text-white shadow-inner overflow-hidden">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="block overflow-hidden">
+                <p class="text-sm font-bold text-white truncate w-32" id="current-user-name">Loading...</p>
+                <p class="text-[10px] text-green-400 uppercase font-bold tracking-wider" id="current-user-role">
+                    ...</p>
+            </div>
+        </div>
+
+        <button onclick="openAccountCenter()"
+            class="w-full flex items-center justify-start px-3 py-2 text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition mb-1">
+            <i class="fa-solid fa-id-card"></i>
+            <span class="ml-3 text-xs font-bold">Account Center</span>
+        </button>
+
+        <button onclick="logout()"
+            class="w-full flex items-center justify-start px-3 py-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition">
+            <i class="fa-solid fa-power-off"></i>
+            <span class="ml-3 text-xs font-bold">LOGOUT</span>
+        </button>
+    </div>
+</aside>

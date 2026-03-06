@@ -1,0 +1,56 @@
+<!-- Employee Navbar Component -->
+<header
+    class="h-16 glass-header fixed top-0 w-full z-30 px-4 md:px-8 flex items-center justify-between border-b border-white/40 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-sm">
+    <div class="flex items-center gap-3">
+        <div id="header-logo-container"
+            class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-green-600 text-sm shadow-sm overflow-hidden border border-slate-100">
+            <img id="header-logo-img" class="w-full h-full object-contain hidden" src="">
+            <i id="header-logo-fallback" class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="flex flex-col">
+            <span class="font-bold text-slate-800 dark:text-slate-100 text-lg tracking-tight leading-none"
+                id="header-company-name">IPEC <span class="text-green-600">Expense Manager</span></span>
+            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider hidden sm:block">Employee
+                Dashboard</span>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+        <button id="pwa-install-btn-emp"
+            class="hidden text-xs bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 transition font-bold shadow-sm animate-pulse">
+            <i class="fa-solid fa-download mr-1"></i> Install
+        </button>
+
+        <div class="text-right hidden sm:block">
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-100" id="user-name-display">Loading...
+            </p>
+            <p class="text-[9px] text-slate-500 dark:text-slate-400 uppercase tracking-wide bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full inline-block mt-0.5"
+                id="user-role-display">...</p>
+        </div>
+
+        <div
+            class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700">
+            <button onclick="openChatModal()"
+                class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-green-600 transition flex items-center justify-center relative">
+                <i class="fa-solid fa-comments text-xs"></i>
+                <span id="chat-badge"
+                    class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-slate-100 dark:border-slate-800 hidden"></span>
+            </button>
+            <button onclick="toggleTheme()"
+                class="w-8 h-8 rounded-full text-slate-500 dark:text-yellow-400 hover:bg-white dark:hover:bg-slate-700 transition flex items-center justify-center">
+                <i class="fa-solid fa-moon theme-toggle-icon text-xs"></i>
+            </button>
+            <button onclick="openProfileModal()" id="header-profile-btn"
+                class="w-8 h-8 rounded-full text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-green-600 transition flex items-center justify-center p-0 overflow-hidden">
+                <div id="header-profile-avatar" class="w-full h-full flex items-center justify-center">
+                    <i class="fa-solid fa-user-gear text-xs"></i>
+                </div>
+            </button>
+        </div>
+
+        <button onclick="handleLogout()"
+            class="w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 border border-red-100 transition flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-power-off text-xs"></i>
+        </button>
+    </div>
+</header>

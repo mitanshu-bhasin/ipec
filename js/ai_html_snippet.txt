@@ -1,0 +1,35 @@
+
+    <script type="module">
+        import { AISupport } from './js/ai-support.js';
+
+        window.addEventListener('load', () => {
+            // Retrieve current user info for AI Context
+            let user = { name: 'Employee', role: 'USER' };
+            try {
+                // Try getting from userData if available globally, else local storage
+                if (window.userData) {
+                    user = window.userData;
+                } else {
+                    const stored = localStorage.getItem('user_profile');
+                    if (stored) user = JSON.parse(stored);
+                }
+            } catch (e) { console.error(e); }
+
+            // Initialize AI Support (Bottom-Left via ai-support.js CSS)
+            window.aiAssistant = new AISupport(user);
+
+            // Listen for AI Expense Actions
+            window.addEventListener('ai-expense-action', (e) => {
+                if (window.createExpenseFromAI) {
+                    window.createExpenseFromAI(e.detail);
+                }
+            });
+
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker Registered'))
+                    .catch(err => console.error('Service Worker Error', err));
+            }
+        });
+    

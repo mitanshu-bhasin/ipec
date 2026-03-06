@@ -1,4 +1,343 @@
-/* common.css */
+/* common.css - Shared styles for admin.html and emp.html */
+
+/* ===== Enterprise Base Typography & Spacing ===== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.6;
+    letter-spacing: 0.015em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Enterprise Data Grids ===== */
+.data-grid {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.dark .data-grid {
+    border-color: #2F3336;
+}
+
+.data-grid th {
+    background-color: #f8fafc;
+    padding: 16px 24px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.dark .data-grid th {
+    background-color: #16181C;
+    color: #94a3b8;
+    border-bottom-color: #2F3336;
+}
+
+.data-grid td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    transition: background-color 0.2s ease;
+}
+
+.dark .data-grid td {
+    border-bottom-color: #2F3336;
+    color: #e2e8f0;
+}
+
+.data-grid tbody tr:hover td {
+    background-color: #f8fafc;
+}
+
+.dark .data-grid tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.data-grid tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== Enterprise Skeletons ===== */
+.skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+.dark .skeleton {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ===== Enterprise Re-usable Classes ===== */
+.shadow-soft {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 8px -2px rgba(0, 0, 0, 0.02) !important;
+}
+
+.dark .shadow-soft {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 8px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.glass-enterprise {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.dark .glass-enterprise {
+    background: rgba(22, 24, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.transition-enterprise {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ghost-btn {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ghost-btn:hover {
+    background: #f8fafc;
+    color: #1E8E3E;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.dark .ghost-btn {
+    border-color: #2F3336;
+    color: #94a3b8;
+}
+
+.dark .ghost-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #4ade80;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #10b981;
+    border-radius: 20px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #059669;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* ===== Animations ===== */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.fade-in {
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fade-scale {
+    animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ===== Badge ===== */
+.badge {
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid;
+}
+
+/* ===== Glassmorphism ===== */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.dark .glass {
+    background: rgba(22, 24, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Dark Mode Overrides ===== */
+.dark body {
+    background-color: #000000;
+}
+
+.dark [class*="bg-green-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-green-100"] {
+    background-color: #16181C !important;
+}
+
+.dark [class*="bg-slate-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-emerald-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-orange-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-red-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-yellow-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-purple-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-indigo-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-pink-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+.dark [class*="bg-teal-50"] {
+    background-color: #16181C !important;
+    border-color: #2F3336 !important;
+}
+
+/* text colors in repurposed light cards */
+.dark [class*="bg-green-50"] p,
+.dark [class*="bg-slate-50"] p,
+.dark [class*="bg-emerald-50"] p,
+.dark [class*="bg-orange-50"] p,
+.dark [class*="bg-red-50"] p,
+.dark [class*="bg-yellow-50"] p,
+.dark [class*="bg-purple-50"] p {
+    color: #e2e8f0;
+}
+
+/* ===== Transitions ===== */
+.transition-all-fast {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* ===== Gradient Text ===== */
+.gradient-text {
+    background: linear-gradient(to right, #D93025, #F9AB00, #1E8E3E);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Hero Background ===== */
+.hero-bg {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 249, 255, 1) 100%);
+}
+
+.dark .hero-bg {
+    background: #000000;
+}
+
+/* ===== Existing common.css content ===== */
 
 /* --- link.html Styles --- */
 .glass-effect {
@@ -96,10 +435,6 @@ body.test-page .mono {
 }
 
 /* Fade Animation */
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
