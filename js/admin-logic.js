@@ -26,6 +26,33 @@ try {
 }
 
 let currentUser = null;
+
+// ======== INJECTED INTERNATIONALIZATION & ERROR HELPERS ========
+window.formatCurrency = (amount, currency = 'INR') => {
+    try {
+        return Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(amount || 0);
+    } catch(e) { return '₹' + amount; }
+};
+window.formatDateUtc = (dateInput) => {
+    if (!dateInput) return '';
+    try {
+        const date = dateInput.toDate ? dateInput.toDate() : new Date(dateInput);
+        return Intl.DateTimeFormat(undefined, { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(date);
+    } catch(e) { return formatDateUtc(dateInput); }
+};
+window.safeFirebaseFetch = async (fetchPromise) => {
+    try {
+        return await fetchPromise;
+    } catch (error) {
+        console.error("Firebase Network Error:", error);
+        if (typeof showToast === 'function') {
+            showToast("Slow network or offline. Please try again.", "warning");
+        }
+        throw error;
+    }
+};
+// ================================================================
+
 let userData = null;
 try {
     const cached = localStorage.getItem('ipec_admin_data_cache');
@@ -97,7 +124,7 @@ window.showToast = (message, type = 'info') => {
 async function loadCompanyBranding() {
     try {
         const settingsRef = doc(db, "settings", "global");
-        const settingsSnap = await getDoc(settingsRef);
+        const settingsSnap = await safeFirebaseFetch(getDoc(settingsRef));
         if (settingsSnap.exists()) {
             const data = settingsSnap.data();
 
@@ -133,12 +160,12 @@ onAuthStateChanged(auth, async (user) => {
         try {
             // Fetch full user profile
             const q = query(collection(db, "users"), where("email", "==", user.email));
-            let snap = await getDocs(q);
+            let snap = await safeFirebaseFetch(getDocs(q));
 
             if (snap.empty) {
                 try {
                     // Fallback: Case-insensitive/Trim search
-                    const allUsersSnap = await getDocs(collection(db, "users"));
+                    const allUsersSnap = await safeFirebaseFetch(getDocs(collection(db, "users")));
                     const foundDoc = allUsersSnap.docs.find(doc => doc.data().email?.trim().toLowerCase() === user.email.trim().toLowerCase());
                     if (foundDoc) {
                         snap = { empty: false, docs: [foundDoc] };
@@ -156,7 +183,7 @@ onAuthStateChanged(auth, async (user) => {
                 // --- MAINTENANCE MODE CHECK ---
                 try {
                     const settingsRef = doc(db, "settings", "global");
-                    const setSnap = await getDoc(settingsRef);
+                    const setSnap = await safeFirebaseFetch(getDoc(settingsRef));
                     if (setSnap.exists() && setSnap.data().maintenanceMode === true) {
                         if (user.email !== 'mfskufgu@gmail.com' && user.email !== 'info@fouralpha.org') {
                             document.body.innerHTML = `
@@ -406,7 +433,7 @@ window.getAllowedStatusesForRole = async (role) => {
     // Parse through workflowConfig to find all stages where approverRole === role
     if (!window.currentWorkflowConfig) {
         try {
-            const snap = await getDoc(doc(db, "settings", "workflow_config"));
+            const snap = await safeFirebaseFetch(getDoc(doc(db, "settings", "workflow_config")));
             if (snap.exists()) window.currentWorkflowConfig = snap.data();
         } catch (e) { }
     }
@@ -456,7 +483,7 @@ async function updatePendingCount() {
         }
 
         if (q) {
-            const snap = await getDocs(q);
+            const snap = await safeFirebaseFetch(getDocs(q));
             const count = snap.size;
             const pendingEl = document.getElementById('pending-count');
             if (count > 0) {
@@ -570,12 +597,12 @@ window.handleGoogleLogin = async () => {
 
         // 1. Fetch only email from Google and verify in our records
         const q = query(collection(db, "users"), where("email", "==", user.email));
-        let snap = await getDocs(q);
+        let snap = await safeFirebaseFetch(getDocs(q));
 
         if (snap.empty) {
             // Fallback: Case-insensitive/Trim search
             try {
-                const allUsersSnap = await getDocs(collection(db, "users"));
+                const allUsersSnap = await safeFirebaseFetch(getDocs(collection(db, "users")));
                 const foundDoc = allUsersSnap.docs.find(doc => doc.data().email?.trim().toLowerCase() === user.email.trim().toLowerCase());
                 if (foundDoc) {
                     snap = { empty: false, docs: [foundDoc] };
@@ -683,7 +710,7 @@ window.handleAccountActivation = async (e) => {
     try {
         // Check if email already exists in DB
         const q = query(collection(db, "users"), where("email", "==", email));
-        const snap = await getDocs(q);
+        const snap = await safeFirebaseFetch(getDocs(q));
 
         if (snap.empty) {
             throw new Error("Email not registered as Admin/Manager. Contact System Owner.");
@@ -888,7 +915,7 @@ async function renderOverview() {
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                             <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full transition-transform group-hover:scale-110"></div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider relative">Total Disbursed</p>
-                            <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">₹${totalPaid.toLocaleString()}</p>
+                            <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">\${formatCurrency(totalPaid, 'INR')}</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                             <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-50 rounded-full transition-transform group-hover:scale-110"></div>
@@ -931,9 +958,9 @@ async function renderOverview() {
                                                     <div class="font-bold text-slate-700 dark:text-slate-200">${code}</div>
                                                     <div class="text-[10px] text-slate-400">${projectsMap[code] || 'Unregistered Project'}</div>
                                                 </td>
-                                                <td class="py-3 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-200">₹${stats.total.toLocaleString()}</td>
-                                                <td class="py-3 px-2 text-right text-green-600 font-mono">₹${stats.paid.toLocaleString()}</td>
-                                                <td class="py-3 px-2 text-right text-orange-500 font-mono">₹${stats.pending.toLocaleString()}</td>
+                                                <td class="py-3 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-200">\${formatCurrency(stats.total, 'INR')}</td>
+                                                <td class="py-3 px-2 text-right text-green-600 font-mono">\${formatCurrency(stats.paid, 'INR')}</td>
+                                                <td class="py-3 px-2 text-right text-orange-500 font-mono">\${formatCurrency(stats.pending, 'INR')}</td>
                                             </tr>
                                         `).join('')}
                                     </tbody>
@@ -987,7 +1014,7 @@ async function renderOverview() {
                                     </div>
                                     <div class="text-right">
                                         <span class="${getStatusBadgeClass(e.status)}">${e.status.replace('_', ' ')}</span>
-                                        <p class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300 mt-1">${getSymbol(e.currency)}${e.totalAmount}</p>
+                                        <p class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300 mt-1">\${formatCurrency(e.totalAmount, e.currency)}</p>
                                     </div>
                                 </div>
                             `).join('')}
@@ -1077,7 +1104,7 @@ async function renderReports() {
     content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
     try {
-        const expensesSnap = await getDocs(collection(db, "expenses"));
+        const expensesSnap = await safeFirebaseFetch(getDocs(collection(db, "expenses")));
         const expenses = expensesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
         // Group by month
@@ -1108,7 +1135,7 @@ async function renderReports() {
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
                                             <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(monthlyTotals)) * 100)}%"></div>
                                         </div>
-                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">₹${total.toLocaleString()}</span>
+                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">\${formatCurrency(total, 'INR')}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -1123,7 +1150,7 @@ async function renderReports() {
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
                                             <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(categoryTotals)) * 100)}%"></div>
                                         </div>
-                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">₹${total.toLocaleString()}</span>
+                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">\${formatCurrency(total, 'INR')}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -1156,7 +1183,7 @@ async function renderAuditLogs() {
 
     try {
         // Get recent actions from expenses history
-        const expensesSnap = await getDocs(query(collection(db, "expenses"), orderBy("createdAt", "desc")));
+        const expensesSnap = await safeFirebaseFetch(getDocs(query(collection(db, "expenses")), orderBy("createdAt", "desc")));
         const auditLogs = [];
 
         expensesSnap.forEach(doc => {
@@ -1349,7 +1376,7 @@ async function renderTasks() {
     // Fetch users for assignment dropdown
     let usersOptions = '<option value="">Select Employee...</option>';
     try {
-        const usersSnap = await getDocs(query(collection(db, "users"), where("status", "==", "ACTIVE")));
+        const usersSnap = await safeFirebaseFetch(getDocs(query(collection(db, "users")), where("status", "==", "ACTIVE")));
         usersSnap.forEach(d => {
             const u = d.data();
             usersOptions += `<option value="${u.email}">${u.name} (${u.role.replace('_', ' ')})</option>`;
@@ -1487,7 +1514,7 @@ window.filterAdminTasks = () => {
                     </div>
                     <div class="mt-4 pt-3 border-t border-slate-50 dark:border-slate-700/50 flex flex-wrap gap-4 text-[10px] text-slate-500 dark:text-slate-400 items-center">
                         <span class="flex items-center gap-1"><i class="fa-solid fa-user text-green-500"></i> Assignee: <span class="font-bold text-slate-700 dark:text-slate-300">${t.assignedTo}</span></span>
-                        <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-check text-red-400"></i> Due: <span class="font-bold ${new Date(t.dueDate) < new Date() && t.status !== 'COMPLETED' ? 'text-red-500' : 'text-slate-700 dark:text-slate-300'}">${new Date(t.dueDate).toLocaleDateString()}</span></span>
+                        <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-check text-red-400"></i> Due: <span class="font-bold ${new Date(t.dueDate) < new Date() && t.status !== 'COMPLETED' ? 'text-red-500' : 'text-slate-700 dark:text-slate-300'}">${formatDateUtc(t.dueDate)}</span></span>
                         <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-slate-400"></i> Created: ${t.createdAt?.toDate ? t.createdAt.toDate().toLocaleDateString() : 'Unknown'}</span>
                         ${t.status !== 'COMPLETED' ? `<button onclick="updateTaskStatus('${t.id}', 'COMPLETED')" class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold transition ml-auto"><i class="fa-solid fa-check"></i> Mark Done</button>` : ''}
                     </div>
@@ -1572,7 +1599,7 @@ async function renderSettings() {
     let settings = { name: '', logo: '', email: '', phone: '', address: '', taxId: '' };
     try {
         const settingsRef = doc(db, "settings", "global");
-        const settingsSnap = await getDoc(settingsRef);
+        const settingsSnap = await safeFirebaseFetch(getDoc(settingsRef));
         if (settingsSnap.exists()) settings = settingsSnap.data();
     } catch (e) { }
 
@@ -1737,7 +1764,7 @@ async function renderApprovals() {
     // Fetch Projects for Filter
     let projectOptions = '<option value="">All Projects</option>';
     try {
-        const pSnap = await getDocs(query(collection(db, "projects"), orderBy("code")));
+        const pSnap = await safeFirebaseFetch(getDocs(query(collection(db, "projects")), orderBy("code")));
         pSnap.forEach(d => {
             projectOptions += `<option value="${d.data().code}">${d.data().code}</option>`;
         });
@@ -2198,7 +2225,7 @@ window.confirmDeleteUser = async () => {
     try {
         // Delete all expenses by this user (Handle Batch Limit of 500)
         const expensesQuery = query(collection(db, "expenses"), where("userId", "==", userToDelete));
-        const expensesSnap = await getDocs(expensesQuery);
+        const expensesSnap = await safeFirebaseFetch(getDocs(expensesQuery));
 
         // Chunk deletion
         const chunkSize = 400;
@@ -2262,7 +2289,7 @@ document.getElementById('user-form').addEventListener('submit', async (e) => {
         } else {
             // Check if user already exists
             const q = query(collection(db, "users"), where("email", "==", email));
-            const snap = await getDocs(q);
+            const snap = await safeFirebaseFetch(getDocs(q));
 
             if (!snap.empty) {
                 showToast('User with this email already exists!', 'error');
@@ -2309,7 +2336,7 @@ window.toggleUserExpenses = async (userId, btn) => {
     try {
         // Remove orderBy to avoid composite index requirement issues
         const q = query(collection(db, "expenses"), where("userId", "==", userId));
-        const snap = await getDocs(q);
+        const snap = await safeFirebaseFetch(getDocs(q));
 
         // Client-side sort and limit
         const expenses = snap.docs
@@ -2345,7 +2372,7 @@ window.toggleUserExpenses = async (userId, btn) => {
                                             <tr>
                                                 <td class="py-2 text-slate-500">${e.createdAt?.toDate ? e.createdAt.toDate().toLocaleDateString() : '-'}</td>
                                                 <td class="py-2 font-medium text-slate-700 dark:text-slate-200">${e.title}</td>
-                                                <td class="py-2 text-right font-mono">${getSymbol(e.currency)}${e.totalAmount}</td>
+                                                <td class="py-2 text-right font-mono">\${formatCurrency(e.totalAmount, e.currency)}</td>
                                                 <td class="py-2 text-center"><span class="${getStatusBadgeClass(e.status).split(' ')[0]} scale-75 origin-center">${e.status.replace('_', ' ')}</span></td>
                                                 <td class="py-2 text-slate-500">${e.projectCode || '-'}</td>
                                             </tr>
@@ -2382,13 +2409,13 @@ async function renderUserManagement() {
     content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
     try {
-        const usersSnap = await getDocs(collection(db, "users"));
+        const usersSnap = await safeFirebaseFetch(getDocs(collection(db, "users")));
         const users = usersSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         globalUsersCache = users; // Update cache
 
         // Get expense counts for each user
         expenseCountsCache = {};
-        const expensesSnap = await getDocs(collection(db, "expenses"));
+        const expensesSnap = await safeFirebaseFetch(getDocs(collection(db, "expenses")));
         expensesSnap.forEach(doc => {
             const data = doc.data();
             expenseCountsCache[data.userId] = (expenseCountsCache[data.userId] || 0) + 1;
@@ -2652,7 +2679,7 @@ window.exportReport = async (format) => {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
     try {
-        const expensesSnap = await getDocs(collection(db, "expenses"));
+        const expensesSnap = await safeFirebaseFetch(getDocs(collection(db, "expenses")));
         const expenses = expensesSnap.docs.map(d => {
             const data = d.data();
             return {
@@ -2875,7 +2902,7 @@ window.openExpenseModal = (id) => {
                         <p class="text-[10px] text-slate-400 font-mono">${new Date(h.date?.toDate ? h.date.toDate() : h.date).toLocaleString()}</p>
                         <p class="text-xs text-slate-700 dark:text-slate-200 font-semibold">${h.action} <span class="font-normal text-slate-500 dark:text-slate-400">by ${h.by}</span></p>
                         ${h.comment ? `<div class="bg-yellow-50 text-yellow-800 text-[10px] p-2 rounded mt-1 border border-yellow-100 italic">"${h.comment}"</div>` : ''}
-                        ${h.paymentMode ? `<div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Paid via ${h.paymentMode} (Ref: ${h.transactionRef}) on ${new Date(h.paymentDate).toLocaleDateString()}</div>` : ''}
+                        ${h.paymentMode ? `<div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Paid via ${h.paymentMode} (Ref: ${h.transactionRef}) on ${formatDateUtc(h.paymentDate)}</div>` : ''}
                         ${proofHtml}
                     </div>
                 `;
@@ -3293,7 +3320,7 @@ window.renderProjects = async () => {
     content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
     try {
-        const snap = await getDocs(collection(db, "projects"));
+        const snap = await safeFirebaseFetch(getDocs(collection(db, "projects")));
         const projects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
         content.innerHTML = `
@@ -3374,7 +3401,7 @@ window.closeProjectModal = () => {
 // Export Function
 window.exportProjectsCSV = async () => {
     try {
-        const snap = await getDocs(collection(db, "projects"));
+        const snap = await safeFirebaseFetch(getDocs(collection(db, "projects")));
         if (snap.empty) return showToast("No projects to export", "info");
 
         const headers = ["Project Code", "Project Name", "Details", "Status", "Created At"];
@@ -3436,7 +3463,7 @@ window.loadProjects = async () => {
 
     try {
         const q = query(collection(db, "projects"), where("active", "==", true));
-        const snap = await getDocs(q);
+        const snap = await safeFirebaseFetch(getDocs(q));
 
         if (snap.empty) {
             select.innerHTML = '<option value="" disabled selected>No active projects</option>';
@@ -3481,7 +3508,7 @@ window.renderWorkflow = async () => {
         // Fetch existing config or use default
         let existingConfig = {};
         try {
-            const snap = await getDoc(doc(db, "settings", "workflow_config"));
+            const snap = await safeFirebaseFetch(getDoc(doc(db, "settings", "workflow_config")));
             if (snap.exists()) existingConfig = snap.data();
         } catch (e) { console.log("No existing workflow config found, using defaults."); }
 
@@ -3772,7 +3799,7 @@ window.saveWorkflowConfig = async () => {
 window.getInitialStageStatus = async (role) => {
     if (!window.currentWorkflowConfig) {
         try {
-            const snap = await getDoc(doc(db, "settings", "workflow_config"));
+            const snap = await safeFirebaseFetch(getDoc(doc(db, "settings", "workflow_config")));
             if (snap.exists()) window.currentWorkflowConfig = snap.data();
             else return null;
         } catch (e) { return null; }
@@ -3792,7 +3819,7 @@ window.getNextStageStatus = async (currentStatus, role) => {
     // But we need to load the config first if not loaded.
     if (!window.currentWorkflowConfig) {
         try {
-            const snap = await getDoc(doc(db, "settings", "workflow_config"));
+            const snap = await safeFirebaseFetch(getDoc(doc(db, "settings", "workflow_config")));
             if (snap.exists()) window.currentWorkflowConfig = snap.data();
             else return null; // Fallback to hardcoded if needed
         } catch (e) { return null; }
@@ -4225,7 +4252,7 @@ window.submitMyClaim = async () => {
             const expenseRef = doc(db, "expenses", docId);
 
             // Fetch existing history to append
-            const existingSnap = await getDoc(expenseRef);
+            const existingSnap = await safeFirebaseFetch(getDoc(expenseRef));
             let existingHistory = existingSnap.exists() ? (existingSnap.data().history || []) : [];
 
             const updateData = {
@@ -4368,11 +4395,11 @@ async function loadChatUsers() {
 
     try {
         // Fetch all users
-        const usersSnap = await getDocs(collection(db, "users"));
+        const usersSnap = await safeFirebaseFetch(getDocs(collection(db, "users")));
         const users = usersSnap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
 
         // Fetch chats for sorting and last message
-        const chatsSnap = await getDocs(query(collection(db, "chats"), where("users", "array-contains", userData.docId)));
+        const chatsSnap = await safeFirebaseFetch(getDocs(query(collection(db, "chats")), where("users", "array-contains", userData.docId)));
         const chatMeta = {};
         chatsSnap.forEach(docSnap => {
             const data = docSnap.data();
@@ -4381,7 +4408,7 @@ async function loadChatUsers() {
         });
 
         // Get Global Chat last message
-        const globalChatSnap = await getDocs(query(collection(db, "global_chat"), orderBy("createdAt", "desc"), limit(1)));
+        const globalChatSnap = await safeFirebaseFetch(getDocs(query(collection(db, "global_chat")), orderBy("createdAt", "desc"), limit(1)));
         const globalLast = globalChatSnap.empty ? "Company Wide Chat" : globalChatSnap.docs[0].data().text;
 
         // Sort users by activity
@@ -4672,7 +4699,7 @@ window.openAccountCenter = async () => {
     document.getElementById('ac-dept').textContent = u.department || 'General';
     document.getElementById('ac-manager').textContent = u.managerId || 'None';
     // Convert firestore timestamp safely
-    document.getElementById('ac-join').textContent = u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString() : (u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A');
+    document.getElementById('ac-join').textContent = u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString() : (u.createdAt ? formatDateUtc(u.createdAt) : 'N/A');
     document.getElementById('ac-avatar').textContent = u.name ? u.name[0].toUpperCase() : 'U';
 
     document.getElementById('ac-phone').value = u.altPhone || '';
@@ -4745,7 +4772,7 @@ window.downloadMyData = async () => {
         // Assuming `db` IS available because `renderChat` uses it.
 
         const q = query(collection(db, "expenses"), where("userId", "==", userData.uid || userData.id));
-        const snap = await getDocs(q);
+        const snap = await safeFirebaseFetch(getDocs(q));
         const expenses = snap.docs.map(d => d.data());
 
         // 2. Prepare JSON
@@ -4793,7 +4820,7 @@ window.openNotificationModal = async () => {
         populateOptions(window.globalUsersCache);
     } else {
         try {
-            const usersSnap = await getDocs(collection(db, "users"));
+            const usersSnap = await safeFirebaseFetch(getDocs(collection(db, "users")));
             const users = usersSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             window.globalUsersCache = users;
             populateOptions(users);
@@ -5017,7 +5044,7 @@ window.acceptCall = async () => {
 
     try {
         const callDocRef = doc(db, "calls", currentCallDoc);
-        const callSnap = await getDoc(callDocRef);
+        const callSnap = await safeFirebaseFetch(getDoc(callDocRef));
         if (!callSnap.exists()) throw new Error("Call ended");
         const callData = callSnap.data();
 

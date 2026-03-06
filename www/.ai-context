@@ -1,0 +1,26 @@
+# IPEC Expense Manager - AI Context
+
+## Project Overview
+This is a Vanilla JS web application that uses Firebase for the backend and Capacitor for Android app packaging.
+
+## Technology Stack
+- **Frontend**: Vanilla HTML/JavaScript/CSS (Files in root, `js/`, `css/`, `components/`)
+- **Backend/Database**: Firebase (Firestore, Authentication, Functions)
+- **Mobile Packaging**: Capacitor (`capacitor.config.json`, `android/` directory)
+- **Hosting**: Netlify (`netlify.toml`)
+
+## Key Directories and Files
+- `/index.html`, `/admin.html`, `/emp.html`, `/link.html` - Main entry points.
+- `/js/` - Contains core logic scripts, including `admin-logic.js` (large monolithic file).
+- `/css/` - Custom styles.
+- `/components/` - Extracted UI components for better organization.
+- `/firestore.rules` - Firebase security rules.
+- `/functions/` - Cloud functions (Node.js).
+- `/android/` - Capacitor Android project folder.
+- `/www/` - Web assets output folder (used for Capacitor sync).
+
+## Development Guidelines
+- Always ensure cross-platform compatibility (Web + Android via Capacitor).
+- Use robust try-catch blocks for Firebase operations due to potential slow mobile networks.
+- Handle global user data gracefully (Currency formatting and UTC Timezone conversions).
+- Be mindful of performance in large files like `admin-logic.js`.
