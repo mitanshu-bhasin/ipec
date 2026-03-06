@@ -240,6 +240,10 @@
         }
     </script>
 
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>emailjs.init("i1GEROAXLarlKvxnp");</script>
+
 </head>
 
 <body
@@ -432,6 +436,16 @@
                         id="user-role-display">...</p>
                 </div>
 
+                <div class="relative mr-2">
+                    <select id="mode-selector" onchange="toggleMode(this.value)"
+                        class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-3 pr-8 text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-1 focus:ring-green-500 outline-none appearance-none cursor-pointer">
+                        <option value="company">🏢 Company</option>
+                        <option value="personal">🔒 Personal</option>
+                    </select>
+                    <i
+                        class="fa-solid fa-chevron-down absolute right-2.5 top-2.5 text-slate-400 text-[10px] pointer-events-none"></i>
+                </div>
+
                 <div
                     class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700">
                     <button onclick="openChatModal()"
@@ -462,8 +476,8 @@
         <main class="flex-1 flex flex-col pt-20 w-full max-w-6xl mx-auto px-4 pb-24 md:pb-6 overflow-y-auto">
 
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-8 fade-in">
-                <div
+            <div id="stats-container" class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-8 fade-in">
+                <div id="stat-card-paid"
                     class="card p-5 lg:p-6 rounded-2xl border border-white dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden group">
                     <div
                         class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-bl from-emerald-100/80 to-transparent dark:from-emerald-900/30 rounded-bl-full -mr-8 -mt-8 transition-transform duration-500 group-hover:scale-125">
@@ -481,7 +495,7 @@
                     </div>
                 </div>
 
-                <div
+                <div id="stat-card-pending"
                     class="card p-5 lg:p-6 rounded-2xl border border-white dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden group">
                     <div
                         class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-bl from-amber-100/80 to-transparent dark:from-amber-900/30 rounded-bl-full -mr-8 -mt-8 transition-transform duration-500 group-hover:scale-125">
@@ -500,7 +514,7 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="openCreateModal('EXPENSE')"
+                    <button id="btn-new-expense" onclick="openCreateModal('EXPENSE')"
                         class="group bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-slate-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
                         <div class="flex justify-between items-start w-full">
                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
@@ -510,13 +524,15 @@
                                 class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition duration-300 opacity-50"></i>
                         </div>
                         <div class="mt-3 text-left">
-                            <p data-i18n="btn_new_expense" class="text-sm font-bold text-white mb-0.5">New Expense</p>
-                            <p data-i18n="btn_new_expense_sub" class="text-[10px] text-slate-300 dark:text-emerald-100">
+                            <p data-i18n="btn_new_expense" class="text-sm font-bold text-white mb-0.5"
+                                id="text-new-expense">New Expense</p>
+                            <p data-i18n="btn_new_expense_sub" class="text-[10px] text-slate-300 dark:text-emerald-100"
+                                id="sub-new-expense">
                                 Upload Receipt</p>
                         </div>
                     </button>
 
-                    <button onclick="openCreateModal('REQUEST')"
+                    <button id="btn-request-item" onclick="openCreateModal('REQUEST')"
                         class="group bg-green-600 hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-teal-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
                         <div class="flex justify-between items-start w-full">
                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
@@ -526,8 +542,10 @@
                                 class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition duration-300 opacity-50"></i>
                         </div>
                         <div class="mt-3 text-left">
-                            <p data-i18n="btn_request_item" class="text-sm font-bold text-white mb-0.5">Request Item</p>
-                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-green-100">Software / Hardware
+                            <p data-i18n="btn_request_item" class="text-sm font-bold text-white mb-0.5"
+                                id="text-request-item">Request Item</p>
+                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-green-100"
+                                id="sub-request-item">Software / Hardware
                             </p>
                         </div>
                     </button>
@@ -537,7 +555,8 @@
             <!-- Expenses List -->
             <div class="card rounded-2xl flex-1 min-h-[500px] flex-shrink-0 overflow-hidden flex flex-col shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white dark:border-slate-700/50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md fade-in mb-6"
                 style="animation-delay: 0.1s">
-                <div class="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+                <div id="tabs-container"
+                    class="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
                     <button onclick="toggleEmpView('claims')" id="btn-view-claims"
                         class="flex-1 py-4 font-bold text-slate-800 dark:text-slate-100 text-sm uppercase tracking-wide border-b-2 border-green-500 bg-white dark:bg-slate-800 transition">
                         <i class="fa-solid fa-receipt mr-2 text-green-500"></i> Your Claims
@@ -546,6 +565,17 @@
                         class="flex-1 py-4 font-bold text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wide border-b-2 border-transparent hover:bg-white dark:hover:bg-slate-800 transition">
                         <i class="fa-solid fa-list-check mr-2"></i> Your Tasks
                     </button>
+                </div>
+
+                <!-- Personal Vault Header (Hidden by default) -->
+                <div id="personal-vault-header"
+                    class="hidden p-5 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-800 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100"><i
+                                class="fa-solid fa-vault mr-2 text-green-600"></i> Personal Vault</h3>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Private Records •
+                            Auto-Filtered (90 Days)</p>
+                    </div>
                 </div>
 
                 <!-- Claims Section -->
@@ -600,10 +630,104 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Monthly Analysis Section (Personal Mode Only) -->
+            <div id="personal-analysis" class="hidden fade-in mb-6" style="animation-delay: 0.2s">
+                <div
+                    class="card rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white dark:border-slate-700/50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md">
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800 dark:text-slate-100"><i
+                                    class="fa-solid fa-chart-pie mr-2 text-green-600"></i> Monthly Analysis</h3>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Last 3 Months
+                                Overview</p>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <!-- Month Cards -->
+                        <div id="monthly-cards" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"></div>
+                        <!-- Category Breakdown -->
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3"><i
+                                    class="fa-solid fa-tags mr-1"></i> Category Breakdown (Current Month)</h4>
+                            <div id="category-breakdown" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
+    <!-- Personal Vault Create Modal (Multi-Item) -->
+    <div id="modal-personal-create"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex justify-center items-end md:items-center sm:p-4">
+        <div
+            class="bg-white dark:bg-slate-800 w-full max-w-lg sm:rounded-2xl shadow-2xl flex flex-col max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
+            <div
+                class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-gradient-to-r from-emerald-50 to-green-50 dark:from-slate-900 dark:to-slate-900 sm:rounded-t-2xl">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100"><i
+                            class="fa-solid fa-vault mr-2 text-green-600"></i> New Personal Expense</h3>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">
+                        Private • Add Multiple Items</p>
+                </div>
+                <button type="button" onclick="closeModal('modal-personal-create')"
+                    class="w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="personal-expense-form" class="p-6 space-y-4 overflow-y-auto flex-1">
+                <!-- Expense Name -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Expense
+                        Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="pv-name" class="input-field w-full rounded-lg p-3 text-sm"
+                        placeholder="e.g., Aaj ka Shopping Mall, Daily Groceries" required>
+                </div>
+                <div>
+                    <label
+                        class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Description</label>
+                    <textarea id="pv-description" class="input-field w-full rounded-lg p-3 text-sm h-12 resize-none"
+                        placeholder="Optional details..."></textarea>
+                </div>
 
+                <!-- Line Items Section -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase"><i
+                                class="fa-solid fa-list mr-1"></i> Items</label>
+                        <button type="button" onclick="addPvLineItem()"
+                            class="text-[10px] bg-green-50 hover:bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-bold transition flex items-center gap-1">
+                            <i class="fa-solid fa-plus text-[8px]"></i> Add Item
+                        </button>
+                    </div>
+                    <div id="pv-line-items" class="space-y-2">
+                        <!-- Line items get added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Running Total -->
+                <div
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex justify-between items-center border border-slate-100 dark:border-slate-700">
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Total</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="pv-item-count">0 items</p>
+                    </div>
+                    <p class="text-2xl font-bold text-slate-800 dark:text-slate-100 font-mono" id="pv-running-total">₹0
+                    </p>
+                </div>
+            </div>
+            <div
+                class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-800 sm:rounded-b-2xl flex justify-end gap-3">
+                <button onclick="closeModal('modal-personal-create')"
+                    class="px-5 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 text-sm font-bold transition">Cancel</button>
+                <button onclick="submitPersonalExpense(event)" id="btn-pv-submit"
+                    class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg shadow-green-200 dark:shadow-none text-sm transition flex items-center gap-2 transform hover:translate-y-[-1px]">
+                    <i class="fa-solid fa-vault"></i> Save to Vault
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="modal-emp-task"
         class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex justify-center items-end md:items-center sm:p-4">
@@ -1227,6 +1351,448 @@
         let expensesData = []; // Store for client-side filtering
         let expensesUnsub = null; // Store listener to unsubscribe
         let aiAssistant = null;
+
+        // ====== PERSONAL MODE LOGIC ======
+        let currentMode = 'company';
+        let personalData = [];
+        let personalUnsub = null;
+
+        window.toggleMode = (mode) => {
+            currentMode = mode;
+            console.log("Mode switch triggered. Target mode:", currentMode);
+
+            const statsContainer = document.getElementById('stats-container');
+            const tabsContainer = document.getElementById('tabs-container');
+            const vaultHeader = document.getElementById('personal-vault-header');
+
+            const btnNew = document.getElementById('btn-new-expense');
+            const btnReq = document.getElementById('btn-request-item');
+            const textNew = document.getElementById('text-new-expense');
+            const subNew = document.getElementById('sub-new-expense');
+            const textReq = document.getElementById('text-request-item');
+            const subReq = document.getElementById('sub-request-item');
+
+            const secClaims = document.getElementById('section-claims');
+            const secTasks = document.getElementById('section-tasks');
+
+            // Clear list immediately to prevent showing old data
+            const list = document.getElementById('expenses-list');
+            if (list) list.innerHTML = '';
+
+            if (currentMode === 'personal') {
+                console.log("Applying Personal Mode UI changes...");
+
+                // Hide company stat cards only (keep buttons visible)
+                const statPaid = document.getElementById('stat-card-paid');
+                const statPending = document.getElementById('stat-card-pending');
+                if (statPaid) statPaid.classList.add('hidden');
+                if (statPending) statPending.classList.add('hidden');
+                // Change grid to single column for the button
+                if (statsContainer) {
+                    statsContainer.classList.remove('md:grid-cols-3');
+                    statsContainer.classList.add('md:grid-cols-1');
+                }
+                if (tabsContainer) tabsContainer.classList.add('hidden');
+
+                // Show personal vault header
+                if (vaultHeader) vaultHeader.classList.remove('hidden');
+
+                // Force Claims view (where the list resides) and hide Tasks
+                if (secClaims) secClaims.classList.remove('hidden');
+                if (secTasks) secTasks.classList.add('hidden');
+
+                // Hide "Request Item" button, make "Vault Entry" full width
+                if (btnNew && btnReq) {
+                    btnNew.parentElement.classList.remove('grid-cols-2');
+                    btnNew.parentElement.classList.add('grid-cols-1');
+                    btnReq.classList.add('hidden');
+                }
+
+                if (textNew) textNew.textContent = "Vault Entry";
+                if (subNew) subNew.textContent = "Add Personal Expense";
+
+                // Unsubscribe from company expenses listener
+                if (expensesUnsub) { expensesUnsub(); expensesUnsub = null; }
+
+                // Show monthly analysis
+                const analysisSection = document.getElementById('personal-analysis');
+                if (analysisSection) analysisSection.classList.remove('hidden');
+
+                fetchPersonalVault();
+            } else {
+                console.log("Applying Company Mode UI changes...");
+
+                // Show company-specific UI
+                const statPaid = document.getElementById('stat-card-paid');
+                const statPending = document.getElementById('stat-card-pending');
+                if (statPaid) statPaid.classList.remove('hidden');
+                if (statPending) statPending.classList.remove('hidden');
+                if (statsContainer) {
+                    statsContainer.classList.remove('md:grid-cols-1');
+                    statsContainer.classList.add('md:grid-cols-3');
+                }
+                if (tabsContainer) tabsContainer.classList.remove('hidden');
+
+                // Hide monthly analysis
+                const analysisSection = document.getElementById('personal-analysis');
+                if (analysisSection) analysisSection.classList.add('hidden');
+
+                // Hide personal vault header
+                if (vaultHeader) vaultHeader.classList.add('hidden');
+
+                // Default back to Claims view for Company mode
+                if (secClaims) secClaims.classList.remove('hidden');
+                if (secTasks) secTasks.classList.add('hidden');
+
+                // Restore buttons
+                if (btnNew && btnReq) {
+                    btnNew.parentElement.classList.remove('grid-cols-1');
+                    btnNew.parentElement.classList.add('grid-cols-2');
+                    btnReq.classList.remove('hidden');
+                }
+
+                // Reset tab look
+                const btnClaims = document.getElementById('btn-view-claims');
+                const btnTasks = document.getElementById('btn-view-tasks');
+                if (btnClaims && btnTasks) {
+                    btnClaims.classList.add('border-green-500', 'bg-white');
+                    btnTasks.classList.remove('border-green-500', 'bg-white');
+                    btnTasks.classList.add('border-transparent');
+                }
+
+                // Reset button text
+                if (textNew) textNew.textContent = "New Expense";
+                if (subNew) subNew.textContent = "Upload Receipt";
+                if (textReq) textReq.textContent = "Request Item";
+                if (subReq) subReq.textContent = "Software / Hardware";
+
+                // Unsubscribe from personal vault listener
+                if (personalUnsub) { personalUnsub(); personalUnsub = null; }
+
+                fetchExpenses();
+            }
+            console.log("toggleMode completed. currentMode is now:", currentMode);
+        };
+
+        function fetchPersonalVault() {
+            if (!currentUser || !userData) return;
+
+            if (personalUnsub) { personalUnsub(); personalUnsub = null; }
+
+            const list = document.getElementById('expenses-list');
+            if (list) list.innerHTML = '<div class="text-center text-slate-400 mt-4"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading Vault...</div>';
+
+            // 90-day filter
+            const ninetyDaysAgo = new Date();
+            ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+            const q = query(
+                collection(db, "personal_vault"),
+                where("userId", "==", userData.docId),
+                orderBy("createdAt", "desc")
+            );
+
+            personalUnsub = onSnapshot(q, (snapshot) => {
+                personalData = [];
+
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    // Client-side 90-day filter
+                    if (data.createdAt && data.createdAt.toDate) {
+                        if (data.createdAt.toDate() < ninetyDaysAgo) return;
+                    }
+                    personalData.push({ id: docSnap.id, ...data });
+                });
+
+                renderPersonalVault(personalData);
+            }, (error) => {
+                console.error("Personal Vault Sync Error:", error);
+                if (list) list.innerHTML = `<div class="text-center text-red-500 mt-4 p-4 border border-red-200 bg-red-50 rounded-lg">
+                    <p class="font-bold">Vault Sync Error</p>
+                    <p class="text-xs">${error.message}</p>
+                </div>`;
+            });
+        }
+
+        function renderPersonalVault(items) {
+            const list = document.getElementById('expenses-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (items.length === 0) {
+                list.innerHTML = `<div class="text-center py-12">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-300">
+                        <i class="fa-solid fa-vault text-2xl"></i>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">Your vault is empty</p>
+                    <p class="text-xs text-slate-400">Add a personal expense to get started.</p>
+                </div>`;
+                updatePersonalAnalysis([]);
+                return;
+            }
+
+            const categoryIcons = {
+                'Food': '🍔', 'Transport': '🚗', 'Shopping': '🛍️', 'Bills': '💡',
+                'Health': '💊', 'Entertainment': '🎬', 'Groceries': '🥛', 'Education': '📚', 'Other': '📦'
+            };
+
+            items.forEach(data => {
+                const dateStr = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Now';
+                const amt = parseFloat(data.price) || 0;
+                const catIcon = categoryIcons[data.category] || '📦';
+
+                const div = document.createElement('div');
+                div.className = 'card p-4 rounded-lg flex justify-between items-center hover:border-emerald-300 transition group animate-[slideUp_0.1s]';
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded border border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400">
+                            <span class="text-[10px] font-bold uppercase">${dateStr.split(' ')[1] || ''}</span>
+                            <span class="text-lg font-bold text-slate-700 dark:text-slate-200">${dateStr.split(' ')[0] || ''}</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-green-600 transition truncate max-w-[200px] sm:max-w-xs">${data.expenseName || 'Unnamed'}</p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="text-[10px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded font-bold">${catIcon} ${data.category || 'Other'}</span>
+                                ${data.itemCount > 1 ? `<span class="text-[10px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded font-bold">${data.itemCount} items</span>` : ''}
+                                ${data.description ? `<span class="text-[10px] text-slate-400 truncate max-w-[120px]">${data.description}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <span class="badge bg-green-100 text-green-700 border-green-200">Saved</span>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1 font-mono">₹${amt.toLocaleString()}</p>
+                        </div>
+                        <div class="flex flex-col gap-1 transition">
+                            <button onclick="deletePersonalExpense('${data.id}')" class="w-6 h-6 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center" title="Delete"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            updatePersonalAnalysis(items);
+        }
+
+        function updatePersonalAnalysis(items) {
+            const monthlyCards = document.getElementById('monthly-cards');
+            const categoryBreakdown = document.getElementById('category-breakdown');
+            if (!monthlyCards || !categoryBreakdown) return;
+
+            const now = new Date();
+            const months = [];
+            for (let i = 0; i < 3; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                months.push({
+                    label: d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }),
+                    total: 0,
+                    count: 0,
+                    month: d.getMonth(),
+                    year: d.getFullYear()
+                });
+            }
+
+            const currentMonthCategories = {};
+            const categoryIcons = {
+                'Food': '🍔', 'Transport': '🚗', 'Shopping': '🛍️', 'Bills': '💡',
+                'Health': '💊', 'Entertainment': '🎬', 'Groceries': '🥛', 'Education': '📚', 'Other': '📦'
+            };
+
+            items.forEach(item => {
+                const itemDate = item.createdAt?.toDate ? item.createdAt.toDate() : new Date();
+                const amt = parseFloat(item.price) || 0;
+                const itemMonth = itemDate.getMonth();
+                const itemYear = itemDate.getFullYear();
+
+                months.forEach(m => {
+                    if (m.month === itemMonth && m.year === itemYear) {
+                        m.total += amt;
+                        m.count++;
+                    }
+                });
+
+                if (itemMonth === now.getMonth() && itemYear === now.getFullYear()) {
+                    const cat = item.category || 'Other';
+                    currentMonthCategories[cat] = (currentMonthCategories[cat] || 0) + amt;
+                }
+            });
+
+            const colors = ['from-emerald-500 to-green-600', 'from-blue-500 to-indigo-600', 'from-slate-400 to-slate-500'];
+            const bgColors = ['bg-emerald-50 dark:bg-emerald-900/20', 'bg-blue-50 dark:bg-blue-900/20', 'bg-slate-50 dark:bg-slate-900/20'];
+
+            monthlyCards.innerHTML = months.map((m, i) => `
+                <div class="rounded-xl border border-slate-100 dark:border-slate-700/50 ${bgColors[i]} p-4 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-20 h-20 bg-gradient-to-bl ${colors[i]} opacity-10 rounded-bl-full -mr-4 -mt-4"></div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${i === 0 ? 'This Month' : i === 1 ? 'Last Month' : '2 Months Ago'}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">${m.label}</p>
+                    <p class="text-xl font-bold text-slate-800 dark:text-slate-100 font-mono">₹${m.total.toLocaleString()}</p>
+                    <p class="text-[10px] text-slate-400 mt-1">${m.count} expense${m.count !== 1 ? 's' : ''}</p>
+                </div>
+            `).join('');
+
+            const catColors = {
+                'Food': 'bg-orange-100 text-orange-700 border-orange-200',
+                'Transport': 'bg-blue-100 text-blue-700 border-blue-200',
+                'Shopping': 'bg-pink-100 text-pink-700 border-pink-200',
+                'Bills': 'bg-yellow-100 text-yellow-700 border-yellow-200',
+                'Health': 'bg-red-100 text-red-700 border-red-200',
+                'Entertainment': 'bg-purple-100 text-purple-700 border-purple-200',
+                'Groceries': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                'Education': 'bg-indigo-100 text-indigo-700 border-indigo-200',
+                'Other': 'bg-slate-100 text-slate-700 border-slate-200'
+            };
+
+            const sortedCats = Object.entries(currentMonthCategories).sort((a, b) => b[1] - a[1]);
+            if (sortedCats.length === 0) {
+                categoryBreakdown.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-4">No expenses this month yet.</p>';
+            } else {
+                categoryBreakdown.innerHTML = sortedCats.map(([cat, amt]) => `
+                    <div class="rounded-lg border ${catColors[cat] || 'bg-slate-100 text-slate-700 border-slate-200'} p-3 text-center">
+                        <span class="text-lg">${categoryIcons[cat] || '📦'}</span>
+                        <p class="text-[10px] font-bold mt-1">${cat}</p>
+                        <p class="text-sm font-bold font-mono mt-0.5">₹${amt.toLocaleString()}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        window.deletePersonalExpense = async (id) => {
+            if (!confirm("Delete this personal expense?")) return;
+            try {
+                await deleteDoc(doc(db, "personal_vault", id));
+                showToast("Personal expense deleted!", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("Delete failed: " + e.message, "error");
+            }
+        };
+
+        window.createPersonalVaultEntry = () => {
+            document.getElementById('modal-personal-create').classList.remove('hidden');
+            document.getElementById('pv-name').value = '';
+            document.getElementById('pv-description').value = '';
+            document.getElementById('pv-line-items').innerHTML = '';
+            document.getElementById('pv-running-total').textContent = '₹0';
+            document.getElementById('pv-item-count').textContent = '0 items';
+            addPvLineItem(); // Start with one empty item row
+        };
+
+        let pvItemCounter = 0;
+        window.addPvLineItem = () => {
+            pvItemCounter++;
+            const container = document.getElementById('pv-line-items');
+            const row = document.createElement('div');
+            row.id = `pv-item-${pvItemCounter}`;
+            row.className = 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 animate-[slideUp_0.2s] relative';
+            row.innerHTML = `
+                <button type="button" onclick="removePvLineItem('pv-item-${pvItemCounter}')" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 flex items-center justify-center text-[9px] transition shadow-sm" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                <div class="grid grid-cols-[1fr_auto_auto] gap-2 items-center">
+                    <input type="text" placeholder="Item name (e.g., T-Shirt)" class="pv-item-name input-field w-full rounded-lg p-2 text-xs" required>
+                    <div class="relative">
+                        <select class="pv-item-cat input-field rounded-lg p-2 text-xs appearance-none cursor-pointer pr-6 w-24">
+                            <option value="Food">🍔 Food</option>
+                            <option value="Transport">🚗 Travel</option>
+                            <option value="Shopping">🛍️ Shop</option>
+                            <option value="Bills">💡 Bills</option>
+                            <option value="Health">💊 Health</option>
+                            <option value="Entertainment">🎬 Fun</option>
+                            <option value="Groceries">🥛 Grocery</option>
+                            <option value="Education">📚 Edu</option>
+                            <option value="Other">📦 Other</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-2 top-2.5 text-slate-400 text-[8px] pointer-events-none"></i>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute left-2 top-2 text-slate-400 text-xs font-bold">₹</span>
+                        <input type="number" placeholder="0" min="1" step="0.01" class="pv-item-price input-field rounded-lg p-2 pl-5 text-xs font-mono font-bold w-20" oninput="updatePvTotal()" required>
+                    </div>
+                </div>
+            `;
+            container.appendChild(row);
+            updatePvTotal();
+        };
+
+        window.removePvLineItem = (id) => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+            updatePvTotal();
+        };
+
+        window.updatePvTotal = () => {
+            const prices = document.querySelectorAll('.pv-item-price');
+            let total = 0;
+            let count = 0;
+            prices.forEach(p => {
+                const val = parseFloat(p.value) || 0;
+                if (val > 0) count++;
+                total += val;
+            });
+            document.getElementById('pv-running-total').textContent = '₹' + total.toLocaleString();
+            document.getElementById('pv-item-count').textContent = count + ' item' + (count !== 1 ? 's' : '');
+        };
+
+        window.submitPersonalExpense = async (e) => {
+            if (e) e.preventDefault();
+            const btn = document.getElementById('btn-pv-submit');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) { btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...'; btn.disabled = true; }
+
+            try {
+                const name = document.getElementById('pv-name').value.trim();
+                const description = document.getElementById('pv-description').value.trim();
+
+                if (!name) throw new Error('Expense name is required.');
+
+                // Collect line items
+                const itemRows = document.querySelectorAll('#pv-line-items > div');
+                const lineItems = [];
+                let totalPrice = 0;
+                let primaryCategory = 'Other';
+
+                itemRows.forEach(row => {
+                    const itemName = row.querySelector('.pv-item-name')?.value?.trim() || '';
+                    const itemCat = row.querySelector('.pv-item-cat')?.value || 'Other';
+                    const itemPrice = parseFloat(row.querySelector('.pv-item-price')?.value) || 0;
+
+                    if (itemName && itemPrice > 0) {
+                        lineItems.push({ name: itemName, category: itemCat, price: itemPrice });
+                        totalPrice += itemPrice;
+                    }
+                });
+
+                if (lineItems.length === 0) throw new Error('Add at least one item with name and price.');
+
+                // Primary category = highest spend category
+                const catTotals = {};
+                lineItems.forEach(i => { catTotals[i.category] = (catTotals[i.category] || 0) + i.price; });
+                primaryCategory = Object.entries(catTotals).sort((a, b) => b[1] - a[1])[0][0];
+
+                await addDoc(collection(db, "personal_vault"), {
+                    expenseName: name,
+                    description: description || '',
+                    category: primaryCategory,
+                    price: totalPrice,
+                    lineItems: lineItems,
+                    itemCount: lineItems.length,
+                    date: new Date().toISOString().split('T')[0],
+                    notes: description || '',
+                    userId: userData.docId,
+                    userEmail: userData.email,
+                    createdAt: serverTimestamp()
+                });
+
+                showToast(`Saved "${name}" with ${lineItems.length} items (₹${totalPrice.toLocaleString()}) ✅`, "success");
+                closeModal('modal-personal-create');
+            } catch (err) {
+                console.error("Personal vault save error:", err);
+                showToast(err.message || "Failed to save expense", "error");
+            } finally {
+                if (btn) { btn.innerHTML = origHtml; btn.disabled = false; }
+            }
+        };
+
+        // ====== END PERSONAL MODE LOGIC ======
 
         // Profile Logic
         window.openProfileModal = () => {
@@ -1968,6 +2534,11 @@
         };
 
         window.openCreateModal = (type = 'EXPENSE') => {
+            // Personal Mode: Simple vault entry instead of complex expense form
+            if (currentMode === 'personal') {
+                createPersonalVaultEntry();
+                return;
+            }
             document.getElementById('modal-create').classList.remove('hidden');
             document.getElementById('line-items-container').innerHTML = '';
             document.getElementById('expense-id').value = ''; // Clear ID
@@ -4233,22 +4804,39 @@
         class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-green-600 text-white rounded-full shadow-lg shadow-emerald-300 flex items-center justify-center z-40 transition transform active:scale-95 hover:bg-green-700">
         <i class="fa-solid fa-plus text-xl"></i>
     </button>
-    <!-- AI Support Chat (Handled by emp-logic.js with 5s delay) -->
+    <!-- AI Chat Widget Initialization -->
     <script type="module">
-        window.addEventListener('ai-expense-action', (e) => {
-            if (window.createExpenseFromAI) {
-                window.createExpenseFromAI(e.detail);
-            }
-        });
+        import { AISupport } from './js/ai-support.js';
 
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+        window.addEventListener('load', () => {
+            // Retrieve current user info for AI Context
+            let user = { name: 'Employee', role: 'USER' };
+            try {
+                if (window.userData) {
+                    user = window.userData;
+                } else {
+                    const stored = localStorage.getItem('user_profile');
+                    if (stored) user = JSON.parse(stored);
+                }
+            } catch (e) { console.error(e); }
+
+            // Initialize AI Support (Bottom-Left via ai-support.js CSS)
+            window.aiAssistant = new AISupport(user);
+
+            // Listen for AI Expense Actions
+            window.addEventListener('ai-expense-action', (e) => {
+                if (window.createExpenseFromAI) {
+                    window.createExpenseFromAI(e.detail);
+                }
+            });
+
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('Service Worker Registered'))
                     .catch(err => console.error('Service Worker Error', err));
-            });
-        }
+            }
+        });
     </script>
 
     <!-- Google Translate Script -->

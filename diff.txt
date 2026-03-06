@@ -1,0 +1,99 @@
+diff --git a/emp.html b/emp.html
+index 67c2f79..db2b712 100644
+--- a/emp.html
++++ b/emp.html
+@@ -432,6 +432,16 @@
+                         id="user-role-display">...</p>
+                 </div>
+ 
++                <div class="relative mr-2">
++                    <select id="mode-selector" onchange="toggleMode(this.value)"
++                        class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-3 pr-8 text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-1 focus:ring-green-500 outline-none appearance-none cursor-pointer">
++                        <option value="company">🏢 Company Mode</option>
++                        <option value="personal">🔒 Personal Vault</option>
++                    </select>
++                    <i
++                        class="fa-solid fa-chevron-down absolute right-2.5 top-2.5 text-slate-400 text-[10px] pointer-events-none"></i>
++                </div>
++
+                 <div
+                     class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700">
+                     <button onclick="openChatModal()"
+@@ -462,7 +472,7 @@
+         <main class="flex-1 flex flex-col pt-20 w-full max-w-6xl mx-auto px-4 pb-24 md:pb-6 overflow-y-auto">
+ 
+             <!-- Stats -->
+-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-8 fade-in">
++            <div id="stats-container" class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-8 fade-in">
+                 <div
+                     class="card p-5 lg:p-6 rounded-2xl border border-white dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden group">
+                     <div
+@@ -500,7 +510,7 @@
+                 </div>
+ 
+                 <div class="grid grid-cols-2 gap-3">
+-                    <button onclick="openCreateModal('EXPENSE')"
++                    <button id="btn-new-expense" onclick="openCreateModal('EXPENSE')"
+                         class="group bg-slate-900 hover:bg-slate-800 dark:bg-green-600 dark:hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-slate-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
+                         <div class="flex justify-between items-start w-full">
+                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+@@ -510,13 +520,15 @@
+                                 class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition duration-300 opacity-50"></i>
+                         </div>
+                         <div class="mt-3 text-left">
+-                            <p data-i18n="btn_new_expense" class="text-sm font-bold text-white mb-0.5">New Expense</p>
+-                            <p data-i18n="btn_new_expense_sub" class="text-[10px] text-slate-300 dark:text-emerald-100">
++                            <p data-i18n="btn_new_expense" class="text-sm font-bold text-white mb-0.5"
++                                id="text-new-expense">New Expense</p>
++                            <p data-i18n="btn_new_expense_sub" class="text-[10px] text-slate-300 dark:text-emerald-100"
++                                id="sub-new-expense">
+                                 Upload Receipt</p>
+                         </div>
+                     </button>
+ 
+-                    <button onclick="openCreateModal('REQUEST')"
++                    <button id="btn-request-item" onclick="openCreateModal('REQUEST')"
+                         class="group bg-green-600 hover:bg-green-700 text-white p-4 rounded-2xl flex flex-col justify-between shadow-lg shadow-teal-200 dark:shadow-none transition transform hover:-translate-y-1 h-full">
+                         <div class="flex justify-between items-start w-full">
+                             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+@@ -526,8 +538,10 @@
+                                 class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition duration-300 opacity-50"></i>
+                         </div>
+                         <div class="mt-3 text-left">
+-                            <p data-i18n="btn_request_item" class="text-sm font-bold text-white mb-0.5">Request Item</p>
+-                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-green-100">Software / Hardware
++                            <p data-i18n="btn_request_item" class="text-sm font-bold text-white mb-0.5"
++                                id="text-request-item">Request Item</p>
++                            <p data-i18n="btn_request_item_sub" class="text-[10px] text-green-100"
++                                id="sub-request-item">Software / Hardware
+                             </p>
+                         </div>
+                     </button>
+@@ -537,7 +551,8 @@
+             <!-- Expenses List -->
+             <div class="card rounded-2xl flex-1 min-h-[500px] flex-shrink-0 overflow-hidden flex flex-col shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white dark:border-slate-700/50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md fade-in mb-6"
+                 style="animation-delay: 0.1s">
+-                <div class="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
++                <div id="tabs-container"
++                    class="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+                     <button onclick="toggleEmpView('claims')" id="btn-view-claims"
+                         class="flex-1 py-4 font-bold text-slate-800 dark:text-slate-100 text-sm uppercase tracking-wide border-b-2 border-green-500 bg-white dark:bg-slate-800 transition">
+                         <i class="fa-solid fa-receipt mr-2 text-green-500"></i> Your Claims
+@@ -548,6 +563,17 @@
+                     </button>
+                 </div>
+ 
++                <!-- Personal Vault Header (Hidden by default) -->
++                <div id="personal-vault-header"
++                    class="hidden p-5 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-800 flex items-center justify-between">
++                    <div>
++                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100"><i
++                                class="fa-solid fa-vault mr-2 text-green-600"></i> Personal Vault</h3>
++                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Private Records •
++                            Auto-Filtered (90 Days)</p>
++                    </div>
++                </div>
++
+                 <!-- Claims Section -->
+                 <div id="section-claims" class="flex-1 flex flex-col overflow-hidden">
+                     <div

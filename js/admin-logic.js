@@ -53,6 +53,30 @@ window.safeFirebaseFetch = async (fetchPromise) => {
 };
 // ================================================================
 
+// ======== EMAILJS NOTIFICATION HELPER ========
+async function sendSystemEmail(type, data) {
+    try {
+        if (typeof emailjs === 'undefined') {
+            console.warn('[EmailJS] SDK not loaded, skipping notification.');
+            return;
+        }
+        const templateId = 'template_id5j1a8';
+        await emailjs.send('service_hjmx47w', templateId, {
+            to_email: data.to_email || '',
+            name: data.name || 'Employee',
+            new_status: data.new_status || 'UPDATED',
+            message: data.message || 'Your expense status has been updated.'
+        });
+        console.log(`[EmailJS] ${type} notification sent to ${data.to_email}`);
+        showToast("Email Notification Sent Successfully", "success");
+    } catch (err) {
+        // Gracefully handle 200/month limit or any EmailJS errors
+        console.warn(`[EmailJS] Failed to send ${type} notification:`, err?.text || err?.message || err);
+        showToast("Email Notification Failed: Check console.", "warning");
+    }
+}
+// ================================================================
+
 let userData = null;
 try {
     const cached = localStorage.getItem('ipec_admin_data_cache');
@@ -2076,6 +2100,19 @@ window.handleBulkAction = async (action) => {
             updates.push(updateDoc(ref, updatePayload));
         }
 
+        // --- EmailJS: Notify employees IMMEDIATELY ---
+        for (const id of window.selectedApprovals) {
+            const expense = approvalsData.find(e => e.id === id);
+            if (expense) {
+                sendSystemEmail('BULK_STATUS_UPDATE', {
+                    to_email: expense.userEmail || '',
+                    name: expense.userName || 'Employee',
+                    new_status: action === 'REJECT' ? 'REJECTED' : 'APPROVED',
+                    message: `Your claim for ${expense.title || 'Expense'} has been processed via bulk action.`
+                });
+            }
+        }
+
         await Promise.all(updates);
         showToast(`Processed ${updates.length} items successfully!`, 'success');
         window.selectedApprovals.clear();
@@ -3255,6 +3292,14 @@ window.handleDecision = async (decision) => {
             transactionRef: updateData.transactionRef || null
         };
 
+        // --- EmailJS: Notify employee IMMEDIATELY ---
+        sendSystemEmail('STATUS_UPDATE', {
+            to_email: window.currentExpenseData.userEmail || '',
+            name: window.currentExpenseData.userName || 'Employee',
+            new_status: newStatus,
+            message: `Your claim for ${window.currentExpenseData.title || 'Expense'} has been processed.`
+        });
+
         await updateDoc(expenseRef, {
             ...updateData,
             history: [...(window.currentExpenseData.history || []), historyEntry]
@@ -3325,6 +3370,14 @@ window.updateAdminExpense = async () => {
         await updateDoc(expenseRef, {
             ...updateData,
             history: [...(window.currentExpenseData.history || []), historyEntry]
+        });
+
+        // --- EmailJS: Notify employee of admin update ---
+        sendSystemEmail('ADMIN_UPDATE', {
+            to_email: window.currentExpenseData.userEmail || '',
+            name: window.currentExpenseData.userName || 'Employee',
+            new_status: status,
+            message: `Your claim for ${window.currentExpenseData.title || 'Expense'} has been updated by Admin.`
         });
 
         showToast("Expense updated successfully by Admin!", "success");

@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /debug.html
 Disallow: /sw.js
 Disallow: /js/admin-helper.js
 Disallow: /js/theme.js

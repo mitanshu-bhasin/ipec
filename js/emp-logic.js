@@ -125,6 +125,170 @@ let expensesData = []; // Store for client-side filtering
 let expensesUnsub = null; // Store listener to unsubscribe
 let aiAssistant = null;
 let lastDashboardContext = null;
+let currentMode = 'company';
+let personalData = [];
+let personalUnsub = null;
+
+window.toggleMode = (mode) => {
+    currentMode = mode;
+    console.log("Mode switch triggered. Target mode:", currentMode);
+
+    // UI Elements
+    const statsContainer = document.getElementById('stats-container') || document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3');
+    const tabsContainer = document.getElementById('tabs-container');
+    const vaultHeader = document.getElementById('personal-vault-header');
+
+    const btnNew = document.getElementById('btn-new-expense');
+    const btnReq = document.getElementById('btn-request-item');
+    const textNew = document.getElementById('text-new-expense');
+    const subNew = document.getElementById('sub-new-expense');
+    const textReq = document.getElementById('text-request-item');
+    const subReq = document.getElementById('sub-request-item');
+
+    // Select sections to toggle visibility
+    const secClaims = document.getElementById('section-claims');
+    const secTasks = document.getElementById('section-tasks');
+
+    console.log("Status check:", { statsContainer: !!statsContainer, tabsContainer: !!tabsContainer, vaultHeader: !!vaultHeader });
+
+    // Clear list immediately to prevent showing old data
+    const list = document.getElementById('expenses-list');
+    if (list) list.innerHTML = '';
+
+    if (currentMode === 'personal') {
+        console.log("Applying Personal Mode UI changes...");
+        if (statsContainer) statsContainer.classList.add('hidden');
+        if (tabsContainer) tabsContainer.classList.add('hidden');
+        if (vaultHeader) vaultHeader.classList.remove('hidden');
+
+        // Force Claims view (where the list resides) and hide Tasks
+        if (secClaims) secClaims.classList.remove('hidden');
+        if (secTasks) secTasks.classList.add('hidden');
+
+        // Update Creation Buttons: Hide "Request" and make "Vault Entry" full width
+        if (btnNew && btnReq) {
+            btnNew.parentElement.classList.remove('grid-cols-2');
+            btnNew.parentElement.classList.add('grid-cols-1');
+            btnReq.classList.add('hidden');
+        }
+
+        if (textNew) textNew.textContent = "Vault Entry";
+        if (subNew) subNew.textContent = "Add Personal Expense";
+
+        fetchPersonalVault();
+    } else {
+        console.log("Applying Company Mode UI changes...");
+        if (statsContainer) statsContainer.classList.remove('hidden');
+        if (tabsContainer) tabsContainer.classList.remove('hidden');
+        if (vaultHeader) vaultHeader.classList.add('hidden');
+
+        // Default back to Claims view for Company mode
+        if (secClaims) secClaims.classList.remove('hidden');
+        if (secTasks) secTasks.classList.add('hidden');
+
+        // Restore buttons
+        if (btnNew && btnReq) {
+            btnNew.parentElement.classList.remove('grid-cols-1');
+            btnNew.parentElement.classList.add('grid-cols-2');
+            btnReq.classList.remove('hidden');
+        }
+
+        // Reset Tabs Look
+        const btnClaims = document.getElementById('btn-view-claims');
+        const btnTasks = document.getElementById('btn-view-tasks');
+        if (btnClaims && btnTasks) {
+            btnClaims.classList.add('border-green-500', 'bg-white');
+            btnTasks.classList.remove('border-green-500', 'bg-white');
+            btnTasks.classList.add('border-transparent');
+        }
+
+        // Reset Creation Buttons
+        if (textNew) textNew.textContent = "New Expense";
+        if (subNew) subNew.textContent = "Upload Receipt";
+        if (textReq) textReq.textContent = "Request Item";
+        if (subReq) subReq.textContent = "Software / Hardware";
+
+        fetchExpenses();
+    }
+    console.log("toggleMode completed. currentMode is now:", currentMode);
+};
+
+window.fetchPersonalVault = () => {
+    if (!currentUser || !userData) return;
+
+    if (expensesUnsub) { expensesUnsub(); expensesUnsub = null; }
+    if (personalUnsub) { personalUnsub(); personalUnsub = null; }
+
+    const list = document.getElementById('expenses-list');
+    list.innerHTML = '<div class="text-center text-slate-400 mt-4"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading Vault...</div>';
+
+    // 90 Day Filter
+    const ninetyDaysAgo = new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+    const q = query(
+        collection(db, "personal_vault"),
+        where("uid", "==", currentUser.uid),
+        where("serverTimestamp", ">=", ninetyDaysAgo),
+        orderBy("serverTimestamp", "desc")
+    );
+
+    personalUnsub = onSnapshot(q, (snapshot) => {
+        personalData = [];
+        snapshot.forEach(doc => {
+            personalData.push({ id: doc.id, ...doc.data() });
+        });
+        renderPersonalList(personalData);
+    }, (error) => {
+        console.error("Vault Sync Error:", error);
+        showToast("Error loading vault: " + error.message, "error");
+    });
+};
+
+window.renderPersonalList = (data) => {
+    const list = document.getElementById('expenses-list');
+    list.innerHTML = '';
+
+    if (data.length === 0) {
+        list.innerHTML = `<div class="text-center py-12">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-300">
+                <i class="fa-solid fa-vault text-2xl"></i>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">Your Vault is Empty</p>
+            <p class="text-xs text-slate-400">Personal expenses (last 90 days) will appear here.</p>
+        </div>`;
+        return;
+    }
+
+    data.forEach(item => {
+        const dateStr = item.date || 'N/A';
+        const div = document.createElement('div');
+        div.className = `card p-4 rounded-lg flex justify-between items-center hover:border-green-300 transition group animate-[slideUp_0.1s]`;
+
+        div.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-green-50 dark:bg-green-900/20 rounded-full flex items-center justify-center text-green-600">
+                    <i class="fa-solid fa-receipt text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-green-600 transition">${item.expenseName}</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">${dateStr} • ${item.notes || 'No notes'}</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <span class="badge bg-green-100 text-green-700 border-green-200 text-[9px]">SAVED</span>
+                    <p class="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1 font-mono">₹ ${parseFloat(item.price).toLocaleString()}</p>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <button onclick="editPersonalExpense('${item.id}')" class="w-6 h-6 rounded bg-green-50 text-green-600 hover:bg-green-100 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
+                    <button onclick="deletePersonalExpense('${item.id}')" class="w-6 h-6 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+};
 
 // Profile Logic
 window.openProfileModal = () => {
@@ -669,12 +833,21 @@ window.renderExpensesList = (expenses) => {
 
 window.filterExpenses = (term) => {
     term = term ? term.toLowerCase() : '';
-    const filtered = expensesData.filter(e =>
-        e.title.toLowerCase().includes(term) ||
-        (e.projectCode && e.projectCode.toLowerCase().includes(term)) ||
-        e.totalAmount.toString().includes(term)
-    );
-    renderExpensesList(filtered);
+    if (currentMode === 'personal') {
+        const filtered = personalData.filter(e =>
+            (e.expenseName && e.expenseName.toLowerCase().includes(term)) ||
+            (e.notes && e.notes.toLowerCase().includes(term)) ||
+            (e.price && e.price.toString().includes(term))
+        );
+        renderPersonalList(filtered);
+    } else {
+        const filtered = expensesData.filter(e =>
+            e.title.toLowerCase().includes(term) ||
+            (e.projectCode && e.projectCode.toLowerCase().includes(term)) ||
+            e.totalAmount.toString().includes(term)
+        );
+        renderExpensesList(filtered);
+    }
 };
 
 function updateStats(pending, paid) {
@@ -901,7 +1074,20 @@ window.openCreateModal = (type = 'EXPENSE') => {
     const reportTitleInput = document.getElementById('report-title');
     const reportTitleLabel = document.getElementById('label-report-id');
 
-    if (type === 'REQUEST') {
+    if (currentMode === 'personal') {
+        modalTitle.textContent = 'Save Personal Expense';
+        submitBtn.innerHTML = '<span>Save to Vault</span> <i class="fa-solid fa-vault"></i>';
+
+        if (projectContainer) projectContainer.classList.add('hidden');
+        if (preApprovedContainer) preApprovedContainer.classList.add('hidden');
+
+        reportTitleLabel.innerHTML = 'Expense Name <span class="text-red-500">*</span>';
+        reportTitleInput.placeholder = "e.g., Coffee, Netflix, etc.";
+        reportTitleInput.value = "";
+        reportTitleInput.readOnly = false;
+        reportTitleInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
+        reportTitleInput.classList.add('bg-white', 'dark:bg-slate-800');
+    } else if (type === 'REQUEST') {
         modalTitle.textContent = 'Request New Item / Subscription';
         submitBtn.innerHTML = '<span>Submit Request</span> <i class="fa-solid fa-paper-plane"></i>';
 
@@ -1240,6 +1426,85 @@ window.calculateTotal = () => {
     document.getElementById('running-total').textContent = total.toFixed(2);
 };
 
+window.submitPersonalExpense = async () => {
+    const docId = document.getElementById('expense-id').value;
+    const name = document.getElementById('report-title').value.trim();
+    const notes = document.getElementById('expense-notes').value.trim();
+    const btn = document.getElementById('btn-submit');
+
+    // For simplicity, we take the price and date from the first line item
+    const firstItem = document.querySelector('.line-item');
+    if (!firstItem) return showToast("Please add an expense item.", "error");
+
+    const price = firstItem.querySelector('.item-amount').value;
+    const date = firstItem.querySelector('.item-date').value;
+
+    if (!name) return showToast("Please enter expense name.", "error");
+    if (!price) return showToast("Please enter price.", "error");
+
+    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+
+    try {
+        const payload = {
+            uid: currentUser.uid,
+            expenseName: name,
+            price: parseFloat(price),
+            date: date,
+            notes: notes,
+            serverTimestamp: serverTimestamp()
+        };
+
+        if (docId) {
+            await updateDoc(doc(db, "personal_vault", docId), payload);
+            showToast("Personal expense updated!", "success");
+        } else {
+            await addDoc(collection(db, "personal_vault"), payload);
+            showToast("Personal expense saved to vault!", "success");
+        }
+        closeModal('modal-create');
+    } catch (err) {
+        console.error(err);
+        showToast("Error saving: " + err.message, "error");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+};
+
+window.editPersonalExpense = (id) => {
+    const item = personalData.find(i => i.id === id);
+    if (!item) return;
+
+    openCreateModal(); // This will set UI to Personal mode if currentMode is personal
+
+    document.getElementById('expense-id').value = id;
+    document.getElementById('report-title').value = item.expenseName;
+    document.getElementById('expense-notes').value = item.notes || '';
+
+    // Set line item 1
+    const firstItem = document.querySelector('.line-item');
+    if (firstItem) {
+        firstItem.querySelector('.item-amount').value = item.price;
+        firstItem.querySelector('.item-date').value = item.date;
+    }
+
+    document.querySelector('#modal-create h3').textContent = 'Edit Personal Expense';
+    document.getElementById('btn-submit').innerHTML = '<span>Update Vault</span> <i class="fa-solid fa-save"></i>';
+};
+
+window.deletePersonalExpense = async (id) => {
+    if (await showInputPromise("Delete Personal Expense", "Remove this from your personal vault?", "", "none")) {
+        try {
+            await deleteDoc(doc(db, "personal_vault", id));
+            showToast("Item removed from vault", "success");
+        } catch (e) {
+            showToast("Error deleting: " + e.message, "error");
+        }
+    }
+};
+
 
 document.getElementById('pre-approved').addEventListener('change', (e) => {
     const container = document.getElementById('pre-approved-proof-container');
@@ -1272,6 +1537,8 @@ window.getInitialStageStatus = async (role) => {
 };
 
 window.submitExpense = async () => {
+    if (currentMode === 'personal') return submitPersonalExpense();
+
     const docId = document.getElementById('expense-id').value;
     const title = document.getElementById('report-title').value.trim();
     const projectCode = document.getElementById('project-code').value.trim();
