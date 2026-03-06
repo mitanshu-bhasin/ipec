@@ -24,3 +24,26 @@ filesToCopy.forEach(file => {
 });
 
 console.log('Copied source files to www/ for Appflow/Capacitor build.');
+
+// ============================================
+// Mobile-Specific Patches (www/ only)
+// ============================================
+
+// Remove Google Sign-in from admin.html and emp.html
+const googleSigninRegex = /<div id="google-signin-container"[\s\S]*?<\/div>\s*(?=\n)/g;
+
+['admin.html', 'emp.html'].forEach(file => {
+    const filePath = path.join(dest, file);
+    if (fs.existsSync(filePath)) {
+        let content = fs.readFileSync(filePath, 'utf8');
+        const before = content.length;
+        content = content.replace(googleSigninRegex, '<!-- Google Sign-in removed for mobile app -->');
+        if (content.length !== before) {
+            fs.writeFileSync(filePath, content);
+            console.log(`  ✓ Removed Google Sign-in from www/${file}`);
+        }
+    }
+});
+
+console.log('Mobile patches applied.');
+

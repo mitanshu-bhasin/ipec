@@ -19,6 +19,6 @@
   Standards: HTML5, CSS3, ES6+
   Components: Chart.js, html2pdf.js, ImageKit
   Software: VS Code
-  Hosted on: Netlify (https://ipecconsulting.netlify.app)
+  Hosted on: Vercel (https://i.fouralpha.org)
   Version: 2.1.0 "Phoenix Release"
   Last Update: 2026-02-15

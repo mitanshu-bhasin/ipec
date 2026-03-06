@@ -31,14 +31,14 @@ let currentUser = null;
 window.formatCurrency = (amount, currency = 'INR') => {
     try {
         return Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(amount || 0);
-    } catch(e) { return '₹' + amount; }
+    } catch (e) { return '₹' + amount; }
 };
 window.formatDateUtc = (dateInput) => {
     if (!dateInput) return '';
     try {
         const date = dateInput.toDate ? dateInput.toDate() : new Date(dateInput);
         return Intl.DateTimeFormat(undefined, { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(date);
-    } catch(e) { return formatDateUtc(dateInput); }
+    } catch (e) { return formatDateUtc(dateInput); }
 };
 window.safeFirebaseFetch = async (fetchPromise) => {
     try {
@@ -915,7 +915,7 @@ async function renderOverview() {
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                             <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full transition-transform group-hover:scale-110"></div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider relative">Total Disbursed</p>
-                            <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">\${formatCurrency(totalPaid, 'INR')}</p>
+                            <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">${formatCurrency(totalPaid, 'INR')}</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                             <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-50 rounded-full transition-transform group-hover:scale-110"></div>
@@ -958,9 +958,9 @@ async function renderOverview() {
                                                     <div class="font-bold text-slate-700 dark:text-slate-200">${code}</div>
                                                     <div class="text-[10px] text-slate-400">${projectsMap[code] || 'Unregistered Project'}</div>
                                                 </td>
-                                                <td class="py-3 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-200">\${formatCurrency(stats.total, 'INR')}</td>
-                                                <td class="py-3 px-2 text-right text-green-600 font-mono">\${formatCurrency(stats.paid, 'INR')}</td>
-                                                <td class="py-3 px-2 text-right text-orange-500 font-mono">\${formatCurrency(stats.pending, 'INR')}</td>
+                                                <td class="py-3 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-200">${formatCurrency(stats.total, 'INR')}</td>
+                                                <td class="py-3 px-2 text-right text-green-600 font-mono">${formatCurrency(stats.paid, 'INR')}</td>
+                                                <td class="py-3 px-2 text-right text-orange-500 font-mono">${formatCurrency(stats.pending, 'INR')}</td>
                                             </tr>
                                         `).join('')}
                                     </tbody>
@@ -1014,7 +1014,7 @@ async function renderOverview() {
                                     </div>
                                     <div class="text-right">
                                         <span class="${getStatusBadgeClass(e.status)}">${e.status.replace('_', ' ')}</span>
-                                        <p class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300 mt-1">\${formatCurrency(e.totalAmount, e.currency)}</p>
+                                        <p class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300 mt-1">${formatCurrency(e.totalAmount, e.currency)}</p>
                                     </div>
                                 </div>
                             `).join('')}
@@ -1135,7 +1135,7 @@ async function renderReports() {
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
                                             <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(monthlyTotals)) * 100)}%"></div>
                                         </div>
-                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">\${formatCurrency(total, 'INR')}</span>
+                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">${formatCurrency(total, 'INR')}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -1150,7 +1150,7 @@ async function renderReports() {
                                         <div class="flex-1 h-8 bg-slate-100 rounded-full overflow-hidden">
                                             <div class="h-full bg-green-600 rounded-full" style="width: ${(total / Math.max(...Object.values(categoryTotals)) * 100)}%"></div>
                                         </div>
-                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">\${formatCurrency(total, 'INR')}</span>
+                                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">${formatCurrency(total, 'INR')}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -1176,58 +1176,74 @@ async function renderReports() {
     }
 }
 
-async function renderAuditLogs() {
+let cachedAuditLogs = null;
+
+async function renderAuditLogs(forceRefresh = true) {
     document.getElementById('page-title').textContent = "Audit Logs";
     const content = document.getElementById('content-area');
-    content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
-    try {
-        // Get recent actions from expenses history
-        const expensesSnap = await safeFirebaseFetch(getDocs(query(collection(db, "expenses")), orderBy("createdAt", "desc")));
-        const auditLogs = [];
+    // Only show skeleton and fetch from Firebase on first load or forced refresh
+    if (forceRefresh || !cachedAuditLogs) {
+        content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
-        expensesSnap.forEach(doc => {
-            const data = doc.data();
-            if (data.history) {
-                data.history.forEach(h => {
-                    auditLogs.push({
-                        ...h,
-                        expenseId: doc.id,
-                        expenseTitle: data.title,
-                        expenseAmount: data.totalAmount,
-                        expenseCurrency: data.currency,
-                        expenseProject: data.projectCode,
-                        expenseStatus: data.status,
-                        expenseUser: data.userName,
-                        expenseUserEmail: data.userEmail,
-                        expenseDate: data.createdAt
+        try {
+            const expensesSnap = await safeFirebaseFetch(getDocs(query(collection(db, "expenses")), orderBy("createdAt", "desc")));
+            const auditLogs = [];
+
+            expensesSnap.forEach(doc => {
+                const data = doc.data();
+                if (data.history) {
+                    data.history.forEach(h => {
+                        auditLogs.push({
+                            ...h,
+                            expenseId: doc.id,
+                            expenseTitle: data.title,
+                            expenseAmount: data.totalAmount,
+                            expenseCurrency: data.currency,
+                            expenseProject: data.projectCode,
+                            expenseStatus: data.status,
+                            expenseUser: data.userName,
+                            expenseUserEmail: data.userEmail,
+                            expenseDate: data.createdAt
+                        });
                     });
-                });
+                }
+            });
+
+            // Sort by date desc
+            auditLogs.sort((a, b) => new Date(b.date?.toDate ? b.date.toDate() : b.date) - new Date(a.date?.toDate ? a.date.toDate() : a.date));
+
+            let filteredByRole = auditLogs;
+            if (!['ADMIN', 'HR'].includes(userData.role)) {
+                filteredByRole = auditLogs.filter(log => log.by === userData.name);
             }
-        });
 
-        // Sort by date desc
-        auditLogs.sort((a, b) => new Date(b.date?.toDate ? b.date.toDate() : b.date) - new Date(a.date?.toDate ? a.date.toDate() : a.date));
-
-        let filteredLogs = auditLogs;
-        if (!['ADMIN', 'HR'].includes(userData.role)) {
-            filteredLogs = auditLogs.filter(log => log.by === userData.name);
+            cachedAuditLogs = filteredByRole;
+            window.currentAuditLogs = filteredByRole;
+        } catch (e) {
+            content.innerHTML = emptyState("Error loading audit logs: " + e.message);
+            return;
         }
+    }
 
-        window.currentAuditLogs = filteredLogs; // Store globally for export
+    // Client-side filtering from cache
+    let filteredLogs = cachedAuditLogs;
+    if (auditSearchTerm) {
+        const term = auditSearchTerm.toLowerCase();
+        filteredLogs = cachedAuditLogs.filter(log =>
+            (log.by || '').toLowerCase().includes(term) ||
+            (log.action || '').toLowerCase().includes(term) ||
+            (log.expenseTitle || '').toLowerCase().includes(term) ||
+            (log.comment || '').toLowerCase().includes(term) ||
+            (log.role || '').toLowerCase().includes(term)
+        );
+    }
 
-        if (auditSearchTerm) {
-            const term = auditSearchTerm.toLowerCase();
-            filteredLogs = filteredLogs.filter(log =>
-                (log.by || '').toLowerCase().includes(term) ||
-                (log.action || '').toLowerCase().includes(term) ||
-                (log.expenseTitle || '').toLowerCase().includes(term) ||
-                (log.comment || '').toLowerCase().includes(term) ||
-                (log.role || '').toLowerCase().includes(term)
-            );
-        }
+    renderAuditUI(filteredLogs, content);
+}
 
-        content.innerHTML = `
+function renderAuditUI(filteredLogs, content) {
+    content.innerHTML = `
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                         <div class="p-6 border-b border-slate-100 dark:border-slate-800">
                             <div class="flex justify-between items-center audit-header-flex gap-4">
@@ -1235,7 +1251,7 @@ async function renderAuditLogs() {
                                 <div class="flex-1 max-w-sm">
                                     <div class="relative">
                                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                        <input type="text" placeholder="Search logs..." value="${auditSearchTerm}" oninput="window.handleAuditSearch(this.value)" class="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500/20 text-slate-600 dark:text-slate-300">
+                                        <input type="text" id="audit-search-input" placeholder="Search logs..." value="${auditSearchTerm}" oninput="window.handleAuditSearch(this.value)" class="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500/20 text-slate-600 dark:text-slate-300">
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
@@ -1285,14 +1301,24 @@ async function renderAuditLogs() {
                         </div>
                     </div>
                 `;
-    } catch (e) {
-        content.innerHTML = emptyState("Error loading audit logs: " + e.message);
-    }
+
+    // Restore focus to search input
+    setTimeout(() => {
+        const input = document.getElementById('audit-search-input');
+        if (input && auditSearchTerm) {
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        }
+    }, 10);
 }
 
+let auditSearchTimer = null;
 window.handleAuditSearch = (val) => {
     auditSearchTerm = val;
-    renderAuditLogs();
+    clearTimeout(auditSearchTimer);
+    auditSearchTimer = setTimeout(() => {
+        renderAuditLogs(false); // false = don't re-fetch, just re-filter from cache
+    }, 300);
 };
 
 
@@ -2372,7 +2398,7 @@ window.toggleUserExpenses = async (userId, btn) => {
                                             <tr>
                                                 <td class="py-2 text-slate-500">${e.createdAt?.toDate ? e.createdAt.toDate().toLocaleDateString() : '-'}</td>
                                                 <td class="py-2 font-medium text-slate-700 dark:text-slate-200">${e.title}</td>
-                                                <td class="py-2 text-right font-mono">\${formatCurrency(e.totalAmount, e.currency)}</td>
+                                                <td class="py-2 text-right font-mono">${formatCurrency(e.totalAmount, e.currency)}</td>
                                                 <td class="py-2 text-center"><span class="${getStatusBadgeClass(e.status).split(' ')[0]} scale-75 origin-center">${e.status.replace('_', ' ')}</span></td>
                                                 <td class="py-2 text-slate-500">${e.projectCode || '-'}</td>
                                             </tr>

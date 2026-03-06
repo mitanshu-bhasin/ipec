@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Config (Secure)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .input-field {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+            color: #334155;
+        }
+
+        .input-field:focus {
+            background: white;
+            border-color: #10b981;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+    </style>
+</head>
+
+<body class="h-screen flex items-center justify-center">
+
+    <div class="max-w-md w-full p-6 bg-white rounded-2xl shadow-xl border border-slate-100">
+        <div class="text-center mb-6">
+            <i class="fa-solid fa-lock text-3xl text-emerald-500 mb-2"></i>
+            <h1 class="text-2xl font-bold text-slate-800">Secure Config</h1>
+            <p class="text-sm text-slate-500">Update app.html install link</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="auth-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Admin Email</label>
+                <input type="email" id="email" class="input-field w-full rounded-lg py-2.5 px-4 text-sm" required>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
+                <input type="password" id="password" class="input-field w-full rounded-lg py-2.5 px-4 text-sm" required>
+            </div>
+            <button type="submit"
+                class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg hover:bg-slate-800 transition">Login</button>
+        </form>
+
+        <!-- Config Form (Hidden by Default) -->
+        <div id="config-section" class="hidden space-y-4">
+            <div class="p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm mb-4 border border-emerald-100">
+                <i class="fa-solid fa-circle-check mr-2"></i> Authenticated securely.
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Current Install Link</label>
+                <input type="url" id="install-link" class="input-field w-full rounded-lg py-2.5 px-4 text-sm"
+                    placeholder="https://..." required>
+            </div>
+
+            <button id="btn-save"
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition shadow-md shadow-emerald-200">
+                <i class="fa-solid fa-save mr-2"></i> Save Changes
+            </button>
+
+            <button id="btn-logout"
+                class="w-full text-slate-500 hover:text-slate-800 text-sm font-bold py-3 transition mt-2">
+                <i class="fa-solid fa-power-off mr-2"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- App Config -->
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authForm = document.getElementById('auth-form');
+            const configSection = document.getElementById('config-section');
+            const btnSave = document.getElementById('btn-save');
+            const btnLogout = document.getElementById('btn-logout');
+            const linkInput = document.getElementById('install-link');
+
+            // Handle Auth State
+            window.auth.onAuthStateChanged(user => {
+                if (user) {
+                    authForm.classList.add('hidden');
+                    configSection.classList.remove('hidden');
+                    fetchCurrentLink();
+                } else {
+                    authForm.classList.remove('hidden');
+                    configSection.classList.add('hidden');
+                }
+            });
+
+            // Login
+            authForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                window.auth.signInWithEmailAndPassword(email, password)
+                    .catch(err => alert("Login failed: " + err.message));
+            });
+
+            // Logout
+            btnLogout.addEventListener('click', () => {
+                window.auth.signOut();
+            });
+
+            // Fetch current link
+            function fetchCurrentLink() {
+                window.db.collection('config').doc('appSettings').get().then(doc => {
+                    if (doc.exists && doc.data().installLink) {
+                        linkInput.value = doc.data().installLink;
+                    }
+                }).catch(err => alert("Error fetching current link: " + err.message));
+            }
+
+            // Save new link
+            btnSave.addEventListener('click', () => {
+                const newLink = linkInput.value.trim();
+                const btn = btnSave;
+
+                if (!newLink) return alert('Link cannot be empty');
+
+                // Show loading state
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Saving...';
+                btn.disabled = true;
+
+                window.db.collection('config').doc('appSettings').set({
+                    installLink: newLink
+                }, { merge: true }).then(() => {
+                    alert('Install link updated successfully!\nChanges will reflect globally on app.html.');
+                }).catch(err => {
+                    alert('Error saving config: ' + err.message);
+                }).finally(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

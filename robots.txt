@@ -6,5 +6,5 @@ Disallow: /js/admin-helper.js
 Disallow: /js/theme.js
 Disallow: /.well-known/
 
-Sitemap: https://ipecconsulting.netlify.app/sitemap.xml
-Host: https://ipecconsulting.netlify.app
+Sitemap: https://i.fouralpha.org/sitemap.xml
+Host: https://i.fouralpha.org

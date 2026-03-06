@@ -3,43 +3,43 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
-        <loc>https://ipecconsulting.netlify.app/</loc>
+        <loc>https://i.fouralpha.org/</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/mitanshu.html</loc>
+        <loc>https://i.fouralpha.org/mitanshu.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/emp.html</loc>
+        <loc>https://i.fouralpha.org/emp.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/admin.html</loc>
+        <loc>https://i.fouralpha.org/admin.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/contact.html</loc>
+        <loc>https://i.fouralpha.org/contact.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/privacy.html</loc>
+        <loc>https://i.fouralpha.org/privacy.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
     <url>
-        <loc>https://ipecconsulting.netlify.app/terms.html</loc>
+        <loc>https://i.fouralpha.org/terms.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>

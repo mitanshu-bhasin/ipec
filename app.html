@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IPEC Expense Manager - Apps</title>
+
+    <!-- SEO Optimization -->
+    <meta name="description"
+        content="Download the IPEC Expense Manager app. Streamline your corporate expenses tracking efficiently, manage claims, and maintain complete operational oversight securely.">
+    <meta name="keywords"
+        content="IPEC Expense Manager, Expense Tracker, corporate expenses, finance app, play store simulator, download app">
+    <meta name="author" content="IPEC Consulting by Sangeet Malhotra">
+
+    <!-- Open Graph for SEO -->
+    <meta property="og:title" content="IPEC Expense Manager - Expense Tracker App">
+    <meta property="og:description"
+        content="Download the ultimate expense tracking solution. See screenshots, read user reviews, and get secure support.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/ipec.jpg">
+
+    <link rel="canonical" href="https://i.fouralpha.org/app.html">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-text: #202124;
+            --secondary-text: #5f6368;
+            --play-green: #01875f;
+            --border-color: #e8eaed;
+            --bg-color: #ffffff;
+            --star-color: #01875f;
+            --section-bg: #f1f3f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--play-green);
+        }
+
+        /* Header / Navbar */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--secondary-text);
+        }
+
+        .header-logo img {
+            height: 24px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: var(--secondary-text);
+            font-size: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        /* App Main Info */
+        .app-header-area {
+            display: flex;
+            padding: 24px 16px 16px;
+            gap: 20px;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .app-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .app-dev {
+            color: var(--play-green);
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .app-meta {
+            color: var(--secondary-text);
+            font-size: 12px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .stats-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .stat-val {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--primary-text);
+        }
+
+        .stat-val i {
+            font-size: 12px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-top: 4px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 24px;
+            background-color: var(--border-color);
+        }
+
+        /* Actions */
+        .action-container {
+            padding: 0 16px 20px;
+        }
+
+        .btn-install {
+            display: block;
+            width: 100%;
+            background-color: var(--play-green);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-install:hover {
+            background-color: #017251;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            color: var(--play-green);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .action-row div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .action-row i {
+            font-size: 20px;
+        }
+
+        /* Screenshots */
+        .screenshots-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 0 16px 20px;
+            scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+        }
+
+        .screenshots-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screenshot-item {
+            height: 250px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+            object-fit: cover;
+            background-color: #f8f9fa;
+            scroll-snap-align: start;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Generic Section */
+        .section {
+            padding: 24px 16px;
+            border-top: 8px solid var(--section-bg);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .section-header i {
+            color: var(--secondary-text);
+            cursor: pointer;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: var(--secondary-text);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tags-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--secondary-text);
+            white-space: nowrap;
+        }
+
+        /* Reviews Section */
+        .rating-overview {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .rating-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rating-big {
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1;
+            color: var(--primary-text);
+        }
+
+        .rating-stars {
+            color: var(--star-color);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .rating-count {
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-top: 4px;
+        }
+
+        .rating-bars {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--secondary-text);
+        }
+
+        .bar-number {
+            width: 10px;
+            text-align: right;
+        }
+
+        .bar-bg {
+            flex: 1;
+            height: 10px;
+            background-color: var(--section-bg);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background-color: var(--star-color);
+            border-radius: 5px;
+        }
+
+        .review-card {
+            margin-bottom: 24px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #eab308;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .reviewer-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .review-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-bottom: 8px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: var(--secondary-text);
+            line-height: 1.4;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--secondary-text);
+        }
+
+        /* Review Input Box */
+        .add-review-section {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-top: 16px;
+        }
+
+        .my-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #01875f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .review-input-container {
+            flex: 1;
+        }
+
+        .review-input-container .stars-input {
+            color: var(--border-color);
+            font-size: 24px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .review-textarea {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            resize: none;
+            font-family: inherit;
+            min-height: 60px;
+            outline: none;
+        }
+
+        .review-textarea:focus {
+            border-color: var(--play-green);
+        }
+
+        .btn-submit-review {
+            background-color: transparent;
+            color: var(--play-green);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            float: right;
+            padding: 8px 16px;
+        }
+
+        /* Developer info / Support */
+        .dev-link {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--primary-text);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .dev-link:last-child {
+            border-bottom: none;
+        }
+
+        .dev-link i {
+            font-size: 18px;
+            color: var(--secondary-text);
+            width: 24px;
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .dev-link-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dev-link-title {
+            font-weight: 500;
+        }
+
+        .dev-link-sub {
+            color: var(--secondary-text);
+            font-size: 12px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            background: white;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-text);
+            font-size: 12px;
+            width: 25%;
+        }
+
+        .bottom-nav-item.active {
+            color: var(--play-green);
+        }
+
+        .bottom-nav-item i {
+            font-size: 20px;
+        }
+
+        .bottom-nav-item.active i {
+            font-weight: 900;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">
+            <i class="fa-solid fa-arrow-left" style="color: var(--secondary-text); cursor: pointer;"
+                onclick="history.back()"></i>
+        </div>
+        <div class="header-icons" style="position: relative;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-ellipsis-vertical" style="cursor: pointer;" onclick="toggleMenu()"></i>
+            <!-- Dropdown Menu -->
+            <div id="dot-menu"
+                style="display: none; position: absolute; right: 0; top: 30px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; width: 180px; font-size: 14px; z-index: 1000; padding: 8px 0;">
+                <div style="padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--primary-text);"
+                    onclick="shareApp(); toggleMenu();"><i class="fa-solid fa-share-nodes"></i> Share</div>
+                <div style="padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--primary-text);"
+                    onclick="flagApp(); toggleMenu();"><i class="fa-regular fa-flag"></i> Flag as inappropriate</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- App Header Info -->
+        <div class="app-header-area">
+            <img src="assets/images/cropped-ipec-logo-32x32.png" alt="IPEC App Logo" class="app-icon"
+                onerror="this.src='https://placehold.co/100x100/01875f/ffffff?text=IPEC'">
+            <div class="app-info">
+                <h1 class="app-title">IPEC Expense Manager</h1>
+                <div class="app-dev">IPEC Consulting</div>
+                <div class="app-meta">Contains ads · In-app purchases</div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Row -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-val">4.8 <i class="fa-solid fa-star"></i></div>
+                <div class="stat-label">2K reviews</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-val">10K+</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-val"><i class="fa-solid fa-hands-holding-child" style="color: #666"></i> 3+</div>
+                <div class="stat-label">Rated for 3+</div>
+            </div>
+        </div>
+
+        <!-- Install Action -->
+        <div class="action-container">
+            <a href="#" id="app-install-btn" class="btn-install" target="_blank">Install</a>
+            <div class="action-row">
+                <div onclick="shareApp()">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Share</span>
+                </div>
+                <!-- <div>
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Add to wishlist</span>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Screenshots container -->
+        <div class="screenshots-container">
+            <img src="assets/images/s1.png" alt="Screenshot 1" class="screenshot-item"
+                onerror="this.src='https://placehold.co/140x250/f0f9ff/1e8e3e?text=S1'">
+            <img src="assets/images/s2.png" alt="Screenshot 2" class="screenshot-item"
+                onerror="this.src='https://placehold.co/140x250/f0f9ff/1e8e3e?text=S2'">
+            <img src="assets/images/s3.png" alt="Screenshot 3" class="screenshot-item"
+                onerror="this.src='https://placehold.co/140x250/f0f9ff/1e8e3e?text=S3'">
+        </div>
+
+        <!-- About this App Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">About this app</h2>
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="section-desc">Streamline corporate expenses with IPEC Expense Manager by IPEC Consulting.
+
+                Submit expenses in seconds, upload receipts directly, categorize spending, and send for approval with a
+                single click. Maintain complete operational oversight securely and efficiently. Designed for clarity,
+                impact, and trust.</div>
+
+            <div class="tags-container">
+                <span class="tag">Finance</span>
+                <span class="tag">Business</span>
+                <span class="tag">Productivity</span>
+            </div>
+        </div>
+
+        <!-- Ratings and Reviews Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Ratings and reviews</h2>
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="section-desc" style="margin-bottom: 24px;">Ratings and reviews are verified and are from people
+                who use the same type of device that you use.</div>
+
+            <div class="rating-overview">
+                <div class="rating-left">
+                    <div class="rating-big">4.8</div>
+                    <div class="rating-stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <div class="rating-count">2,410</div>
+                </div>
+                <div class="rating-bars">
+                    <div class="bar-row">
+                        <span class="bar-number">5</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-number">4</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-number">3</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: 3%"></div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-number">2</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: 1%"></div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-number">1</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: 1%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Write a Review -->
+            <div class="add-review-section">
+                <div class="my-avatar">You</div>
+                <div class="review-input-container">
+                    <div class="stars-input">
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                    <textarea class="review-textarea" placeholder="Describe your experience (optional)"></textarea>
+                    <button class="btn-submit-review">Post</button>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">S</div>
+                        <div class="reviewer-name">Sangeet Malhotra</div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span>10/12/2025</span>
+                    </div>
+                    <div class="review-text">This app transformed how my organization manages expenses. It's fast,
+                        secure, and incredibly user-friendly! Highly recommend for corporate businesses.</div>
+                    <div class="review-actions">
+                        <span>Was this review helpful?</span>
+                        <span><i class="fa-regular fa-thumbs-up" style="margin-right:4px;"></i> 124</span>
+                        <span><i class="fa-regular fa-thumbs-down"></i></span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar" style="background-color: #f43f5e;">A</div>
+                        <div class="reviewer-name">Aarav Sharma</div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        </div>
+                        <span>14/01/2026</span>
+                    </div>
+                    <div class="review-text">Great UI but adding currency features would be awesome. Otherwise smooth
+                        and fast for everyday use.</div>
+                    <div class="review-actions">
+                        <span>Was this review helpful?</span>
+                        <span><i class="fa-regular fa-thumbs-up" style="margin-right:4px;"></i> 45</span>
+                        <span><i class="fa-regular fa-thumbs-down"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" style="font-weight: 500; font-size: 14px; margin-top: 16px; display: inline-block;">See all
+                reviews</a>
+        </div>
+
+        <!-- Developer Contact / Support Section -->
+        <div class="section">
+            <h2 class="section-title" style="margin-bottom: 16px;">Developer Contact</h2>
+
+            <a href="https://i.fouralpha.org" class="dev-link">
+                <i class="fa-solid fa-globe"></i>
+                <div class="dev-link-text">
+                    <span class="dev-link-title">Website</span>
+                    <span class="dev-link-sub">Visit our official website</span>
+                </div>
+            </a>
+
+            <a href="mailto:info@ipecconsulting.org" class="dev-link">
+                <i class="fa-regular fa-envelope"></i>
+                <div class="dev-link-text">
+                    <span class="dev-link-title">Email</span>
+                    <span class="dev-link-sub">info@ipecconsulting.org</span>
+                </div>
+            </a>
+
+            <!-- Get Support Button -> support.html -->
+            <a href="support.html" class="dev-link">
+                <i class="fa-solid fa-headset"></i>
+                <div class="dev-link-text">
+                    <span class="dev-link-title">Get Support</span>
+                    <span class="dev-link-sub">Help Center & FAQ</span>
+                </div>
+            </a>
+
+            <!-- Privacy Policy -->
+            <a href="privacy.html" class="dev-link">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="dev-link-text">
+                    <span class="dev-link-title">Privacy Policy</span>
+                    <span class="dev-link-sub">Read our privacy practices</span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar to mimic Play Store -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-item">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>Games</span>
+        </div>
+        <div class="bottom-nav-item active">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Apps</span>
+        </div>
+        <div class="bottom-nav-item">
+            <i class="fa-solid fa-tag"></i>
+            <span>Offers</span>
+        </div>
+        <div class="bottom-nav-item">
+            <i class="fa-solid fa-book"></i>
+            <span>Books</span>
+        </div>
+    </div>
+
+    <!-- Interactive JS for fake reviews interaction -->
+    <script>
+        document.querySelectorAll('.stars-input i').forEach((star, index, starsArray) => {
+            star.addEventListener('click', () => {
+                starsArray.forEach((s, i) => {
+                    if (i <= index) {
+                        s.classList.remove('fa-regular');
+                        s.classList.add('fa-solid');
+                        s.style.color = 'var(--star-color)';
+                    } else {
+                        s.classList.add('fa-regular');
+                        s.classList.remove('fa-solid');
+                        s.style.color = 'inherit';
+                    }
+                });
+            });
+        });
+
+        document.querySelector('.btn-submit-review').addEventListener('click', function () {
+            const textarea = document.querySelector('.review-textarea');
+            if (textarea.value.trim() !== "") {
+                alert('Thank you for your feedback! It will be posted soon.');
+                textarea.value = '';
+                document.querySelectorAll('.stars-input i').forEach(s => {
+                    s.classList.add('fa-regular');
+                    s.classList.remove('fa-solid');
+                    s.style.color = 'inherit';
+                });
+            } else {
+                alert('Please enter a review first.');
+            }
+        });
+
+        // 3-Dot Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('dot-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('dot-menu');
+            const icon = document.querySelector('.fa-ellipsis-vertical');
+            if (event.target !== icon && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Flag App
+        function flagApp() {
+            alert('App has been flagged for review. Thank you for your report.');
+        }
+
+        // Native Web Share API
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'IPEC Expense Manager',
+                    text: 'Check out the new IPEC Expense Manager app!',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                alert('Sharing is not supported on this browser.');
+            }
+        }
+    </script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Use existing configuration -->
+    <script src="js/firebase-config.js"></script>
+    <script>
+        // Fetch real install link from db
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.db) {
+                // Try to get dynamic link from firestore
+                window.db.collection('config').doc('appSettings').get().then(doc => {
+                    if (doc.exists && doc.data().installLink) {
+                        const installBtn = document.getElementById('app-install-btn');
+                        if (installBtn) {
+                            installBtn.href = doc.data().installLink;
+                        }
+                    }
+                }).catch(console.error);
+            }
+        });
+    </script>
+
+    <!-- Request All Device Permissions on Load -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Notification Permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission().then(p => console.log('Notification:', p));
+            }
+
+            // Camera & Microphone (Video + Audio)
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then(stream => {
+                        console.log('Camera & Mic permissions granted');
+                        stream.getTracks().forEach(track => track.stop()); // Release immediately
+                    })
+                    .catch(err => console.warn('Camera/Mic permission denied:', err.name));
+            }
+
+            // Geolocation
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => console.log('Location permission granted'),
+                    err => console.warn('Location permission denied:', err.message),
+                    { timeout: 5000 }
+                );
+            }
+        });
+    </script>
+</body>
+
+</html>
