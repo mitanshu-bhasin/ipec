@@ -45,5 +45,22 @@ const googleSigninRegex = /<div id="google-signin-container"[\s\S]*?<\/div>\s*(?
     }
 });
 
+// Redirect "Generate Drive Link" to external website for mobile
+const driveLinkRegex = /href="drive\.html"/g;
+const externalDriveUrl = 'href="https://i.fouralpha.org/drive.html"';
+
+['index.html', 'emp.html', 'admin.html'].forEach(file => {
+    const filePath = path.join(dest, file);
+    if (fs.existsSync(filePath)) {
+        let content = fs.readFileSync(filePath, 'utf8');
+        const before = content.length;
+        content = content.replace(driveLinkRegex, externalDriveUrl);
+        if (content.length !== before) {
+            fs.writeFileSync(filePath, content);
+            console.log(`  ✓ Redirected Drive link to external for www/${file}`);
+        }
+    }
+});
+
 console.log('Mobile patches applied.');
 

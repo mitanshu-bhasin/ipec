@@ -33,6 +33,30 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://i.fouralpha.org/app.html</loc>
+        <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://i.fouralpha.org/team.html</loc>
+        <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://i.fouralpha.org/help.html</loc>
+        <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://i.fouralpha.org/support.html</loc>
+        <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
         <loc>https://i.fouralpha.org/privacy.html</loc>
         <lastmod>2026-03-06T00:00:00+00:00</lastmod>
         <changefreq>yearly</changefreq>

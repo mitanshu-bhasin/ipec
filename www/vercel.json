@@ -38,5 +38,7 @@
             "statusCode": 404
         }
     ],
-    "cleanUrls": true
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "outputDirectory": "."
 }

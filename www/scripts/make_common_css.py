@@ -4,7 +4,7 @@ import re
 dir_path = r'c:\Users\mitan\Videos\Expense Tracker'
 common_css = r'''/* common.css */
 
-/* --- link.html Styles --- */
+/* --- drive.html Styles --- */
 .glass-effect {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
@@ -135,7 +135,7 @@ def inject_common_css(file_path):
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-inject_common_css(os.path.join(dir_path, 'link.html'))
+inject_common_css(os.path.join(dir_path, 'drive.html'))
 inject_common_css(os.path.join(dir_path, 'test.html'))
 inject_common_css(os.path.join(dir_path, 'support.html'))
 
@@ -150,4 +150,4 @@ if 'class="test-page min-h-screen' not in html:
 with open(test_path, 'w', encoding='utf-8') as f:
     f.write(html)
 
-print("Created common.css and updated support.html, link.html, test.html")
+print("Created common.css and updated support.html, drive.html, test.html")
