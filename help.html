@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPEC Help Desk | Admin</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: { blue: '#1A73E8', green: '#1E8E3E', red: '#D93025' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <script src="env.js"></script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+
+    <!-- Auth Screen -->
+    <div id="auth-screen"
+        class="fixed inset-0 z-[100] bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl relative border border-slate-100 dark:border-slate-700">
+            <div class="text-center mb-8">
+                <div
+                    class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-headset text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Helpdesk Admin</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Restricted access.</p>
+            </div>
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label
+                        class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Email</label>
+                    <input type="email" id="login-email"
+                        class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        placeholder="admin@example.com" required>
+                </div>
+                <div>
+                    <label
+                        class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Password</label>
+                    <input type="password" id="login-password"
+                        class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        placeholder="••••••••" required>
+                </div>
+                <button type="submit" id="login-btn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition transform active:scale-95 flex items-center justify-center gap-2 shadow-md">
+                    <span>Secure Login</span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+            </form>
+            <p id="login-error"
+                class="hidden text-red-500 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 rounded-lg text-sm mt-4 text-center font-medium">
+            </p>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar (Simplified from Admin) -->
+        <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col">
+            <div class="h-16 flex items-center justify-center border-b border-gray-700">
+                <span class="text-xl font-bold tracking-wider">HELPDESK <span
+                        class="text-xs text-blue-400">ADMIN</span></span>
+            </div>
+            <nav class="flex-1 px-2 py-4 space-y-2">
+                <a href="admin.html"
+                    class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors">
+                    <i class="fa-solid fa-arrow-left w-6"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg shadow-lg">
+                    <i class="fa-solid fa-ticket w-6"></i>
+                    <span>Active Tickets</span>
+                </a>
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors">
+                    <i class="fa-solid fa-users w-6"></i>
+                    <span>Knowledge Base</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            <!-- Header -->
+            <header
+                class="h-16 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 shadow-sm z-30">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-gray-500 hover:text-blue-600">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Support Ticket Management</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTheme()"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-yellow-400 transition">
+                        <i class="fa-solid fa-moon theme-toggle-icon text-lg"></i>
+                    </button>
+                    <div class="relative">
+                        <i class="fa-solid fa-bell text-gray-400 hover:text-blue-500 cursor-pointer text-lg"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                            A</div>
+                        <span class="hidden sm:inline text-sm font-medium">Administrator</span>
+                        <button onclick="window.logoutHelpdesk()"
+                            class="ml-2 px-3 py-1 bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100 border border-red-200 dark:border-red-800 rounded-lg text-xs font-bold transition">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Ticket List -->
+            <div class="flex-1 overflow-y-auto p-6 scrollbar-hide">
+
+                <!-- Filters -->
+                <div
+                    class="flex flex-col sm:flex-row gap-4 mb-6 justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Search tickets..."
+                            class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div class="flex gap-2">
+                        <select
+                            class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>All Statuses</option>
+                            <option>Open</option>
+                            <option>In Progress</option>
+                            <option>Closed</option>
+                        </select>
+                        <button
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md">
+                            <i class="fa-solid fa-filter mr-1"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ticket Table -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead
+                                class="bg-gray-50 dark:bg-slate-700/50 text-xs uppercase text-gray-500 font-semibold">
+                                <tr>
+                                    <th class="px-6 py-4">Status</th>
+                                    <th class="px-6 py-4">Ticket ID</th>
+                                    <th class="px-6 py-4">Requester</th>
+                                    <th class="px-6 py-4">Category</th>
+                                    <th class="px-6 py-4">Priority</th>
+                                    <th class="px-6 py-4">Date</th>
+                                    <th class="px-6 py-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700" id="ticketTableBody">
+                                <!-- Dynamic Rows -->
+                                <tr>
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">
+                                        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i>
+                                        <p>Loading Tickets...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div
+                        class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-xs text-gray-500">
+                        <span>Showing 1-10 of 50 tickets</span>
+                        <div class="flex gap-2">
+                            <button
+                                class="px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50"><i
+                                    class="fa-solid fa-chevron-left"></i></button>
+                            <button
+                                class="px-3 py-1 rounded bg-blue-50 text-blue-600 font-bold dark:bg-blue-900/30 dark:text-blue-400">1</button>
+                            <button class="px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700">2</button>
+                            <button class="px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700">3</button>
+                            <button class="px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700"><i
+                                    class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Ticket Detail Modal -->
+    <div id="ticketModal"
+        class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-xl max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]">
+            <div
+                class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 rounded-t-xl">
+                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded" id="modalStatus">OPEN</span>
+                    Ticket #<span id="modalId">UNKNOWN</span>
+                </h3>
+                <button onclick="document.getElementById('ticketModal').classList.add('hidden')"
+                    class="text-gray-400 hover:text-red-500 transition"><i
+                        class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 space-y-6">
+                <!-- User Info -->
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
+                        U</div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white" id="modalName">User Name</h4>
+                        <p class="text-xs text-gray-500" id="modalEmail">user@example.com</p>
+                        <p class="text-xs text-blue-500 mt-1" id="modalCategory">Category</p>
+                    </div>
+                    <div class="ml-auto text-right">
+                        <span class="text-xs text-gray-400 block" id="modalDate">Jan 01, 2026</span>
+                        <span
+                            class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border"
+                            id="modalPriority">HIGH</span>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm leading-relaxed"
+                    id="modalMessage">
+                    Loading description...
+                </div>
+
+                <!-- Admin Action -->
+                <div class="border-t border-gray-100 dark:border-gray-700 pt-4">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Update Status</label>
+                    <div class="flex gap-3">
+                        <button onclick="updateTicketStatus('Open')"
+                            class="flex-1 py-2 text-center border border-gray-200 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-slate-700 text-sm font-medium transition">Mark
+                            Open</button>
+                        <button onclick="updateTicketStatus('In Progress')"
+                            class="flex-1 py-2 text-center bg-blue-50 dark:bg-blue-900/20 text-blue-600 border border-blue-200 dark:border-blue-800 rounded hover:bg-blue-100 dark:hover:bg-blue-900/40 text-sm font-medium transition">In
+                            Progress</button>
+                        <button onclick="updateTicketStatus('Closed')"
+                            class="flex-1 py-2 text-center bg-green-50 dark:bg-green-900/20 text-green-600 border border-green-200 dark:border-green-800 rounded hover:bg-green-100 dark:hover:bg-green-900/40 text-sm font-medium transition">Close
+                            Ticket</button>
+                    </div>
+                </div>
+
+                <!-- Admin Note -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Internal Note</label>
+                    <textarea
+                        class="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                        rows="2" placeholder="Add a private note for admins..."></textarea>
+                </div>
+            </div>
+            <div
+                class="p-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-900/50 rounded-b-xl flex justify-end gap-3">
+                <button onclick="document.getElementById('ticketModal').classList.add('hidden')"
+                    class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm transition">Cancel</button>
+                <button
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md font-medium text-sm transition transform active:scale-95">Save
+                    Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: window.ENV.FIREBASE_API_KEY,
+            authDomain: window.ENV.FIREBASE_AUTH_DOMAIN,
+            projectId: window.ENV.FIREBASE_PROJECT_ID,
+            storageBucket: window.ENV.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: window.ENV.FIREBASE_MESSAGING_SENDER_ID,
+            appId: window.ENV.FIREBASE_APP_ID
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const allowedEmail = "mfskufgu@gmail.com";
+        let isTicketsLoaded = false;
+        let unsubscribeTickets = null;
+
+        // Auth Logic
+        const authScreen = document.getElementById('auth-screen');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.email === allowedEmail) {
+                    authScreen.classList.add('hidden');
+                    if (!isTicketsLoaded) {
+                        loadTickets();
+                        isTicketsLoaded = true;
+                    }
+                } else {
+                    signOut(auth);
+                    showError("Unauthorized: Access Restricted to " + allowedEmail);
+                }
+            } else {
+                authScreen.classList.remove('hidden');
+                isTicketsLoaded = false;
+                if (unsubscribeTickets) unsubscribeTickets();
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-password').value;
+            const btn = document.getElementById('login-btn');
+
+            if (email !== allowedEmail) {
+                showError("Unauthorized email address.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                showError("Invalid email or password.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Secure Login</span><i class="fa-solid fa-shield-halved"></i>';
+            }
+        });
+
+        function showError(msg) {
+            loginError.textContent = msg;
+            loginError.classList.remove('hidden');
+        }
+
+        window.logoutHelpdesk = () => {
+            signOut(auth);
+        };
+
+        // Fetch Logic
+        function loadTickets() {
+            const q = query(collection(db, "support_tickets"), orderBy("createdAt", "desc"));
+            let currentTicketId = null;
+
+            unsubscribeTickets = onSnapshot(q, (snapshot) => {
+                const tbody = document.getElementById('ticketTableBody');
+                tbody.innerHTML = '';
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-400">No support tickets found.</td></tr>';
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    const statusColor = getStatusColor(data.status);
+                    const priorityColor = getPriorityColor(data.priority);
+
+                    const row = `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors border-b border-gray-50 dark:border-gray-800 group">
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">
+                                <span class="w-1.5 h-1.5 rounded-full bg-current"></span> ${data.status || 'Open'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-xs text-gray-500">#${id.slice(0, 6).toUpperCase()}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="font-medium text-gray-900 dark:text-white capitalize">${data.name}</div>
+                            </div>
+                            <div class="text-xs text-gray-500">${data.email}</div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">${data.category}</td>
+                        <td class="px-6 py-4">
+                            <span class="${priorityColor} text-xs px-2 py-0.5 rounded border border-transparent opacity-90">${data.priority}</span>
+                        </td>
+                        <td class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
+                            ${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                             <button onclick="window.viewTicket('${id}')" class="text-blue-600 hover:text-blue-800 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 p-2 rounded-lg transition shadow-sm border border-blue-100 dark:border-blue-900">
+                                <i class="fa-solid fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+
+                    // Store data locally for modal access (simple approach)
+                    window[`ticket_${id}`] = data;
+                });
+            });
+
+            function getStatusColor(status) {
+                switch (status) {
+                    case 'Open': return 'bg-orange-100 text-orange-700 border border-orange-200';
+                    case 'In Progress': return 'bg-blue-100 text-blue-700 border border-blue-200';
+                    case 'Closed': return 'bg-gray-100 text-gray-600 border border-gray-200';
+                    default: return 'bg-slate-100 text-slate-600';
+                }
+            }
+
+            function getPriorityColor(p) {
+                switch (p) {
+                    case 'High': return 'bg-red-100 text-red-800';
+                    case 'Medium': return 'bg-yellow-100 text-yellow-800';
+                    case 'Low': return 'bg-blue-100 text-blue-800';
+                    default: return 'bg-gray-100 text-gray-800';
+                }
+            }
+
+            // View Logic
+            window.viewTicket = (id) => {
+                const data = window[`ticket_${id}`];
+                currentTicketId = id;
+                if (!data) return;
+
+                document.getElementById('modalId').innerText = id.slice(0, 6).toUpperCase();
+                document.getElementById('modalName').innerText = data.name;
+                document.getElementById('modalEmail').innerText = data.email;
+                document.getElementById('modalCategory').innerText = data.category;
+                document.getElementById('modalMessage').innerText = data.message;
+                document.getElementById('modalStatus').innerText = data.status || 'OPEN';
+                document.getElementById('modalPriority').innerText = data.priority;
+
+                // Set colors dynamically in modal
+                const pEl = document.getElementById('modalPriority');
+                pEl.className = `inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${getPriorityColor(data.priority)}`;
+
+                document.getElementById('ticketModal').classList.remove('hidden');
+            };
+
+            window.updateTicketStatus = async (newStatus) => {
+                if (!currentTicketId) return;
+                try {
+                    const docRef = doc(db, "support_tickets", currentTicketId);
+                    await updateDoc(docRef, {
+                        status: newStatus,
+                        updatedAt: new Date() // client timestamp adequate for now
+                    });
+                    // Close modal on success (optional, or just show toast)
+                    document.getElementById('ticketModal').classList.add('hidden');
+                } catch (e) {
+                    console.error("Error updating ticket", e);
+                    alert("Failed to update status");
+                }
+            };
+        }
+    </script>
+</body>
+
+</html>

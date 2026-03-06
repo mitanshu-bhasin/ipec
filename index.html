@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPEC Expense Manager | Integrated Financial Control</title>
+    <meta name="description"
+        content="Streamline your corporate expenses with IPEC Expense Manager. Secure, fast, and transparent financial operations for employees and administrators.">
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="env.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: {
+                            red: '#D93025',
+                            green: '#1E8E3E',
+                            blue: '#1A73E8',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .dark .glass-effect {
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(#1A73E8 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+        }
+
+        /* Logo Gradient Text Effect */
+        .gradient-text {
+            background: linear-gradient(to right, #D93025, #1E8E3E, #1A73E8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Subtle Gradient Background for Hero */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 249, 255, 1) 100%);
+        }
+
+        .dark .hero-bg {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased transition-colors duration-300 relative hero-bg flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-500 glass-effect border-b border-white/40 dark:border-slate-700/50 shadow-sm backdrop-blur-xl bg-white/60 dark:bg-slate-900/60"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-blue-600 shadow-lg overflow-hidden border border-blue-100">
+                        <img src="cropped-ipec-logo-32x32.png" alt="IPEC Logo" class="w-8 h-8 object-contain">
+                    </div>
+                    <div>
+                        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">IPEC</span>
+                        <span
+                            class="block text-[10px] font-bold text-blue-600 uppercase tracking-wider relative -top-1">Expense
+                            Manager</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" data-i18n="nav_features"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition text-sm">Features</a>
+                    <a href="#portals" data-i18n="nav_portals"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition text-sm">Access
+                        Portals</a>
+                    <a href="#contact" data-i18n="nav_support"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition text-sm">Contact
+                        Support</a>
+                </div>
+                <a href="help.html"
+                    class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition"><i
+                        class="fa-regular fa-circle-question text-lg"></i></a>
+                <div class="relative ml-2" id="lang-toggle-container">
+                    <button onclick="toggleLanguageDropdown()"
+                        class="flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-bold text-sm transition bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+                        <i class="fa-solid fa-language text-lg"></i>
+                        <span id="current-lang-display">EN</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-70"></i>
+                    </button>
+                    <div id="lang-dropdown"
+                        class="hidden absolute right-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transform origin-top-right transition-all z-50">
+                        <a href="#" onclick="selectLanguage('en'); return false;"
+                            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 transition flex justify-between items-center group">
+                            <span>English</span>
+                            <i class="fa-solid fa-check text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                                id="check-en"></i>
+                        </a>
+                        <a href="#" onclick="selectLanguage('hi'); return false;"
+                            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 transition flex justify-between items-center group">
+                            <span>Hindi</span>
+                            <i class="fa-solid fa-check text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                                id="check-hi"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleMobileMenu()"
+                        class="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+        class="hidden md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 absolute top-20 left-0 w-full shadow-lg h-[calc(100vh-5rem)] overflow-y-auto z-50">
+        <div class="px-4 pt-2 pb-4 space-y-1">
+            <a href="index.html" data-i18n="nav_home"
+                class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Home</a>
+
+            <!-- Mobile Council Verticals -->
+            <div x-data="{ open: false }">
+                <button onclick="document.getElementById('mobile-council-dropdown').classList.toggle('hidden')"
+                    class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                    <span data-i18n="nav_council">Council Verticals</span> <i
+                        class="fa-solid fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-council-dropdown"
+                    class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
+                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600">PP</a>
+                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600">CC</a>
+                </div>
+            </div>
+
+            <!-- Mobile Services -->
+            <div>
+                <button onclick="document.getElementById('mobile-services-dropdown').classList.toggle('hidden')"
+                    class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                    <span data-i18n="nav_services">Services</span> <i class="fa-solid fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-services-dropdown"
+                    class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
+                    <a href="#" class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Lean
+                        Six
+                        Sigma</a>
+                    <a href="#"
+                        class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Cybersecurity</a>
+                </div>
+            </div>
+
+            <a href="event.html" data-i18n="nav_events"
+                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Events</a>
+            <a href="https://ipecconsulting.org" target="_blank" data-i18n="nav_official"
+                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Official
+                Website</a>
+            <a href="team.html" data-i18n="nav_team"
+                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Leadership
+                Team</a>
+            <a href="contact.html" data-i18n="nav_support"
+                class="block py-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+        </div>
+    </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden z-10">
+        <div class="absolute inset-0 hero-pattern pointer-events-none opacity-20 dark:opacity-10"></div>
+        <div
+            class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-500/20 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-amber-400/20 dark:bg-amber-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-2000">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span data-i18n="hero_badge"
+                class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-6 border border-blue-100 shadow-sm animate-fade-in-up">
+                Empowering Education & Impact
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+                <span data-i18n="hero_title_1">Transparent Funding</span> <br class="hidden md:block">
+                <span data-i18n="hero_title_2" class="gradient-text">For Your
+                    Mission.</span>
+            </h1>
+            <p data-i18n="hero_desc" class="mt-4 max-w-2xl mx-auto text-lg text-slate-600 mb-10 leading-relaxed">
+                Streamline expense tracking, manage claims, and maintain complete operational oversight for your
+                institution. Designed for clarity, impact, and trust.
+            </p>
+
+            <div id="portals" class="flex flex-col sm:flex-row justify-center gap-6 animate-fade-in-up delay-200 mt-12">
+                <a href="emp.html"
+                    class="group relative px-8 py-4 bg-gradient-to-r from-blue-700 to-green-600 text-white font-bold rounded-2xl shadow-lg shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-blue-400/30">
+                    <div
+                        class="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 group-hover:translate-x-full transition-transform duration-700 -skew-x-12 -translate-x-full">
+                    </div>
+                    <span class="flex items-center gap-3 relative z-10 text-lg">
+                        <i class="fa-solid fa-user-tag text-brand-100 group-hover:scale-110 transition-transform"></i>
+                        <span data-i18n="btn_employee_portal">Employee Total</span>
+                    </span>
+                    <span data-i18n="btn_employee_sub"
+                        class="block text-xs font-medium opacity-90 mt-1 text-brand-50">Login to Submit Claims & Track
+                        Progress</span>
+                </a>
+                <a href="admin.html"
+                    class="group relative px-8 py-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md text-slate-800 dark:text-white font-bold rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 hover:border-blue-500/50 hover:bg-white dark:hover:bg-slate-800 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <span class="flex items-center gap-3 relative z-10 text-lg">
+                        <i
+                            class="fa-solid fa-shield-halved text-slate-400 group-hover:text-blue-500 transition-colors"></i>
+                        <span data-i18n="btn_admin_portal">Command Center</span>
+                    </span>
+                    <span data-i18n="btn_admin_sub"
+                        class="block text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 group-hover:text-slate-600 dark:group-hover:text-slate-300 relative z-10">Secure
+                        Admin Oversight & Audit</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <span
+                    class="text-blue-600 dark:text-blue-400 font-bold tracking-wider uppercase text-sm mb-2 block">Unmatched
+                    Efficiency</span>
+                <h2 data-i18n="feat_title"
+                    class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">Designed for Impact
+                </h2>
+                <p data-i18n="feat_desc" class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">Intuitive
+                    tools engineered to remove friction from administrative workflows, letting you focus on your
+                    mission.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+                <!-- Employee Features -->
+                <div class="order-2 md:order-1 space-y-8">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div>
+                            <h3 data-i18n="feat_emp_1_title" class="text-xl font-bold text-slate-800 mb-2">Effortless
+                                Claims</h3>
+                            <p data-i18n="feat_emp_1_desc" class="text-slate-600 leading-relaxed">Submit expenses in
+                                seconds. Upload receipts
+                                directly, categorize spending, and send for approval with a single click.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                            <h3 data-i18n="feat_emp_2_title" class="text-xl font-bold text-slate-800 mb-2">Real-Time
+                                Tracking</h3>
+                            <p data-i18n="feat_emp_2_desc" class="text-slate-600 leading-relaxed">Never wonder where
+                                your money is. Track the live
+                                status of your reimbursement from submission to payment.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <a href="emp.html"
+                            class="text-blue-600 font-bold hover:text-brand-800 flex items-center gap-2 group">
+                            <span data-i18n="link_try_emp">Try Employee View</span> <i
+                                class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+                <div
+                    class="order-1 md:order-2 bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-inner relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-50 -mr-10 -mt-10">
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=600"
+                        alt="Employee Dashboard Preview"
+                        class="rounded-xl shadow-lg border border-slate-200 w-full hover:scale-[1.02] transition-transform duration-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Admin Features -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-inner relative overflow-hidden">
+                    <div
+                        class="absolute bottom-0 left-0 w-32 h-32 bg-purple-100 rounded-full blur-3xl opacity-50 -ml-10 -mb-10">
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600"
+                        alt="Admin Dashboard Preview"
+                        class="rounded-xl shadow-lg border border-slate-200 w-full hover:scale-[1.02] transition-transform duration-500">
+                </div>
+                <div class="space-y-8">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">One-Click Approvals</h3>
+                            <p class="text-slate-600 leading-relaxed">Review receipts, check policy compliance, and
+                                approve or reject claims instantly. Bulk actions available for efficiency.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-file-csv"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Audit & Reporting</h3>
+                            <p class="text-slate-600 leading-relaxed">Generate comprehensive CSV/PDF reports provided
+                                with A-to-Z transaction details. Maintain full audit trails for compliance.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <a href="admin.html"
+                            class="text-blue-600 font-bold hover:text-brand-800 flex items-center gap-2 group">
+                            Access Admin Console <i
+                                class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Capabilities (Portfolio Style Showcase) -->
+    <section class="py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
+        <!-- Abstract Background -->
+        <div class="absolute inset-0 opacity-5 pointer-events-none">
+            <div
+                class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px]">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span data-i18n="cap_badge"
+                    class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider mb-4 border border-blue-200">System
+                    Architecture</span>
+                <h2 data-i18n="cap_title" class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Comprehensive
+                    Capabilities</h2>
+                <p data-i18n="cap_desc" class="text-slate-500 max-w-2xl mx-auto text-lg">Engineered for scalability.
+                    Explore the full
+                    spectrum of features powering the IPEC ecosystem.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Reporting -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-green-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </div>
+                    <h3 data-i18n="cap_reporting"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-green-600 transition-colors">Advanced
+                        Reporting</h3>
+                    <p data-i18n="cap_reporting_desc" class="text-sm text-slate-500 leading-relaxed">Wait-free
+                        generation of comprehensive CSV/PDF
+                        reports containing A-Z transaction metadata for instant reconciliation.</p>
+                </div>
+
+                <!-- Card 2: Audit -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-purple-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </div>
+                    <h3 data-i18n="cap_audit"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-purple-600 transition-colors">Smart Audit
+                        Trails</h3>
+                    <p data-i18n="cap_audit_desc" class="text-sm text-slate-500 leading-relaxed">Immutable digital
+                        footprint for every approval,
+                        rejection, and modification ensuring 100% compliance transparency.</p>
+                </div>
+
+                <!-- Card 3: Currency -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-blue-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <h3 data-i18n="cap_currency"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">Global
+                        Currency Core</h3>
+                    <p data-i18n="cap_currency_desc" class="text-sm text-slate-500 leading-relaxed">Native handling of
+                        INR, USD, EUR, and GBP with
+                        real-time exchange logic for cross-border expense management.</p>
+                </div>
+
+                <!-- Card 4: Vault -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-slate-100 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-600 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <h3 data-i18n="cap_vault"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-slate-600 transition-colors">Secure
+                        Evidence Vault</h3>
+                    <p data-i18n="cap_vault_desc" class="text-sm text-slate-500 leading-relaxed">Encrypted cloud object
+                        storage for digital
+                        receipts, invoices, and proof documents ensuring zero data loss.</p>
+                </div>
+
+                <!-- Card 5: Chat -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-pink-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center text-pink-500 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h3 data-i18n="cap_chat"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-pink-500 transition-colors">Real-Time
+                        Comms</h3>
+                    <p data-i18n="cap_chat_desc" class="text-sm text-slate-500 leading-relaxed">Integrated context-aware
+                        chat system allowing
+                        immediate query resolution between employees and approvers.</p>
+                </div>
+
+                <!-- Card 6: Security -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-red-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-500 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-user-lock"></i>
+                    </div>
+                    <h3 data-i18n="cap_security"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-red-500 transition-colors">Role-Based
+                        Security</h3>
+                    <p data-i18n="cap_security_desc" class="text-sm text-slate-500 leading-relaxed">Strict cryptographic
+                        isolation between Employee
+                        claims and Admin oversight capabilities for enterprise-grade security.</p>
+                </div>
+
+                <!-- Card 7: Mobile -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-orange-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-orange-500 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3 data-i18n="cap_mobile"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-orange-500 transition-colors">Adaptive
+                        Interface</h3>
+                    <p data-i18n="cap_mobile_desc" class="text-sm text-slate-500 leading-relaxed">Fluid, responsive
+                        design system that transforms
+                        seamlessly across Mobile, Tablet, and Desktop viewports.</p>
+                </div>
+
+                <!-- Card 8: AI -->
+                <div
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-20 h-20 bg-indigo-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity -mr-5 -mt-5">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-500 text-xl mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 data-i18n="cap_ai"
+                        class="font-bold text-slate-800 mb-2 group-hover:text-indigo-500 transition-colors">AI
+                        Intelligence</h3>
+                    <p data-i18n="cap_ai_desc" class="text-sm text-slate-500 leading-relaxed">Built-in AI copilot for
+                        policy guidance, spending
+                        trend analysis, and automated help desk support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white border-t border-slate-200">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <div
+                class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <h2 data-i18n="contact_title" class="text-3xl font-bold text-slate-900 mb-4">Need Assistance?</h2>
+            <p data-i18n="contact_desc" class="text-slate-500 mb-8">
+                Our support team is available 24/7 to help you with any issues regarding the Expense Manager portals.
+            </p>
+
+            <div class="flex flex-col md:flex-row justify-center gap-6 mb-10">
+                <a href="mailto:support@ipec.org"
+                    class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition border border-slate-100">
+                    <div
+                        class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-sm">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="text-left">
+                        <p data-i18n="contact_email_label" class="text-xs font-bold text-slate-400 uppercase">Email
+                            Support</p>
+                        <p class="text-sm font-bold text-slate-700">info@ipecconsulting.org</p>
+                    </div>
+                </a>
+                <a href="tel:+919876543210"
+                    class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition border border-slate-100">
+                    <div
+                        class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-green-600 shadow-sm">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="text-left">
+                        <p data-i18n="contact_helpline_label" class="text-xs font-bold text-slate-400 uppercase">
+                            Helpline</p>
+                        <p class="text-sm font-bold text-slate-700">+91 98765 43210</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="text-sm text-slate-400">
+                <p>IPEC Consulting Pvt Ltd. <br> 1,982/2 Ward 7, Mehrauli, New Delhi – 110030 </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Link Generator CTA -->
+    <section class="py-16 bg-slate-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">Create Link to Upload on Your Expense</h2>
+            <p class="text-slate-500 mb-8 max-w-xl mx-auto">
+                Securely upload your expense receipts or documents to your personal Google Drive and generate a
+                shareable link instantly.
+            </p>
+            <a href="link.html"
+                class="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <i class="fa-brands fa-google-drive"></i>
+                <span>Generate Drive Link</span>
+                <i class="fa-solid fa-arrow-right opacity-70 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Device Health Check CTA -->
+    <section class="py-20 bg-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-4 border border-indigo-100">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                System Diagnostics
+            </div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">Is Your Device Healthy?</h2>
+            <p class="text-slate-500 mb-8 max-w-xl mx-auto">
+                Ensure your laptop or mobile device is fully optimized for the IPEC ecosystem.
+                Run a quick diagnostic check on your screen, audio, and sensors.
+            </p>
+            <a href="test.html"
+                class="inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <i class="fa-solid fa-laptop-medical"></i>
+                <span>Check Device Health Now</span>
+                <i class="fa-solid fa-arrow-right opacity-70 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Developer Footer & Legal -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs border border-slate-700">
+                        IPEC</div>
+                    <span class="font-semibold text-sm">© 2026 IPEC Expense Manager</span>
+                </div>
+                <div class="flex gap-6 text-xs font-medium text-slate-400">
+                    <a href="privacy.html" data-i18n="footer_privacy" class="hover:text-white transition">Privacy
+                        Policy</a>
+                    <a href="terms.html" data-i18n="footer_terms" class="hover:text-white transition">Terms of
+                        Service</a>
+                    <a href="help.html" data-i18n="footer_help" class="hover:text-white transition">Help Center</a>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 text-center relative overflow-hidden group">
+                <!-- Techy Background Element -->
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMTAwLCAxMTYsIDEzOSwgMC4xKSIvPjwvc3ZnPg==')] opacity-20">
+                </div>
+
+                <p class="text-[10px] text-slate-500 tracking-[0.2em] uppercase mb-4 font-mono">
+                    <span class="text-blue-500">&lt;</span> ARCHITECTED & DEPLOYED <span
+                        class="text-blue-500">/&gt;</span>
+                </p>
+
+                <a href="https://mitanshubhasin.netlify.app" target="_blank"
+                    class="inline-flex items-center gap-3 relative z-10 group-hover:scale-105 transition-transform duration-300">
+                    <div class="h-px w-8 bg-gradient-to-r from-transparent to-blue-500/50"></div>
+                    <span
+                        class="font-mono text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">
+                        Mitanshu_Bhasin<span class="text-white animate-pulse">_</span>
+                    </span>
+                    <div class="h-px w-8 bg-gradient-to-l from-transparent to-blue-500/50"></div>
+                </a>
+
+                <p class="text-[10px] text-slate-600 mt-4 font-mono">
+                    <span class="opacity-50">INITIALIZED_AT:</span> <span class="text-blue-500">2026.02.17</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot Initialization -->
+    <script type="module">
+        import { AISupport } from './ai-support.js';
+
+        // Toggle Mobile Menu
+        window.toggleMobileMenu = function () {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+
+            menu.classList.toggle('hidden');
+
+            if (menu.classList.contains('hidden')) {
+                // Menu is closed, show hamburger
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                // Menu is open, show close icon
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        };
+
+        // Initialize Chatbot for Visitors
+        const initChatbot = () => {
+            // Create a guest context
+            const guestContext = {
+                name: 'Visitor',
+                role: 'Guest',
+                email: 'guest@ipec.org',
+                department: 'General Inquiry'
+            };
+
+            new AISupport(guestContext);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initChatbot);
+        } else {
+            initChatbot();
+        }
+    </script>
+
+    <!-- Google Translate Script -->
+    <div id="google_translate_element" class="hidden"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Language Logic -->
+    <style>
+        /* Hide Google Translate Banner */
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        /* Hide Tooltip */
+        .goog-tooltip {
+            display: none !important;
+        }
+
+        .goog-tooltip:hover {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Specific Fix for Google Top Bar pushing content down */
+        iframe.goog-te-banner-frame {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+        // Custom Language Switcher Logic
+        function triggerGoogleTranslate(lang) {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // Lang Select UI
+        window.toggleLanguageDropdown = () => {
+            const dd = document.getElementById('lang-dropdown');
+            if (dd) dd.classList.toggle('hidden');
+        };
+
+        window.selectLanguage = (lang) => {
+            triggerGoogleTranslate(lang);
+            updateLangUI(lang);
+            const dd = document.getElementById('lang-dropdown');
+            if (dd) dd.classList.add('hidden');
+        };
+
+        function updateLangUI(lang) {
+            const display = document.getElementById('current-lang-display');
+            if (display) display.textContent = lang.toUpperCase();
+
+            // Checks
+            const checkEn = document.getElementById('check-en');
+            if (checkEn) {
+                checkEn.classList.toggle('opacity-0', lang !== 'en');
+                checkEn.classList.toggle('opacity-100', lang === 'en');
+            }
+            const checkHi = document.getElementById('check-hi');
+            if (checkHi) {
+                checkHi.classList.toggle('opacity-0', lang !== 'hi');
+                checkHi.classList.toggle('opacity-100', lang === 'hi');
+            }
+        }
+
+        // Init - Check for existing cookie if possible, otherwise default EN
+        // Google Translate handles its own persistence via cookies.
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('lang-toggle-container');
+            const dropdown = document.getElementById('lang-dropdown');
+            if (container && !container.contains(e.target)) {
+                if (dropdown) dropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

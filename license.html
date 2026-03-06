@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Information - IPEC Consulting</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <script src="theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <nav
+        class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html"
+                class="font-bold text-xl bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">IPEC
+                Consulting</a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()"
+                    class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-yellow-400 transition">
+                    <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                </button>
+                <a href="index.html"
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Back
+                    to
+                    Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="glass-card rounded-2xl p-8 md:p-12 bg-white dark:bg-slate-800">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">License Information</h1>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Proprietary Software License</p>
+
+            <div class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 space-y-6">
+                <p><strong>Copyright &copy; 2026 IPEC Consulting. All rights reserved.</strong></p>
+                <p>This software, known as the "IPEC Consulting Portal", including all source
+                    code, database structures, user interfaces, and associated documentation (the "Software"), is the
+                    proprietary and confidential property of IPEC Consulting.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">1. Grant of License</h2>
+                <p>IPEC Consulting grants authorized employees and contractors a limited, non-exclusive,
+                    non-transferable, revocable license to access and use the Software solely for internal business
+                    operations and expense management purposes within the organization.</p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">2. Restrictions</h2>
+                <p>Users may not:</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>Copy, modify, or create derivative works based on the Software.</li>
+                    <li>Decompile, disassemble, or reverse engineer the Software.</li>
+                    <li>Sell, rent, lease, sub-license, or otherwise distribute the Software to any third party.</li>
+                    <li>Remove any proprietary notices or labels from the Software.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">3. Third-Party Components</h2>
+                <p>The Software may include third-party software components (e.g., open-source libraries like Font
+                    Awesome, AOS, Tailwind CSS). These components are subject to their respective licenses. IPEC
+                    Consulting makes no warranty regarding these third-party components.</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li><strong>Font Awesome:</strong> CC BY 4.0 / SIL OFL 1.1 / MIT</li>
+                    <li><strong>Tailwind CSS:</strong> MIT License</li>
+                    <li><strong>AOS (Animate On Scroll):</strong> MIT License</li>
+                    <li><strong>Chart.js:</strong> MIT License</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-8">4. Disclaimer of Warranty</h2>
+                <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+                    LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+                    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-slate-500 dark:text-slate-400 text-sm">
+            <p>&copy; 2026 IPEC Consulting. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Optimization -->
+    <meta name="description"
+        content="Explore upcoming IPEC events, workshops, and training programs focused on process excellence, digital innovation, and leadership development.">
+    <meta name="keywords"
+        content="IPEC Events, Workshops, Seminars, Process Excellence, Lean Six Sigma, Quantum Technologies, Education Conference">
+    <meta name="author" content="International Process Excellence Council">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ipecconsulting.netlify.app/event.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ipecconsulting.netlify.app/event.html">
+    <meta property="og:title" content="IPEC Events and Workshops">
+    <meta property="og:description"
+        content="Explore upcoming IPEC events, workshops, and training programs focused on process excellence, digital innovation, and leadership development.">
+    <meta property="og:image"
+        content="https://ipecconsulting.org/wp-content/uploads/2025/12/IPEC-Events-and-Workshops.jpg">
+
+    <title>Events & Workshops | IPEC Consulting</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="ipec.jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: {
+                            red: '#D93025',
+                            green: '#1E8E3E',
+                            blue: '#1A73E8',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="theme.js"></script>
+    <!-- Alpine.js for mobile menu interactions -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Distinct Gradient Background */
+        .hero-bg {
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #fff7ed 100%);
+        }
+
+        .dark .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased flex flex-col min-h-screen transition-colors duration-300 hero-bg">
+
+    <!-- Navigation -->
+    <nav
+        class="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-3">
+                        <img src="ipec.jpg" alt="IPEC Logo" class="h-10 w-auto">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg leading-tight text-slate-900 dark:text-white">IPEC
+                                Consulting</span>
+                            <span class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">International
+                                Process Excellence Council</span>
+                        </div>
+                    </a>
+                </div>
+                <!-- Links -->
+                <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600 dark:text-slate-400 items-center">
+                    <a href="index.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
+
+                    <!-- Council Verticals Dropdown -->
+                    <div class="relative group">
+                        <button
+                            class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition py-2">
+                            Council Verticals <i
+                                class="fa-solid fa-chevron-down text-[10px] ml-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div
+                            class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+                            <div
+                                class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+                                <a href="#"
+                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition border-b border-slate-50 dark:border-slate-700/50 last:border-0">PP</a>
+                                <a href="#"
+                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">CC</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button
+                            class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition py-2">
+                            Services <i
+                                class="fa-solid fa-chevron-down text-[10px] ml-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div
+                            class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0 z-50">
+                            <div
+                                class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+                                <a href="#"
+                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition border-b border-slate-50 dark:border-slate-700/50 last:border-0">Lean
+                                    Six Sigma</a>
+                                <a href="#"
+                                    class="block px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Cybersecurity</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="event.html" class="text-indigo-600 dark:text-indigo-400 font-bold transition">Events</a>
+                    <a href="https://ipecconsulting.org" target="_blank"
+                        class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Official Website</a>
+                    <a href="team.html" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Leadership
+                        Team</a>
+                    <a href="contact.html"
+                        class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Contact</a>
+                    <button onclick="toggleTheme()"
+                        class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
+                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                    </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleTheme()"
+                        class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
+                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                    </button>
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                        class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="index.html" class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Home</a>
+
+                <!-- Mobile Council Verticals -->
+                <div x-data="{ open: false }">
+                    <button onclick="document.getElementById('mobile-council-dropdown').classList.toggle('hidden')"
+                        class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                        Council Verticals <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-council-dropdown"
+                        class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
+                        <a href="#"
+                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">PP</a>
+                        <a href="#"
+                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">CC</a>
+                    </div>
+                </div>
+
+                <!-- Mobile Services -->
+                <div>
+                    <button onclick="document.getElementById('mobile-services-dropdown').classList.toggle('hidden')"
+                        class="w-full flex justify-between items-center py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                        Services <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-services-dropdown"
+                        class="hidden pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-1">
+                        <a href="#"
+                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Lean
+                            Six Sigma</a>
+                        <a href="#"
+                            class="block py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600">Cybersecurity</a>
+                    </div>
+                </div>
+
+                <a href="event.html" class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Events</a>
+                <a href="https://ipecconsulting.org" target="_blank"
+                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Official
+                    Website</a>
+                <a href="team.html"
+                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Leadership
+                    Team</a>
+                <a href="contact.html"
+                    class="block py-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <div class="text-center py-20 px-4">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold mb-4 border border-blue-100 dark:border-blue-800">
+                IPEC Events
+            </span>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Join Our <span
+                    class="text-blue-600 dark:text-blue-400">Events</span></h1>
+            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Stay updated with our latest workshops, webinars, and training sessions focused on process excellence,
+                digital innovation, and leadership.
+            </p>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Event 1: Gyan Sabha -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ChatGPT-Image-Jan-5-2026-03_08_40-PM.png"
+                            alt="Gyan Sabha"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            25–28 July</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Participation in Gyan Sabha –
+                            National Education Conference</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-location-dot mr-1"></i> Kalady, Kerala</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Organised by Shiksha Sanskriti Utthan Nyas. Associated Organization: Rashtriya Swayamsevak
+                            Sangh.
+                        </p>
+                        <a href="https://ipecconsulting.org/gyan_sabha/" target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 2: Lean Six Sigma Quantum -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ChatGPT-Image-Jan-5-2026-03_17_18-PM.png"
+                            alt="Lean Six Sigma Quantum"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            12–14 Aug</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Lean Six Sigma for Quantum
+                            Technologies</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-chalkboard-user mr-1"></i> Faculty Program</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Theme: Designing, Deploying, and Auditing a National Quantum Computing Mission using a
+                            Process Excellence Approach.
+                        </p>
+                        <a href="https://ipecconsulting.org/lean-six-sigma-for-quantum-technologies-faculty-program/"
+                            target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 3: International Workshops Sept -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ChatGPT-Image-Jan-5-2026-03_19_18-PM-e1767676864799.png"
+                            alt="International Workshops"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Sept 2025</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">International Workshops and
+                            Conferences</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-calendar mr-1"></i> 15–25 September</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Data Needs for Planning Sustainable Development (Greater Noida) & Statistics and Data
+                            Science for Development Planning (Kolkata).
+                        </p>
+                        <a href="https://ipecconsulting.org/international-workshops-and-conferences-september/"
+                            target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 4: International Conference Kolkata -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ChatGPT-Image-Jan-5-2026-03_19_18-PM-e1767676864799.png"
+                            alt="Kolkata Conference"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div
+                            class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Conference</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">International Conference –
+                            Kolkata</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-location-dot mr-1"></i> Kolkata</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Theme: Statistical Literacy for Citizen Empowerment.
+                        </p>
+                        <a href="https://ipecconsulting.org/international-conference-kolkata/" target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 5: STARR -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/486140596_1199440102194346_3493018515902588217_n.jpg"
+                            alt="STARR Event"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Delegation</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">STARR Event Participation</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-users mr-1"></i> IPEC Delegation</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Uttam Biswas (CEO), Sangeet Malhotra (COO), Deepak Dwivedi, MahaVidhya Dwivedi.
+                        </p>
+                        <a href="https://ipecconsulting.org/starr-event-participation/" target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 6: Quantum4Alpha -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2025/12/Quantum4Alpha-Magazine-1st-November-Issue-01_page-0001.jpg"
+                            alt="Quantum4Alpha"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div
+                            class="absolute top-2 right-2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            Nov 1</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Launch of Quantum4Alpha
+                            Initiative</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-rocket mr-1"></i> Initiative Launch</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Official launch date: 1 November 2025.
+                        </p>
+                        <a href="https://ipecconsulting.org/launch-of-quantum4alpha-initiative/" target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 7: ICVMCS 2025 -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ICVMCS-final.png"
+                            alt="ICVMCS 2025"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div
+                            class="absolute top-2 right-2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            2025</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Participation in ICVMCS 2025
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-university mr-1"></i> Miranda House, Delhi</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Theme: Vedic Pathways to Mind, Culture, and Society.
+                        </p>
+                        <a href="https://ipecconsulting.org/participation-in-icvmcs-2025-miranda-house-university-of-delhi/"
+                            target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 8: Horizon Competition -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/cropped-news-logo-hr-1024x331-1.png"
+                            alt="Horizon Competition"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            Training</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Horizon Competition School,
+                            Agra</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-graduation-cap mr-1"></i> White Belt Training</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            World’s first Lean and Six Sigma White Belt training for 350 Students and 12 Teachers.
+                        </p>
+                        <a href="https://ipecconsulting.org/horizon-competition-school-agra/" target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 9: NEP 2030 -->
+                <div
+                    class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ipecconsulting.org/wp-content/uploads/2026/01/ChatGPT-Image-Jan-5-2026-03_41_02-PM.png"
+                            alt="NEP 2030"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            23–27 Dec</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">NEP 2030 Co-Creation
+                            International Workshop</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2"><i
+                                class="fa-solid fa-users mr-1"></i> 230 Participants</p>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 mb-4 flex-grow">
+                            Discussing on NEP 2030 Revolution with participants from diverse academic and policy
+                            backgrounds.
+                        </p>
+                        <a href="https://ipecconsulting.org/nep-2030-co-creation-international-workshop/"
+                            target="_blank"
+                            class="text-blue-600 dark:text-blue-400 font-semibold hover:underline text-sm mt-auto inline-flex items-center">
+                            Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <img src="ipec.jpg" alt="IPEC Logo" class="h-8 w-auto grayscale opacity-80">
+                        <span class="font-bold text-lg text-slate-700 dark:text-slate-200">IPEC</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-sm">
+                        Empowering organizations through process excellence, certifications, and strategic consulting
+                        since 2025.
+                    </p>
+                    <div class="flex flex-col items-start gap-1 mt-4 text-sm text-slate-600 dark:text-slate-400">
+                        <p class="mt-2"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> 1,982/2 Ward 7,
+                            Mehrauli, New Delhi – 110030</p>
+                        <p class="text-xs text-slate-500"><i class="fa-regular fa-clock mr-1"></i> Mon–Fri, 10:00–18:00
+                            IST</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="index.html"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a></li>
+                        <li><a href="team.html"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition">Leadership Team</a></li>
+                        <li><a href="https://ipecconsulting.org" target="_blank"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition">Services</a></li>
+                        <li><a href="support.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Help
+                                Desk</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6">Legal</h4>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="par.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Payments
+                                and Refunds</a></li>
+                        <li><a href="privacy.html"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Terms
+                                of Use</a></li>
+                        <li><a href="license.html"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition">License</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-slate-500 text-center md:text-left">
+                    &copy; 2025 International Process Excellence Council. All rights reserved.
+                </p>
+                <div class="flex gap-4">
+                    <a href="https://www.linkedin.com/company/international-process-excellence-council/" target="_blank"
+                        class="text-slate-400 hover:text-blue-600 transition"><i
+                            class="fa-brands fa-linkedin text-lg"></i></a>
+                    <a href="https://www.youtube.com/@ipecconsulting" target="_blank"
+                        class="text-slate-400 hover:text-red-500 transition"><i
+                            class="fa-brands fa-youtube text-lg"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-blue-400 transition"><i
+                            class="fa-brands fa-twitter text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Support Widget -->
+    <script type="module">
+        import { AISupport } from './ai-support.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AI Support (Floating Widget)
+            const aiSupport = new AISupport({
+                name: 'Visitor',
+                role: 'Guest',
+                page: 'Events Page'
+            });
+        });
+
+        // Helper to open chat from the CTA button
+        window.openChatWidget = function () {
+            const trigger = document.getElementById('ai-widget-trigger');
+            if (trigger) trigger.click();
+        }
+    </script>
+</body>
+
+</html>

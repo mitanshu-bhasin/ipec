@@ -1,0 +1,153 @@
+import os
+import re
+
+dir_path = r'c:\Users\mitan\Videos\Expense Tracker'
+common_css = r'''/* common.css */
+
+/* --- link.html Styles --- */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-effect {
+    background: rgba(17, 24, 39, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hero-pattern {
+    background-image: radial-gradient(#3b82f6 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.1;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* --- test.html Styles --- */
+body.test-page {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.test-page .mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Glassmorphism Mobile Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s active ease;
+}
+
+.glass-card:active {
+    transform: scale(0.98);
+}
+
+.blob {
+    position: absolute;
+    filter: blur(90px);
+    z-index: -1;
+    opacity: 0.5;
+}
+
+/* Mobile Grid Test */
+.grid-cell {
+    border: 1px solid #e2e8f0;
+    touch-action: none;
+}
+
+.grid-cell.filled {
+    background-color: #10b981;
+    border-color: #059669;
+}
+
+/* Range Slider Styling */
+.test-page input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+.test-page input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    background: #4f46e5;
+    margin-top: -12px;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
+}
+
+.test-page input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #e2e8f0;
+    border-radius: 2px;
+}
+
+/* Fade Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+'''
+
+with open(os.path.join(dir_path, 'common.css'), 'w', encoding='utf-8') as f:
+    f.write(common_css)
+
+def drop_style_tag(html_text):
+    return re.sub(r'<style>.*?</style>', '', html_text, flags=re.DOTALL)
+
+def inject_common_css(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        html = f.read()
+    
+    html = drop_style_tag(html)
+    
+    if '<link rel="stylesheet" href="common.css">' not in html:
+        html = html.replace('</head>', '    <link rel="stylesheet" href="common.css">\n</head>')
+        
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+inject_common_css(os.path.join(dir_path, 'link.html'))
+inject_common_css(os.path.join(dir_path, 'test.html'))
+inject_common_css(os.path.join(dir_path, 'support.html'))
+
+# Update body class for test.html namespace
+test_path = os.path.join(dir_path, 'test.html')
+with open(test_path, 'r', encoding='utf-8') as f:
+    html = f.read()
+
+if 'class="test-page min-h-screen' not in html:
+    html = html.replace('<body class="min-h-screen', '<body class="test-page min-h-screen')
+
+with open(test_path, 'w', encoding='utf-8') as f:
+    f.write(html)
+
+print("Created common.css and updated support.html, link.html, test.html")

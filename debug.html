@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Console | IPEC Expense Manager</title>
+
+    <!-- Meta Tags -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="ipec.jpg">
+
+    <!-- Tailwind CSS & Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: {
+                            red: '#D93025',
+                            green: '#1E8E3E',
+                            blue: '#1A73E8',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="theme.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Distinct Gradient Background */
+        .hero-bg {
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #fff7ed 100%);
+        }
+
+        .dark .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased flex flex-col min-h-screen transition-colors duration-300 hero-bg">
+
+    <!-- Navigation -->
+    <nav
+        class="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-3">
+                    <img src="ipec.jpg" alt="IPEC Logo" class="h-10 w-auto">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight text-slate-900 dark:text-white">IPEC Expense
+                            Manager</span>
+                        <span class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Debug Console -
+                            <span class="text-red-500 font-bold">DEV ONLY</span></span>
+                    </div>
+                </div>
+                <!-- Links -->
+                <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600 dark:text-slate-400 items-center">
+                    <a href="index.html" class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Go Home</a>
+                    <button onclick="toggleTheme()"
+                        class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center">
+                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Left: Environment & Actions -->
+            <div class="space-y-6">
+                <!-- Environment Info -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-900 dark:text-white">
+                        <i class="fa-solid fa-server text-blue-500"></i> Environment Info
+                    </h2>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400" id="env-info">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Debug Actions -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-900 dark:text-white">
+                        <i class="fa-solid fa-toolbox text-purple-500"></i> Actions
+                    </h2>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="clearStorage('local')"
+                            class="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 hover:text-red-700 transition text-sm font-medium border border-red-200 dark:border-red-800/50">
+                            Clear LocalStorage
+                        </button>
+                        <button onclick="clearStorage('session')"
+                            class="p-3 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-200 hover:text-orange-700 transition text-sm font-medium border border-orange-200 dark:border-orange-800/50">
+                            Clear SessionStorage
+                        </button>
+                        <button onclick="reloadApp()"
+                            class="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 hover:text-blue-700 transition text-sm font-medium border border-blue-200 dark:border-blue-800/50 col-span-2">
+                            Full Reload (Hard Refresh)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Storage Viewer -->
+            <div class="space-y-6">
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 h-[600px] flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+                            <i class="fa-solid fa-database text-green-500"></i> Storage Viewer
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="refreshStorageView()"
+                                class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">
+                                <i class="fa-solid fa-sync"></i> Refresh
+                            </button>
+                            <select id="storage-select" onchange="refreshStorageView()"
+                                class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded border-none outline-none text-slate-600 dark:text-slate-300">
+                                <option value="local">LocalStorage</option>
+                                <option value="session">SessionStorage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex-grow overflow-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-4 font-mono text-xs border border-slate-200 dark:border-slate-700 custom-scrollbar">
+                        <pre id="storage-content"
+                            class="whitespace-pre-wrap break-all text-slate-700 dark:text-slate-300">
+                            Loading...
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Environment Info
+        function updateEnvInfo() {
+            const info = [
+                { label: 'User Agent', value: navigator.userAgent },
+                { label: 'Platform', value: navigator.platform },
+                { label: 'Language', value: navigator.language },
+                { label: 'Screen', value: `${window.screen.width}x${window.screen.height}` },
+                { label: 'Viewport', value: `${window.innerWidth}x${window.innerHeight}` },
+                { label: 'Cookies Enabled', value: navigator.cookieEnabled ? 'Yes' : 'No' },
+                { label: 'Service Worker', value: 'serviceWorker' in navigator ? 'Supported' : 'Not Supported' },
+                { label: 'Local Storage', value: typeof (Storage) !== "undefined" ? 'Supported' : 'Not Supported' },
+            ];
+
+            const list = document.getElementById('env-info');
+            list.innerHTML = info.map(item => `
+                <li class="flex justify-between border-b last:border-0 border-slate-100 dark:border-slate-700/50 pb-2 last:pb-0">
+                    <span class="font-medium">${item.label}:</span>
+                    <span class="text-slate-500 max-w-[50%] truncate text-right" title="${item.value}">${item.value}</span>
+                </li>
+            `).join('');
+        }
+
+        // Storage Management
+        function clearStorage(type) {
+            if (confirm(`Are you sure you want to clear ${type} storage? This will log you out and reset settings.`)) {
+                if (type === 'local') localStorage.clear();
+                else sessionStorage.clear();
+                refreshStorageView();
+                alert(`${type} storage cleared.`);
+            }
+        }
+
+        function reloadApp() {
+            window.location.reload(true);
+        }
+
+        function refreshStorageView() {
+            const type = document.getElementById('storage-select').value;
+            const content = document.getElementById('storage-content');
+            const storage = type === 'local' ? localStorage : sessionStorage;
+
+            if (storage.length === 0) {
+                content.innerHTML = '<span class="text-slate-400 italic">Storage is empty</span>';
+                return;
+            }
+
+            let html = '';
+            for (let i = 0; i < storage.length; i++) {
+                const key = storage.key(i);
+                let value = storage.getItem(key);
+
+                // Try to format JSON
+                try {
+                    const parsed = JSON.parse(value);
+                    value = JSON.stringify(parsed, null, 2); // Pretty print
+                } catch (e) {
+                    // Not JSON, keep as is
+                }
+
+                html += `<div class="mb-4 last:mb-0">
+                    <div class="text-blue-600 dark:text-blue-400 font-bold mb-1">[${key}]</div>
+                    <div class="text-slate-600 dark:text-slate-400 pl-4 border-l-2 border-slate-200 dark:border-slate-700">${value}</div>
+                </div>`;
+            }
+            content.innerHTML = html;
+        }
+
+        // Init
+        window.addEventListener('load', () => {
+            updateEnvInfo();
+            refreshStorageView();
+        });
+    </script>
+</body>
+
+</html>

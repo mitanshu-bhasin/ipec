@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager Systems Architecture & Documentation - IPEC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            /* Light slate from index.html */
+            --surface-color: #ffffff;
+            --surface-border: #e2e8f0;
+            --primary-emerald: #059669;
+            /* emerald-600 */
+            --primary-amber: #d97706;
+            /* amber-600 */
+            --text-main: #1e293b;
+            /* slate-800 */
+            --text-muted: #64748b;
+            /* slate-500 */
+            --cert-gold: #f59e0b;
+            --api-blue: #2563eb;
+            --api-bg: #eff6ff;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.05), transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.05), transparent 40%);
+            background-attachment: fixed;
+            padding: 2rem;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+            margin-top: 2rem;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-emerald), var(--primary-amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs System */
+        .tabs-container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-emerald);
+            background: var(--surface-color);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-emerald);
+            box-shadow: 0 -2px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 3rem;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-header {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--surface-border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-badge {
+            background: #e2e8f0;
+            font-size: 1rem;
+            padding: 4px 12px;
+            border-radius: 5px;
+            color: var(--text-main);
+            font-family: monospace;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Module Cards */
+        .module-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .module-card:hover {
+            border-color: var(--primary-emerald);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .module-title {
+            color: var(--primary-emerald);
+            font-size: 1.8rem;
+            font-family: var(--font-display);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .module-desc {
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        /* Workflows */
+        .workflow-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .workflow-box h4 {
+            color: var(--primary-amber);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: var(--primary-emerald);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+        }
+
+        .step-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            padding-top: 3px;
+        }
+
+        .step-text strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* API Badges */
+        .api-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--surface-border);
+        }
+
+        .api-badge {
+            background: var(--api-bg);
+            color: var(--api-blue);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .api-badge::before {
+            content: '⚡';
+            font-size: 0.9rem;
+        }
+
+        .tech-stack-overview {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 3rem;
+        }
+
+        .tech-stack-overview h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-emerald);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .tech-stack-overview p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .tech-item h5 {
+            color: var(--primary-amber);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-display);
+        }
+
+        .tech-item p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            color: #94a3b8;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .tabs-header {
+                flex-direction: column;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .module-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>System Architecture & Docs</h1>
+        <p>A comprehensive deep-dive into the modules, workflows, and operations of the IPEC Expense Manager web
+            application ecosystem.</p>
+    </header>
+
+    <div class="tabs-container">
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="openTab('admin')">Admin Portal Documentation</button>
+            <button class="tab-btn" onclick="openTab('emp')">Employee Portal Documentation</button>
+        </div>
+
+        <!-- ==============================================
+             ADMIN TAB
+        =============================================== -->
+        <div id="admin" class="tab-content active">
+            <h2 class="file-header">Command Center Overview <span class="file-badge">admin.html</span></h2>
+
+            <div class="module-grid">
+                <!-- Module 1: Dashboard & Analytics Engine -->
+                <div class="module-card">
+                    <div class="module-title">Dashboard & Analytics Engine</div>
+                    <div class="module-desc">
+                        The central hub for administrative oversight. It pulls vast amounts of expense data across the
+                        organization in real-time, displaying crucial metrics like "Total Corporate Spending" and
+                        "Pending Approvals."
+                        This module is designed to provide immediate situational awareness using visual tools (via
+                        Chart.js) and quick KPI cards.
+                        <br><br>
+                        <strong>Usage:</strong> Financial Controllers and Main Admins use this dashboard to instantly
+                        verify the health of the company's financial burn rate over specific quarters or months.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Logical Workflow Execution</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Real-time Listener Initialization:</strong> The page
+                                    orchestrates a Firebase <code>onSnapshot</code> listener binding to the
+                                    <code>expenses</code> and <code>users</code> collections immediately after the admin
+                                    authenticates successfully.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Data Aggregation Pipeline:</strong> Incoming documents
+                                    are mapped and reduced locally. Variables accumulator adds up amounts where
+                                    <code>status === 'Approved'</code>. Pending requests are pushed into a separate
+                                    review array.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Chart Data Transformation:</strong> The reduced dataset
+                                    is split into labels (Dates, Categories, Departments) and datasets (Amounts). This
+                                    transformed data is fed directly into the Canvas contexts replacing old Chart.js
+                                    instances.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">4</div>
+                                <div class="step-text"><strong>DOM Repaint:</strong> Counter elements animating from 0
+                                    to the target total are triggered. The UI shifts to resolve loading states,
+                                    displaying the latest financial state of the firm securely.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">Firebase Firestore onSnapshot()</span>
+                        <span class="api-badge">Chart.js new Chart()</span>
+                        <span class="api-badge">requestAnimationFrame for Counters</span>
+                    </div>
+                </div>
+
+                <!-- Module 2: Expense Evaluation & Adjudication -->
+                <div class="module-card">
+                    <div class="module-title">Expense Evaluation & Adjudication Module</div>
+                    <div class="module-desc">
+                        A critical compliance gateway. It lists all pending claims submitted by the employee workforce.
+                        Admins review itemized lines, inspect uploaded receipts, and make definitive binary decisions
+                        (Approve/Reject) or push for revisions.
+                        <br><br>
+                        <strong>Usage:</strong> Used daily by HR managers or department heads to authorize
+                        reimbursements. Requires scrutiny of PDF/Image proofs against stated request amounts.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Logical Workflow Execution</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Queue Construction:</strong> The UI builds a table or
+                                    grid of items where <code>status === 'Pending'</code>, sorted by timestamp
+                                    descending using a Firestore query with <code>orderBy('createdAt', 'desc')</code>.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Deep Inspection Trigger:</strong> Admin clicks "Review".
+                                    A modal expands capturing the specific document via its ID. It triggers a fetch for
+                                    the attached <code>receiptUrl</code> from Firebase Cloud Storage securely.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Adjudication Transaction:</strong> If accepted, the Admin
+                                    clicks "Approve". An asynchronous transaction begins. The system records the
+                                    <code>processedBy</code> (Admin UID) and <code>processedAt</code> (Server
+                                    Timestamp).
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">4</div>
+                                <div class="step-text"><strong>Atomic Write:</strong> The <code>updateDoc()</code>
+                                    command is issued changing status to 'Approved'. This triggers a history update
+                                    locally where a new entry is pushed into the <code>history</code> array of the
+                                    document.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">query(collection(db, 'expenses'), where('status', '==',
+                            'Pending'))</span>
+                        <span class="api-badge">updateDoc(docRef, { status: 'Approved' })</span>
+                    </div>
+                </div>
+
+                <!-- Module 3: WebRTC Real-Time Communication Hub -->
+                <div class="module-card">
+                    <div class="module-title">WebRTC Connectivity (Video & Voice)</div>
+                    <div class="module-desc">
+                        A cutting-edge peer-to-peer communication system integrated directly into the Admin Portal. It
+                        allows Admins to initiate instant Video/Voice calls with employees to clarify expense details
+                        without leaving the dashboard.
+                        <br><br>
+                        <strong>Usage:</strong> Vital for resolving complex claim disputes or conducting quick internal
+                        audits where high-bandwidth communication is preferred over asynchronous chat.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Technical Signaling Workflow</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>SDP Offer Generation:</strong> The caller initiates
+                                    <code>RTCPeerConnection</code> and creates an SDP (Session Description Protocol)
+                                    offer, which is written to a dedicated <code>calls</code> collection in Firestore.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Signaling Implementation:</strong> Both peers listen to
+                                    Firestore sub-collections (<code>offerCandidates</code> and
+                                    <code>answerCandidates</code>). ICE candidates are swapped in real-time as they are
+                                    discovered by the browser's networking stack.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Media Stream Negotiation:</strong> Upon answer
+                                    acceptance, <code>localStream</code> (from <code>getUserMedia</code>) is attached to
+                                    the peer connection, and <code>ontrack</code> events trigger to display the
+                                    <code>remoteStream</code> in the UI's video elements.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">4</div>
+                                <div class="step-text"><strong>Call Termination:</strong> Either peer can trigger
+                                    <code>cleanupCall()</code>, which closes the connection, stops all tracks, and
+                                    updates the Firestore call document status to <code>'ended'</code>.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">new RTCPeerConnection()</span>
+                        <span class="api-badge">navigator.mediaDevices.getUserMedia()</span>
+                        <span class="api-badge">onSnapshot(collection(callRef, 'candidates'))</span>
+                    </div>
+                </div>
+
+                <!-- Module 4: Global Notification & Broadcast System -->
+                <div class="module-card">
+                    <div class="module-title">Global Notification Pipeline</div>
+                    <div class="module-desc">
+                        The heartbeat of system-wide communication. Admins can dispatch targeted notifications to
+                        individual users or broadcast emergency bulletins to the entire organization simultaneously.
+                        <br><br>
+                        <strong>Usage:</strong> Used for system maintenance alerts, expense policy changes, or notifying
+                        employees of completed payments.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Dispatch Logic</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Recipient Targeting:</strong> Admins select a specific
+                                    User ID or the reserved <code>'ALL'</code> keyword to trigger a broadcast.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Document Dispatch:</strong> A new document is created in
+                                    the <code>notifications</code> collection with a <code>read: false</code> flag and a
+                                    server-side timestamp.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Listener Perception:</strong> Employee portals (listening
+                                    to their specific UID or 'ALL') receive the new data packet via
+                                    <code>onSnapshot</code> and trigger a local UI 'Toast' or badge update.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">addDoc(collection(db, 'notifications'), payload)</span>
+                        <span class="api-badge">onSnapshot(query(where('targetUserId', 'in', [uid, 'ALL'])))</span>
+                    </div>
+                </div>
+
+                <!-- Module 5: Financial Auditing & Report Generation -->
+                <div class="module-card">
+                    <div class="module-title">Financial Auditing & Reporting Engine</div>
+                    <div class="module-desc">
+                        A robust reporting suite that allows financial controllers to generate immutable PDF artifacts
+                        of expense data. It precisely maps Firestore documents to a high-fidelity DOM structure
+                        optimized for PDF rendering.
+                        <br><br>
+                        <strong>Usage:</strong> Used at the end of every fiscal month or project milestone to create
+                        official records for corporate tax and internal auditing.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Audit Generation Lifecycle</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Data Vectorization:</strong> The engine queries the
+                                    <code>expenses</code> collection using date-range filters and aggregates totals by
+                                    Department and Category into a JSON-serialized object.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Virtual DOM Mapping:</strong> A hidden
+                                    <code>&lt;div&gt;</code> is populated with a stylized template containing the
+                                    filtered data, including auto-calculated KPI totals and high-resolution charts.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>PDF Serialization:</strong> Using
+                                    <code>html2pdf.js</code>, the engine captures the virtual DOM and converts it into a
+                                    multi-page PDF blob with high DPI settings (300+ DPI) for professional print
+                                    quality.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">html2pdf().from(element).save()</span>
+                        <span class="api-badge">JSON.stringify(auditPayload)</span>
+                    </div>
+                </div>
+
+                <!-- Module 6: Real-time Session & Workforce Sync -->
+                <div class="module-card">
+                    <div class="module-title">Real-time Session Management</div>
+                    <div class="module-desc">
+                        Ensures that the Admin Portal stays synchronized with the latest workforce state. It manages
+                        user authentication persistence, role verification, and global state synchronization.
+                        <br><br>
+                        <strong>Usage:</strong> Critical for security; it ensures that any changes to user permissions
+                        or budget limits are reflected in the UI across all active admin terminals instantly.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Security & Sync Workflow</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Auth Listener:</strong> <code>onAuthStateChanged</code>
+                                    initializes the session, fetching the user's document from the <code>users</code>
+                                    collection to verify the <code>ADMIN</code> role.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>RBAC Guard:</strong> Every sensitive function checks
+                                    <code>userData.role</code> before execution, preventing unauthorized API calls at
+                                    the frontend layer.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Stack Overview -->
+                <div class="tech-stack-overview">
+                    <h3>admin.html - Architecture & Tech Stack</h3>
+                    <p>The Admin portal is built as a highly responsive, client-side rendered Single Page Application
+                        (SPA) utilizing vanilla HTML/JS paired with modern utility CSS framing.</p>
+
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <h5>Styling Core</h5>
+                            <p><strong>Tailwind CSS via CDN.</strong> Utilizes extensive utility classes for rapid
+                                layout building, flexbox structuring, glassmorphism UI components, and strict responsive
+                                breakpoint management natively handling dark/light mode switches.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>Database & Auth</h5>
+                            <p><strong>Firebase V9 (Modular).</strong> Incorporates Firestore for NoSQL document
+                                syncing, Firebase Storage for receipt blob holding, and Firebase Authentication for
+                                strict session lifecycle management guarding admin routes.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>Data Visualization</h5>
+                            <p><strong>Chart.js CDN.</strong> Used for drawing performant canvas-based line, bar, and
+                                doughnut charts for financial analytics, making data digestable immediately.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>Exporting Engine</h5>
+                            <p><strong>html2pdf.js / CSV Parsing.</strong> Includes client-side bundling libraries that
+                                capture the DOM or map JSON arrays to export comprehensive audit reports instantly
+                                without server overhead.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==============================================
+             EMPLOYEE TAB
+        =============================================== -->
+        <div id="emp" class="tab-content">
+            <h2 class="file-header">Employee Workspace <span class="file-badge">emp.html</span></h2>
+
+            <div class="module-grid">
+                <!-- Module 1: AI-Powered Submission Engine -->
+                <div class="module-card">
+                    <div class="module-title">AI-Powered Submission Portal</div>
+                    <div class="module-desc">
+                        A revolutionary interaction layer that leverages Google Gemini (via <code>ai-support.js</code>)
+                        to automate expense creation. Users can simply chat with the AI, which parses natural language
+                        to extract project codes, amounts, and categories.
+                        <br><br>
+                        <strong>Usage:</strong> Significantly reduces friction for staff on-the-go. Instead of manual
+                        data entry, they describe their expense, and the AI drafts the submission for them.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>AI Logic Flow & Integration</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Natural Language Parsing:</strong> The
+                                    <code>AISupport</code> class sends user prompts to the Gemini API with a system
+                                    instruction to return a specialized <code>[COMMAND:CREATE_EXPENSE:...]</code> tag if
+                                    all data points are present.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Event Dispatch:</strong> Upon receiving the command,
+                                    <code>ai-support.js</code> dispatches a
+                                    <code>CustomEvent('ai-expense-action')</code> globally.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Autonomous Modal Handling:</strong> <code>emp.html</code>
+                                    listens for this event and invokes <code>window.createExpenseFromAI(data)</code>,
+                                    which programmatically opens the submission modal, populates all fields, and
+                                    triggers the <code>submitExpense()</code> function after a brief delay.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">window.dispatchEvent(new CustomEvent('ai-expense-action'))</span>
+                        <span class="api-badge">Gemini API: generateContent()</span>
+                        <span class="api-badge">window.createExpenseFromAI(payload)</span>
+                    </div>
+                </div>
+
+                <!-- Module 2: PWA & Offline Capability -->
+                <div class="module-card">
+                    <div class="module-title">PWA & Offline Resilience</div>
+                    <div class="module-desc">
+                        Designed as a Progressive Web App, <code>emp.html</code> ensures that employees can access their
+                        dashboard and draft expenses even in low-connectivity environments like airplanes or remote
+                        sites.
+                        <br><br>
+                        <strong>Usage:</strong> Enables "Install as App" on mobile devices and ensures critical UI
+                        assets are cached locally for near-instant rendering.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Lifecycle Management</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Service Worker Registration:</strong>
+                                    <code>navigator.serviceWorker.register('./sw.js')</code> is called on page load,
+                                    installing a background worker that runs independently of the main browser thread.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Cache-First Strategy:</strong> The <code>sw.js</code>
+                                    intercepts fetch requests and retrieves core assets (CSS, Icons, Fonts) from the
+                                    <code>CacheStorage</code>, falling back to the network only when necessary.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Manifest Integration:</strong> High-resolution icons and
+                                    theme colors are defined in <code>manifest.json</code>, allowing the browser to
+                                    prompt users to "Add to Home Screen" for a native, app-like feel.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">caches.match(event.request)</span>
+                        <span class="api-badge">navigator.serviceWorker.register()</span>
+                        <span class="api-badge">ServiceWorkerRegistration.showNotification()</span>
+                    </div>
+                </div>
+
+                <!-- Module 3: Status Tracking & Advanced Audit -->
+                <div class="module-card">
+                    <div class="module-title">Intelligent Status Tracking & Audit Feed</div>
+                    <div class="module-desc">
+                        A real-time overview showing the current lifecycle state of every claim. It tracks the progress
+                        from
+                        'PENDING_MANAGER' to 'FINANCE_APPROVED' down to 'PAID', providing full transparency.
+                        <br><br>
+                        <strong>Usage:</strong> Critical for employees to verify the timeline of their reimbursement and
+                        view granular feedback from the finance department if a claim requires revision.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Activity Reconstruction Workflow</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Personalized Querying:</strong> A listener executes
+                                    looking specifically for documents where
+                                    <code>userId === auth.currentUser.uid</code>, protected by Firestore Security Rules.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Timeline Reconstruction:</strong> When a claim is viewed,
+                                    the <code>history</code> array is parsed. Each entry (Date, Action, Admin Name,
+                                    Comment) is rendered into a dynamic vertical timeline component.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">3</div>
+                                <div class="step-text"><strong>Badge Color Mapping:</strong> The UI utilizes a specific
+                                    CSS map to apply status-specific styling (e.g., <code>bg-amber-100</code> for
+                                    PENDING_TREASURY) ensuring immediate visual hierarchy.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">onSnapshot(query(expenses))</span>
+                        <span class="api-badge">new Date(history.date).toLocaleDateString()</span>
+                    </div>
+                </div>
+
+                <!-- Module 4: UI/UX & Utility Systems -->
+                <div class="module-card">
+                    <div class="module-title">Core UX & Shared Utility Systems</div>
+                    <div class="module-desc">
+                        The application's premium behavior is driven by a shared utility layer (<code>utils.js</code>
+                        and <code>admin-helper.js</code>) that manages everything from sophisticated modal dialogs to
+                        client-side performance optimizations.
+                        <br><br>
+                        <strong>Usage:</strong> Ensures that all user interactions—whether a simple alert or a complex
+                        image upload—feel cohesive and high-performance.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Technical Foundation</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Modal Virtualization:</strong> Standard browser
+                                    <code>alert</code> and <code>confirm</code> calls are replaced by a class-based
+                                    <code>modalSystem</code> that creates rich, accessible HTML dialogs dynamically.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Real-Time Image Compression:</strong> To optimize
+                                    bandwidth, the <code>compressImage</code> function utilize a virtual Canvas to
+                                    downscale high-resolution receipt photos before they ever touch the network.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-stack">
+                        <span class="api-badge">canvas.getContext('2d').drawImage()</span>
+                        <span class="api-badge">window.alert = async (msg) => { ... }</span>
+                    </div>
+                </div>
+
+                <!-- Module 3: Workforce Tasks Orchestration -->
+                <div class="module-card">
+                    <div class="module-title">Workforce Task Management</div>
+                    <div class="module-desc">
+                        A unified operational layer where employees receive and update assignments from management. This
+                        module bridges the gap between financial accountability and daily task execution.
+                        <br><br>
+                        <strong>Usage:</strong> Staff use this to view assigned duties, update status to "IN_PROGRESS"
+                        or "COMPLETED", and provide completion feedback to their supervisors.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Task Lifecycle Tracking</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Task Ingestion:</strong> The UI queries the
+                                    <code>tasks</code> collection, filtering for documents where <code>assigneeId</code>
+                                    matches the current user.</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>State Transition:</strong> When the user toggles a task
+                                    status, an <code>updateDoc()</code> call is triggered, immediately updating the
+                                    administrator's view via real-time listeners.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 4: Secure Real-time Communication -->
+                <div class="module-card">
+                    <div class="module-title">Real-time Peer Messaging</div>
+                    <div class="module-desc">
+                        A direct communication channel between employees and their administrators. This module allows
+                        for instant clarification on expense queries, reducing the cycle time for approvals.
+                        <br><br>
+                        <strong>Usage:</strong> Used to respond to administrative feedback on pending claims or to
+                        coordinate on upcoming project budgets.
+                    </div>
+
+                    <div class="workflow-box">
+                        <h4>Signaling & Messaging Flow</h4>
+                        <div class="workflow-steps">
+                            <div class="step">
+                                <div class="step-num">1</div>
+                                <div class="step-text"><strong>Thread Initialization:</strong> A composite key (UIDs of
+                                    both participants) is used to locate or create a dedicated chat thread document.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-num">2</div>
+                                <div class="step-text"><strong>Message Propagation:</strong> Messages are pushed into a
+                                    <code>messages</code> sub-collection. Recipients are notified instantly
+                                    viaFirestore's active snapshot listeners.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Stack Overview -->
+                <div class="tech-stack-overview">
+                    <h3>emp.html - Architecture & Tech Stack</h3>
+                    <p>The Employee portal relies on the same robust foundations but is explicitly tuned to prevent wide
+                        database read access, prioritizing strict UX boundaries, form handling, and speed.</p>
+
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <h5>Responsive DOM Processing</h5>
+                            <p><strong>Vanilla JavaScript Events.</strong> The UI is manipulated via standard DOM node
+                                manipulation mapped to form inputs, preventing heavyweight framework load times for
+                                standard operators.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>Access Security</h5>
+                            <p><strong>Firebase Security Rules matching.</strong> Queries from <code>emp.html</code>
+                                implicitly expect the backend rules to challenge them, making sure no client-tampering
+                                can ever retrieve data belonging to another UID.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>Styling Core (Light Mode Default)</h5>
+                            <p><strong>Tailwind CSS Utilities.</strong> The portal defaults to a brighter, highly
+                                legible color spectrum utilizing `bg-slate-50` and structured borders for clear form
+                                interactions, distinguishing it aesthetically from the dark mode command center.</p>
+                        </div>
+                        <div class="tech-item">
+                            <h5>PWA Ready</h5>
+                            <p><strong>Progressive Web App Logic.</strong> Employee workflows incorporate
+                                `manifest.json` parsing and Service Worker bindings allowing staff to "Install" the
+                                portal as a native app on their phones for quick photo receipt uploads.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to handle tab switching -->
+    <script>
+        function openTab(tabId) {
+            // Hide all contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Show current tab and add active class to button
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

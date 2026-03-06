@@ -1,0 +1,117 @@
+{
+  "name": "IPEC Consulting",
+  "short_name": "IPEC Consulting",
+  "id": "/?source=pwa",
+  "description": "The official portal for IPEC Consulting. Advancing excellence across education, industry, and governance. Streamline your operations with our secure, efficient tools.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "categories": [
+    "productivity",
+    "finance",
+    "business"
+  ],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "ipec.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "cropped-ipec-logo-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "ipec.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "s1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Comprehensive Dashboard Overview"
+    },
+    {
+      "src": "s2.jpg",
+      "sizes": "720x1280",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Simple Expense Submission"
+    },
+    {
+      "src": "s3.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Real-time Approval Tracking"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Submit Claim",
+      "short_name": "New Claim",
+      "description": "Create a new expense claim instantly",
+      "url": "./emp.html?action=create",
+      "icons": [
+        {
+          "src": "ipec.jpg",
+          "sizes": "192x192",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "Admin Panel",
+      "short_name": "Admin",
+      "description": "Access administrative controls",
+      "url": "./admin.html",
+      "icons": [
+        {
+          "src": "ipec.jpg",
+          "sizes": "192x192",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "share_target": {
+    "action": "./emp.html",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "link",
+      "files": [
+        {
+          "name": "receipt",
+          "accept": [
+            "image/jpeg",
+            "image/png",
+            "application/pdf"
+          ]
+        }
+      ]
+    }
+  }
+}

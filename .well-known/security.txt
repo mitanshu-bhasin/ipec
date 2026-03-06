@@ -1,0 +1,8 @@
+Contact: info@ipecconsulting.org
+Expires: 2027-12-31T23:59:00.000Z
+Encryption: https://ipecconsulting.netlify.app/.well-known/pgp-key.txt
+Acknowledgments: https://ipecconsulting.netlify.app/security-hall-of-fame.html
+Preferred-Languages: en
+Canonical: https://ipecconsulting.netlify.app/.well-known/security.txt
+Policy: https://ipecconsulting.netlify.app/security-policy.html
+Hiring: https://ipecconsulting.netlify.app/careers.html

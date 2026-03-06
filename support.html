@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center | IPEC Consulting</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="ipec.jpg">
+
+    <!-- SEO & Metadata -->
+    <meta name="description" content="Submit a support ticket for IPEC Consulting issues.">
+    <meta name="robots" content="index, follow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: { blue: '#1A73E8', green: '#1E8E3E', red: '#D93025' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="common.css">
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white transition-colors duration-300 font-sans">
+
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <img src="ipec.jpg" alt="IPEC" class="h-8 w-8 rounded">
+                        <span class="font-bold text-lg tracking-tight">IPEC Support</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm font-medium hover:text-blue-600 transition">Back to Home</a>
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-4">How can we help you?</h1>
+            <p class="text-slate-500 dark:text-slate-400">Fill out the form below to create a support ticket. Our team
+                usually responds within 24 hours.</p>
+        </div>
+
+        <div
+            class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+            <div class="p-8">
+                <form id="supportForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" required
+                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" required
+                                class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Issue Category</label>
+                        <select id="category" required
+                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <option value="General Inquiry">General Inquiry</option>
+                            <option value="Login Issue">Login / Account Issue</option>
+                            <option value="Expense Claim">Expense Claim Problem</option>
+                            <option value="Technical Bug">Technical Bug</option>
+                            <option value="Feature Request">Feature Request</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Priority</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="priority" value="Low"
+                                    class="text-blue-600 focus:ring-blue-500" checked>
+                                <span
+                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Low</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="priority" value="Medium"
+                                    class="text-yellow-600 focus:ring-yellow-500">
+                                <span
+                                    class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">Medium</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="priority" value="High"
+                                    class="text-red-600 focus:ring-red-500">
+                                <span
+                                    class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">High</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Description</label>
+                        <textarea id="message" rows="5" required
+                            class="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            placeholder="Please describe your issue in detail..."></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <span>Submit Ticket</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tracking Section -->
+    <section class="max-w-3xl mx-auto px-4 pb-12">
+        <div
+            class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+            <div class="p-8">
+                <h2 class="text-xl font-bold mb-4">Track Existing Ticket</h2>
+                <form id="trackForm" class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="trackId" required placeholder="Enter Ticket Reference ID"
+                        class="flex-1 px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    <button type="submit" id="trackBtn"
+                        class="bg-gray-800 hover:bg-gray-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-lg transition shadow-sm">
+                        Track Ticket
+                    </button>
+                </form>
+                <div id="trackResult"
+                    class="mt-6 hidden p-6 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span id="resStatus"
+                                class="inline-block px-3 py-1 text-xs font-bold uppercase rounded-full bg-blue-100 text-blue-700">Open</span>
+                        </div>
+                        <span id="resPriority"
+                            class="text-xs font-bold text-gray-500 bg-gray-200 dark:bg-slate-700 px-2 py-1 rounded">Medium</span>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1" id="resCategory">Category</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4" id="resDate">Submitted on ...</p>
+                    <div
+                        class="p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300">
+                        <p id="resMessage">Message description goes here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal"
+        class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl transform scale-95 opacity-0 transition-all duration-300"
+            id="modalContent">
+            <div
+                class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+                <i class="fa-solid fa-check text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Ticket Created!</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm">Your support request has been recorded. Reference
+                ID: <span id="ticketRef" class="font-mono text-blue-500"></span></p>
+            <button onclick="window.location.reload()"
+                class="w-full bg-slate-900 dark:bg-slate-700 text-white py-2 rounded-lg hover:opacity-90 transition">Close</button>
+        </div>
+    </div>
+
+    <!-- Firebase Logic -->
+    <script src="env.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Reuse existing config logic or check localStorage
+        // For this implementation we'll assume a standard config or fetch it
+        // Since I cannot read the user's FULL config from here securely, I will use a placeholder
+        // that matches the project structure. EXPECTING ADMIN-HELPER OR UTILS TO HAVE CONFIG.
+        // However, standard practice here:
+
+        const firebaseConfig = {
+            apiKey: window.ENV.FIREBASE_API_KEY,
+            authDomain: window.ENV.FIREBASE_AUTH_DOMAIN,
+            projectId: window.ENV.FIREBASE_PROJECT_ID,
+            storageBucket: window.ENV.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: window.ENV.FIREBASE_MESSAGING_SENDER_ID,
+            appId: window.ENV.FIREBASE_APP_ID
+        };
+
+        // Try to get config from window if defined in other scripts, else fallback
+        // We'll rely on the user having disjointed files so we'll init freshly with what we know is likely the project ID from context
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('supportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
+            try {
+                const ticket = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    category: document.getElementById('category').value,
+                    priority: document.querySelector('input[name="priority"]:checked').value,
+                    message: document.getElementById('message').value,
+                    status: 'Open',
+                    createdAt: serverTimestamp()
+                };
+
+                const docRef = await addDoc(collection(db, "support_tickets"), ticket);
+
+                // Show Success
+                const modal = document.getElementById('successModal');
+                const content = document.getElementById('modalContent');
+                document.getElementById('ticketRef').textContent = docRef.id.slice(0, 8).toUpperCase();
+
+                modal.classList.remove('hidden');
+                // Small delay for animation
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
+
+            } catch (error) {
+                console.error("Error adding ticket: ", error);
+                alert("Error submitting ticket: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Tracking Logic
+        document.getElementById('trackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const trackId = document.getElementById('trackId').value.trim().toUpperCase();
+            if (!trackId) return;
+
+            const btn = document.getElementById('trackBtn');
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "support_tickets"));
+                let foundDoc = null;
+
+                querySnapshot.forEach((doc) => {
+                    if (doc.id.toUpperCase().startsWith(trackId)) {
+                        foundDoc = doc.data();
+                    }
+                });
+
+                const resDiv = document.getElementById('trackResult');
+                if (foundDoc) {
+                    document.getElementById('resStatus').textContent = foundDoc.status || 'Open';
+                    // simple color coding for status
+                    const st = (foundDoc.status || '').toLowerCase();
+                    const statusEl = document.getElementById('resStatus');
+                    statusEl.className = 'inline-block px-3 py-1 text-xs font-bold uppercase rounded-full ' +
+                        (st === 'closed' ? 'bg-gray-100 text-gray-700' :
+                            st === 'in progress' ? 'bg-orange-100 text-orange-700' :
+                                'bg-blue-100 text-blue-700');
+
+                    document.getElementById('resPriority').textContent = foundDoc.priority || 'Normal';
+                    document.getElementById('resCategory').textContent = foundDoc.category || 'General';
+                    document.getElementById('resMessage').textContent = foundDoc.message || 'No description provided.';
+
+                    const dateObj = foundDoc.createdAt ? new Date(foundDoc.createdAt.seconds * 1000) : new Date();
+                    document.getElementById('resDate').textContent = 'Submitted on ' + dateObj.toLocaleDateString();
+
+                    resDiv.classList.remove('hidden');
+                } else {
+                    resDiv.classList.add('hidden');
+                    alert('No ticket found matching that ID.');
+                }
+            } catch (error) {
+                console.error("Error fetching tickets: ", error);
+                alert("Error searching for ticket.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        });
+    </script>
+    <script type="module">
+        import { AISupport } from './ai-support.js';
+        window.addEventListener('load', () => {
+            new AISupport({
+                name: 'Guest',
+                role: 'Visitor',
+                department: 'Support'
+            });
+        });
+    </script>
+</body>
+
+</html>

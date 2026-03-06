@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Optimization -->
+    <meta name="description"
+        content="IPEC Consulting - Secure and efficient portal for IPEC Consulting. Process Excellence Beyond Boundaries.">
+    <meta name="keywords" content="IPEC, Consulting, Engineering, Process Excellence">
+    <meta name="author" content="IPEC Consulting">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ipecconsulting.netlify.app/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="IPEC Consulting - Official Portal">
+    <meta property="og:description" content="Process Excellence Beyond Boundaries. Internal expense portal.">
+    <meta property="og:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
+
+    <title>IPEC Consulting | Process Excellence</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="cropped-ipec-logo-32x32.png">
+    <link rel="apple-touch-icon" href="ipec.jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ipec: {
+                            red: '#D93025',
+                            green: '#1E8E3E',
+                            blue: '#1A73E8',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="theme.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Logo Gradient Text Effect */
+        .gradient-text {
+            background: linear-gradient(to right, #D93025, #1E8E3E, #1A73E8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Subtle Gradient Background for Hero */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 249, 255, 1) 100%);
+        }
+
+        .dark .hero-bg {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav
+        class="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <img src="ipec.jpg" alt="IPEC Logo" class="h-12 w-auto object-contain">
+                    <div class="hidden sm:block">
+                        <span
+                            class="block font-bold text-xl tracking-tight text-slate-900 dark:text-white leading-none">IPEC</span>
+                        <span class="block text-xs font-medium text-slate-500 tracking-wider">CONSULTING</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600 dark:text-slate-400 items-center">
+                    <a href="#" class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Dashboard</a>
+                    <a href="https://ipecconsulting.org" target="_blank"
+                        class="hover:text-ipec-blue dark:hover:text-blue-400 transition">Corporate Site</a>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()"
+                        class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                        <i class="fa-solid fa-moon theme-toggle-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="flex-grow hero-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 grid lg:grid-cols-2 gap-16 items-center">
+
+            <!-- Left: Content -->
+            <div class="text-center lg:text-left">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-6 border border-blue-100 dark:border-blue-800">
+                    <span class="flex h-2 w-2 rounded-full bg-blue-600"></span>
+                    Internal Employee Portal
+                </div>
+
+                <h1 class="text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
+                    Manage Expenses with <br>
+                    <span class="gradient-text">Process Excellence</span>
+                </h1>
+
+                <p class="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Welcome to the official IPEC Consulting reimbursement hub. Secure, fast, and engineered for
+                    efficiency—just like our solutions.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <!-- Gradient Button -->
+                    <a href="emp.html"
+                        class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-800 hover:to-green-700 text-white font-bold shadow-lg shadow-blue-500/20 transition transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-user-check"></i> Employee Login
+                    </a>
+
+                    <a href="admin.html"
+                        class="px-8 py-4 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-shield-cat"></i> Admin Portal
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Abstract Visual representing Engineering/Finance -->
+            <div class="relative hidden lg:block">
+                <!-- Decorative background blob -->
+                <div
+                    class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-gradient-to-br from-red-500/10 to-blue-500/10 rounded-full blur-3xl">
+                </div>
+
+                <div
+                    class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 p-8 transform rotate-2 hover:rotate-0 transition duration-500">
+                    <div
+                        class="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-slate-700 pb-4">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono">CONFIDENTIAL // FINANCIAL DATA</div>
+                    </div>
+
+                    <!-- Dummy UI Elements -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="h-2 w-24 bg-slate-200 dark:bg-slate-600 rounded mb-2"></div>
+                                <div class="h-2 w-16 bg-slate-100 dark:bg-slate-700 rounded"></div>
+                            </div>
+                            <span class="text-green-600 font-bold text-sm">+ Approved</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+                                <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="h-2 w-32 bg-slate-200 dark:bg-slate-600 rounded mb-2"></div>
+                                <div class="h-2 w-20 bg-slate-100 dark:bg-slate-700 rounded"></div>
+                            </div>
+                            <span class="text-blue-600 font-bold text-sm">Processing</span>
+                        </div>
+                        <div
+                            class="mt-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-slate-500">Total Reimbursements</span>
+                                <span class="text-xl font-bold text-slate-800 dark:text-white">₹ 45,200.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Company Info Section (Replaces "Why Use") -->
+    <section class="bg-slate-50 dark:bg-slate-900 py-24 border-t border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-start">
+
+                <!-- About Text -->
+                <div>
+                    <h4 class="text-sm font-bold text-blue-600 uppercase tracking-widest mb-2">About IPEC Consulting
+                    </h4>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">Process Excellence
+                        <br> Beyond Boundaries.
+                    </h2>
+
+                    <p class="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                        IPEC Consulting is a premier engineering and consulting firm dedicated to transforming
+                        industrial operations. We specialize in Automotive, Aerospace, and Industrial Automation
+                        sectors, delivering world-class solutions that bridge the gap between concept and execution.
+                    </p>
+
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
+                            <span class="text-slate-700 dark:text-slate-300"><strong>Global Standards:</strong> Adhering
+                                to international quality frameworks.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-blue-600 mt-1"></i>
+                            <span class="text-slate-700 dark:text-slate-300"><strong>Engineering Innovation:</strong>
+                                Cutting-edge solutions for complex problems.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-red-500 mt-1"></i>
+                            <span class="text-slate-700 dark:text-slate-300"><strong>Strategic Growth:</strong>
+                                Empowering businesses to scale efficiently.</span>
+                        </li>
+                    </ul>
+
+                    <a href="https://ipecconsulting.org" target="_blank"
+                        class="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center gap-2 group">
+                        Visit Corporate Website <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                    </a>
+                </div>
+
+                <!-- Corporate Stats / Info Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition group">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/20 flex items-center justify-center text-red-600 mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-globe text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Global Presence</h3>
+                        <p class="text-sm text-slate-500">Serving clients across multiple continents with localized
+                            expertise.</p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition group">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center text-green-600 mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-gears text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Process Engineering</h3>
+                        <p class="text-sm text-slate-500">Optimizing workflows for maximum efficiency and output.</p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition group sm:col-span-2">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-blue-600">
+                                <i class="fa-solid fa-handshake"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Trusted Partners</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">
+                            Partnering with top-tier organizations to deliver excellence in every project we undertake.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <span class="font-bold text-lg text-slate-900 dark:text-white">IPEC Consulting</span>
+                <p class="text-slate-500 text-sm mt-1">&copy; 2026 Process Excellence Beyond Boundaries.</p>
+            </div>
+
+            <div class="flex gap-6 text-sm font-medium text-slate-500">
+                <a href="#" class="hover:text-blue-600 transition">Support</a>
+                <a href="#" class="hover:text-blue-600 transition">Privacy</a>
+                <a href="#" class="hover:text-blue-600 transition">Internal Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Support Integration -->
+    <script type="module">
+        import { AISupport } from './ai-support.js';
+        window.addEventListener('load', () => {
+            // Initializing with guest context
+            new AISupport({
+                name: 'Visitor',
+                role: 'Guest',
+                department: 'Public'
+            });
+        });
+    </script>
+</body>
+
+</html>

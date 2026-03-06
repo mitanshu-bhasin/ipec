@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPEC Link Generator | Google Drive</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="common.css">
+    <script src="env.js"></script>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-slate-900 min-h-screen text-slate-800 dark:text-slate-100 flex flex-col transition-colors duration-300 font-sans overflow-x-hidden">
+
+    <!-- Background Patterns -->
+    <div class="fixed inset-0 hero-pattern pointer-events-none"></div>
+    <div
+        class="fixed top-0 right-0 -mr-20 -mt-20 w-[500px] h-[500px] bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-5 pointer-events-none animate-blob">
+    </div>
+    <div
+        class="fixed bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-amber-400 rounded-full mix-blend-multiply filter blur-3xl opacity-5 pointer-events-none animate-blob">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass-effect border-b border-white/50 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div
+                        class="w-8 h-8 bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center text-brand-600 shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-google-drive"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg tracking-tight">IPEC <span
+                                class="text-brand-600">Drive</span></span>
+                    </div>
+                </a>
+
+                <div class="flex items-center gap-4">
+                    <a href="index.html"
+                        class="text-sm font-medium text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition hidden sm:inline-block">Back
+                        to Home</a>
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center p-4 relative z-10 w-full max-w-4xl mx-auto gap-8 mt-6 mb-12">
+
+        <!-- Upload Card -->
+        <div id="main-card"
+            class="glass-effect w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-xl transition-all duration-300">
+
+            <!-- Step 1: Connect -->
+            <div id="step-connect" class="text-center space-y-6">
+                <div
+                    class="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto text-blue-600 dark:text-blue-400 text-3xl mb-4 shadow-sm border border-blue-100 dark:border-blue-800">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">Upload to Drive</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed px-2">
+                        Connect with Google to securely upload files and get an instant shareable link.
+                    </p>
+                </div>
+                <button id="btn-connect"
+                    class="w-full py-3.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm group hover:border-brand-500 dark:hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg"
+                        class="w-5 h-5 group-hover:scale-110 transition-transform">
+                    <span>Sign in with Google</span>
+                </button>
+                <div id="auth-status" class="text-xs text-slate-400 h-4"></div>
+            </div>
+
+            <!-- Step 2: Upload -->
+            <div id="step-upload" class="hidden text-center space-y-6 animate-fade-in">
+                <!-- User Profile Header -->
+                <div
+                    class="flex items-center justify-between bg-slate-50/80 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-700 backdrop-blur-sm">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <img id="user-avatar" src="" class="w-9 h-9 rounded-full border border-slate-200 shrink-0">
+                        <div class="text-left overflow-hidden">
+                            <p id="user-name" class="text-sm font-bold truncate text-slate-700 dark:text-slate-200"></p>
+                            <p id="user-email" class="text-[10px] text-slate-500 truncate"></p>
+                        </div>
+                    </div>
+                    <button id="btn-logout"
+                        class="text-slate-400 hover:text-red-500 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition shrink-0"
+                        title="Sign Out">
+                        <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Dropzone -->
+                <div class="relative group cursor-pointer" onclick="document.getElementById('file-input').click()">
+                    <div
+                        class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl p-8 hover:border-brand-500 dark:hover:border-brand-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group-hover:shadow-md">
+                        <div class="text-slate-400 group-hover:text-brand-500 text-4xl mb-4 transition-colors">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <p class="font-bold text-slate-700 dark:text-slate-200 text-sm mb-1">Click to Upload</p>
+                        <p class="text-xs text-slate-400">Any file type (Max 10MB recommended)</p>
+                    </div>
+                    <input type="file" id="file-input" class="hidden" onchange="handleFileSelect(this)">
+                </div>
+            </div>
+
+            <!-- Step 3: Progress -->
+            <div id="step-progress" class="hidden text-center space-y-6 animate-fade-in py-4">
+                <div class="relative w-16 h-16 mx-auto mb-4">
+                    <svg class="animate-spin w-full h-full text-brand-200 dark:text-slate-700"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            class="text-brand-600"></path>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-brand-600 dark:text-brand-400"
+                        id="progress-text">0%</div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-white mb-1">Uploading...</h3>
+                    <p class="text-xs text-slate-500">Please do not close this window</p>
+                </div>
+
+                <div class="w-full bg-slate-100 dark:bg-slate-700/50 rounded-full h-2 overflow-hidden">
+                    <div id="progress-bar"
+                        class="bg-brand-600 h-2 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+                        style="width: 0%"></div>
+                </div>
+                <p id="progress-eta" class="text-[10px] text-slate-400 font-medium font-mono h-4"></p>
+            </div>
+
+            <!-- Step 4: Result -->
+            <div id="step-result" class="hidden text-center space-y-6 animate-fade-in">
+                <div
+                    class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-3xl mb-4 shadow-sm border border-emerald-100 dark:border-emerald-800">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Link Generated!</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 px-4">Your file is now public and ready to
+                        share.<br>Anyone with the link can view it.</p>
+                </div>
+
+                <div
+                    class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 break-all text-left relative group hover:border-brand-300 dark:hover:border-brand-700 transition-colors shadow-inner">
+                    <div class="flex items-center justify-between mb-2">
+                        <p class="text-[10px] uppercase font-bold text-slate-400">Shareable Link</p>
+                        <span
+                            class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 font-bold">Public</span>
+                    </div>
+
+                    <p id="result-link"
+                        class="text-sm font-mono text-brand-600 dark:text-brand-400 pr-8 line-clamp-3 select-all cursor-text">
+                    </p>
+
+                    <button onclick="copyLink()"
+                        class="absolute top-8 right-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+                        title="Copy to Clipboard">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                    <div id="copy-feedback"
+                        class="absolute top-2 right-2 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded shadow-sm opacity-0 transition-opacity pointer-events-none border border-emerald-100">
+                        Copied!</div>
+                </div>
+
+                <button onclick="resetUI()"
+                    class="w-full py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Upload Another File
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Recent Links Section -->
+        <div id="recent-links-container" class="w-full max-w-md hidden animate-fade-in">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h3
+                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Recent Links
+                </h3>
+                <button onclick="window.clearRecentLinks()"
+                    class="text-[10px] bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 transition">Clear
+                    All</button>
+            </div>
+
+            <div id="recent-links-list" class="space-y-3 pb-8">
+                <!-- Links injected here -->
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="text-center py-6 text-xs text-slate-400 font-medium relative z-10 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm mt-auto w-full">
+        Powered by Google Drive API &bull; IPEC Systems
+    </footer>
+
+    <!-- Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // CONFIG
+        const firebaseConfig = {
+            apiKey: window.ENV.FIREBASE_API_KEY,
+            authDomain: window.ENV.FIREBASE_AUTH_DOMAIN,
+            projectId: window.ENV.FIREBASE_PROJECT_ID,
+            storageBucket: window.ENV.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: window.ENV.FIREBASE_MESSAGING_SENDER_ID,
+            appId: window.ENV.FIREBASE_APP_ID
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // CRITICAL: Request Drive Scope
+        provider.addScope('https://www.googleapis.com/auth/drive.file');
+
+        // Elements
+        const steps = {
+            connect: document.getElementById('step-connect'),
+            upload: document.getElementById('step-upload'),
+            progress: document.getElementById('step-progress'),
+            result: document.getElementById('step-result')
+        };
+        const elAuthStatus = document.getElementById('auth-status');
+
+        // State
+        let accessToken = localStorage.getItem('ipec_drive_token') || null;
+        let tokenExpiry = localStorage.getItem('ipec_drive_token_expiry') || 0;
+        let uploadStartTime = 0;
+        let cachedUser = null;
+
+        try {
+            if (localStorage.getItem('ipec_drive_user')) {
+                cachedUser = JSON.parse(localStorage.getItem('ipec_drive_user'));
+            }
+        } catch (e) { }
+
+        // Clear expired token
+        if (accessToken && Date.now() > parseInt(tokenExpiry)) {
+            accessToken = null;
+            cachedUser = null;
+            localStorage.removeItem('ipec_drive_token');
+            localStorage.removeItem('ipec_drive_token_expiry');
+            localStorage.removeItem('ipec_drive_user');
+        } 
+        
+        // Instant visual update if token in cache
+        if (accessToken && cachedUser) {
+            document.addEventListener("DOMContentLoaded", () => {
+                updateUserUI(cachedUser);
+                showStep('upload');
+            });
+        }
+
+        // --- AUTH ---
+        document.getElementById('btn-connect').onclick = async () => {
+            try {
+                elAuthStatus.textContent = "Connecting to Google...";
+                const result = await signInWithPopup(auth, provider);
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                accessToken = credential.accessToken;
+
+                // Cache token for 55 minutes
+                localStorage.setItem('ipec_drive_token', accessToken);
+                localStorage.setItem('ipec_drive_token_expiry', (Date.now() + 55 * 60 * 1000).toString());
+                
+                // Cache user profile
+                localStorage.setItem('ipec_drive_user', JSON.stringify({
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    photoURL: result.user.photoURL
+                }));
+
+                // If we have a user and token, show upload UI
+                updateUserUI(result.user);
+                showStep('upload');
+            } catch (error) {
+                console.error(error);
+                elAuthStatus.textContent = "Error: " + error.message;
+            }
+        };
+
+        document.getElementById('btn-logout').onclick = () => {
+            signOut(auth).then(() => {
+                localStorage.removeItem('ipec_drive_token');
+                localStorage.removeItem('ipec_drive_token_expiry');
+                localStorage.removeItem('ipec_drive_user');
+                location.reload();
+            });
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (accessToken) {
+                    updateUserUI(user);
+                    showStep('upload');
+                } else {
+                    elAuthStatus.textContent = "Session expired. Please sign in again.";
+                    showStep('connect');
+                }
+            } else {
+                showStep('connect');
+            }
+            loadRecentLinks();
+        });
+
+        function updateUserUI(user) {
+            document.getElementById('user-name').textContent = user.displayName;
+            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('user-avatar').src = user.photoURL;
+        }
+
+        // --- UPLOAD LOGIC ---
+        window.handleFileSelect = async (input) => {
+            if (!input.files || input.files.length === 0) return;
+            const file = input.files[0];
+
+            showStep('progress');
+            uploadStartTime = Date.now();
+
+            try {
+                // 1. Initial Resumable Upload Request (Metadata)
+                const metadata = {
+                    name: file.name,
+                    mimeType: file.type
+                };
+
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                form.append('file', file);
+
+                const xhr = new XMLHttpRequest();
+                // We ask for id, webViewLink
+                xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink,webContentLink');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+
+                xhr.upload.onprogress = (e) => {
+                    if (e.lengthComputable) {
+                        const percent = Math.round((e.loaded / e.total) * 100);
+                        document.getElementById('progress-bar').style.width = percent + '%';
+                        document.getElementById('progress-text').textContent = percent + '%';
+
+                        // Estimate Time
+                        const timeElapsed = (Date.now() - uploadStartTime) / 1000;
+                        const uploadSpeed = e.loaded / timeElapsed;
+                        const remainingBytes = e.total - e.loaded;
+                        const secondsRemaining = remainingBytes / uploadSpeed;
+
+                        if (secondsRemaining > 0 && isFinite(secondsRemaining)) {
+                            document.getElementById('progress-eta').textContent = `Est. Time: ${Math.ceil(secondsRemaining)}s`;
+                        } else {
+                            document.getElementById('progress-eta').textContent = 'Finalizing...';
+                        }
+                    }
+                };
+
+                xhr.onload = async () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        const fileId = response.id;
+                        let link = response.webViewLink;
+
+                        // 2. Make Public
+                        try {
+                            await makePublic(fileId);
+                        } catch (permError) {
+                            console.error("Permission Error:", permError);
+                            alert("File uploaded, but failed to make public: " + permError.message);
+                        }
+
+                        document.getElementById('result-link').textContent = link;
+                        saveRecentLink(file.name, link);
+                        showStep('result');
+                    } else if (xhr.status === 401) {
+                        alert('Session expired. Please sign in again.');
+                        localStorage.removeItem('ipec_drive_token');
+                        localStorage.removeItem('ipec_drive_token_expiry');
+                        localStorage.removeItem('ipec_drive_user');
+                        signOut(auth).then(() => location.reload());
+                    } else {
+                        alert('Upload failed: ' + xhr.responseText);
+                        showStep('upload');
+                    }
+                };
+
+                xhr.onerror = () => {
+                    alert('Network error during upload');
+                    showStep('upload');
+                };
+
+                xhr.send(form);
+
+            } catch (error) {
+                alert("Error: " + error.message);
+                showStep('upload');
+            }
+
+            input.value = ''; // Reset
+        };
+
+        async function makePublic(fileId) {
+            console.log('Making public:', fileId);
+            const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    role: 'reader',
+                    type: 'anyone'
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                console.error('Permission API Error:', err);
+                throw new Error(err.error?.message || 'Failed to set permissions');
+            }
+            return res.json();
+        }
+
+        // --- RECENT LINKS ---
+        function saveRecentLink(name, url) {
+            let links = JSON.parse(localStorage.getItem('ipec_recent_links') || '[]');
+            links.unshift({ name, url, date: new Date().toISOString() });
+            if (links.length > 5) links = links.slice(0, 5);
+            localStorage.setItem('ipec_recent_links', JSON.stringify(links));
+            loadRecentLinks();
+        }
+
+        window.clearRecentLinks = () => {
+            // Simple clear without confirm for speed if user just clicks
+            localStorage.removeItem('ipec_recent_links');
+            loadRecentLinks();
+        };
+
+        function loadRecentLinks() {
+            const container = document.getElementById('recent-links-container');
+            const list = document.getElementById('recent-links-list');
+            const links = JSON.parse(localStorage.getItem('ipec_recent_links') || '[]');
+
+            if (links.length > 0) {
+                container.classList.remove('hidden');
+                list.innerHTML = links.map(link => `
+                    <div class="glass-effect p-3 rounded-xl flex items-center justify-between text-left group hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                        <div class="truncate pr-3 flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <i class="fa-regular fa-file-lines text-slate-400 text-xs shrink-0"></i>
+                                <p class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">${link.name}</p>
+                            </div>
+                            <a href="${link.url}" target="_blank" class="text-[10px] text-brand-500 hover:underline truncate block w-full opacity-75 hover:opacity-100">${link.url}</a>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('${link.url}')" class="shrink-0 text-slate-400 hover:text-brand-500 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Copy Link">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // --- UTILS ---
+        function showStep(stepId) {
+            Object.values(steps).forEach(s => s.classList.add('hidden'));
+            steps[stepId].classList.remove('hidden');
+        }
+
+        window.copyLink = () => {
+            const link = document.getElementById('result-link').textContent;
+            navigator.clipboard.writeText(link);
+            const fb = document.getElementById('copy-feedback');
+            fb.classList.remove('opacity-0');
+            setTimeout(() => fb.classList.add('opacity-0'), 2000);
+        };
+
+        window.resetUI = () => {
+            showStep('upload');
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-eta').textContent = '';
+        };
+
+        // Theme Logic
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+
+</html>
