@@ -6,12 +6,12 @@ import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/fireb
 import { AISupport } from './ai-support.js';
 
 const firebaseConfig = {
-    apiKey: window.ENV.FIREBASE_API_KEY,
-    authDomain: window.ENV.FIREBASE_AUTH_DOMAIN,
-    projectId: window.ENV.FIREBASE_PROJECT_ID,
-    storageBucket: window.ENV.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: window.ENV.FIREBASE_MESSAGING_SENDER_ID,
-    appId: window.ENV.FIREBASE_APP_ID
+    apiKey: "AIzaSyBHQF5cUBujrCJqOqybEUIeanTCbHYpMWU",
+    authDomain: "expense-manager-ec149.firebaseapp.com",
+    projectId: "expense-manager-ec149",
+    storageBucket: "expense-manager-ec149.firebasestorage.app",
+    messagingSenderId: "868468480650",
+    appId: "1:868468480650:web:484a4e831724a8112feb73"
 };
 
 const app = initializeApp(firebaseConfig);
