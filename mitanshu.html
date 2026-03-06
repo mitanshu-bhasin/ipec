@@ -324,6 +324,28 @@
         </div>
     </footer>
 
+    <!-- AI Chatbot Initialization -->
+    <script type="module">
+        import { AISupport } from './js/ai-support.js';
+
+        const initChatAfterDelay = () => {
+            setTimeout(() => {
+                new AISupport({
+                    name: 'Visitor',
+                    role: 'Guest',
+                    email: 'guest@ipec.org',
+                    department: 'Team Profile'
+                });
+            }, 5000);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initChatAfterDelay);
+        } else {
+            initChatAfterDelay();
+        }
+    </script>
 </body>
+
 
 </html>

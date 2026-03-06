@@ -309,13 +309,16 @@
     <script type="module">
         import { AISupport } from './js/ai-support.js';
         window.addEventListener('load', () => {
-            new AISupport({
-                name: 'Guest',
-                role: 'Visitor',
-                department: 'Support'
-            });
+            setTimeout(() => {
+                new AISupport({
+                    name: 'Guest',
+                    role: 'Visitor',
+                    department: 'Support'
+                });
+            }, 5000);
         });
     </script>
+
 </body>
 
 </html>

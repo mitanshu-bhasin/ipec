@@ -672,6 +672,18 @@
             }
         };
     </script>
+    <!-- AI Support Chat -->
+    <script type="module">
+        import { AISupport } from './js/ai-support.js';
+        setTimeout(() => {
+            new AISupport({
+                name: 'Visitor',
+                role: 'Guest',
+                department: 'Account Services'
+            });
+        }, 5000);
+    </script>
 </body>
+
 
 </html>

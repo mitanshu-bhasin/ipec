@@ -124,6 +124,7 @@ try {
 let expensesData = []; // Store for client-side filtering
 let expensesUnsub = null; // Store listener to unsubscribe
 let aiAssistant = null;
+let lastDashboardContext = null;
 
 // Profile Logic
 window.openProfileModal = () => {
@@ -2319,8 +2320,8 @@ function getSymbol(curr) {
 // Auth Listener & Data Loading
 onAuthStateChanged(auth, async (user) => {
 
-    // Initialize AI Assistant
-    if (user && typeof AISupport !== 'undefined' && !aiAssistant) { aiAssistant = new AISupport(user); }
+    // AI initialization is handled with a delay below
+
     if (user) {
         currentUser = user;
         try {
@@ -2397,6 +2398,28 @@ onAuthStateChanged(auth, async (user) => {
                         avatarContainer.innerHTML = `<i class="fa-solid fa-user-gear text-xs"></i>`;
                     }
                 }
+
+                // Initialize AI with 5-second delay to ensure all data is ready
+                setTimeout(() => {
+                    if (aiAssistant) {
+                        aiAssistant.updateContext(userData);
+                        // Update greeting if it was already created with 'User'
+                        const greetingEl = document.querySelector('.ai-message.ai strong');
+                        if (greetingEl && (greetingEl.textContent === 'User' || !greetingEl.textContent)) {
+                            greetingEl.textContent = userData.name || userData.displayName || 'User';
+                        }
+                    } else if (typeof AISupport !== 'undefined') {
+                        aiAssistant = new AISupport(userData);
+                        window.aiAssistant = aiAssistant;
+                    }
+                    // After initialization/update, push any cached dashboard data
+                    if (aiAssistant && lastDashboardContext) {
+                        aiAssistant.updateContext({ dashboardData: lastDashboardContext });
+                    }
+                }, 5000);
+
+
+
 
                 // Start listening for calls
                 window.listenForCalls();
@@ -2615,9 +2638,15 @@ window.fetchExpenses = () => {
 
         window.expensesData = expensesData; // Sync global for debugging
 
+        lastDashboardContext = {
+            expenses: expensesData.slice(0, 20),
+            summary: { pending: pendingTotal, paid: paidTotal }
+        };
+
         if (aiAssistant) {
-            aiAssistant.updateContext({ dashboardData: { expenses: expensesData.slice(0, 20), summary: { pending: pendingTotal, paid: paidTotal } } });
+            aiAssistant.updateContext({ dashboardData: lastDashboardContext });
         }
+
 
         updateStats(pendingTotal, paidTotal);
         // Apply search filter if any

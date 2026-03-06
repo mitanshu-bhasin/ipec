@@ -1,16 +1,16 @@
 /**
- * IPEC AI Support Module using Google Gemini API
- * Provides a chat interface for users to get support and insights.
+ * IPEC AI Support Module using Groq API
+ * Provides a chat interface for users to get support and insights via Llama 3 models.
  */
 
-const GEMINI_API_KEY = 'AIzaSyDKy8-WdO1gqlDr6wDjHjdfI9D2nknTF14';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+const GROQ_API_KEY = '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';
+const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 export class AISupport {
     constructor(userContext = {}, containerId = null) {
         this.userContext = userContext || {};
         this.containerId = containerId;
-        this.chatHistory = [];
+        this.chatHistory = []; // Standard OpenAI format: [{role: 'user'|'assistant', content: '...'}]
         this.isOpen = false;
         this.init();
     }
@@ -180,7 +180,7 @@ export class AISupport {
                 0%, 80%, 100% { transform: scale(0); }
                 40% { transform: scale(1); }
             }
-            /* Markdown styles roughly */
+            /* Markdown styles */
             .ai-message.ai strong { font-weight: 600; color: #1e293b; }
             .ai-message.ai ul { margin-left: 20px; list-style-type: disc; }
             .ai-message.ai p { margin-bottom: 8px; }
@@ -228,7 +228,7 @@ export class AISupport {
             </div>
             <div class="ai-messages" id="ai-messages">
                 <div class="ai-message ai">
-                    Hello <strong>${this.userContext.name || 'User'}</strong>! I'm your IPEC AI Assistant powered by IPEC. 
+                    Hello <strong>${this.userContext.name || this.userContext.displayName || 'User'}</strong>! I'm your IPEC AI Assistant powered by Mitanshu. 
                     I can help you with expense policies, company info, navigating the portal, or analyzing your data.
                 </div>
             </div>
@@ -290,7 +290,6 @@ export class AISupport {
     embedInContainer() {
         const container = document.getElementById(this.containerId);
         if (container) {
-            // Modify styles for embedded view
             this.widgetBtn.style.display = 'none';
             this.chatWindow.style.position = 'relative';
             this.chatWindow.style.bottom = 'auto';
@@ -321,7 +320,6 @@ export class AISupport {
         const msgs = this.chatWindow.querySelector('#ai-messages');
         const div = document.createElement('div');
         div.className = `ai-message ${sender}`;
-        // Simple markdown parsing for bold and list
         let formatted = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\n/g, '<br>');
@@ -335,9 +333,9 @@ export class AISupport {
         const typing = this.chatWindow.querySelector('#ai-typing');
         const messagesEl = this.chatWindow.querySelector('#ai-messages');
 
-        // RATE LIMIT CHECK (3 messages per minute)
-        const RATE_LIMIT = 3;
-        const TIME_FRAME = 60000; // 60 seconds
+        // RATE LIMIT CHECK
+        const RATE_LIMIT = 10;
+        const TIME_FRAME = 60000;
         const now = Date.now();
 
         let timestamps = [];
@@ -345,17 +343,14 @@ export class AISupport {
             timestamps = JSON.parse(localStorage.getItem('ipec_ai_timestamps') || '[]');
         } catch (e) { timestamps = []; }
 
-        // Filter out timestamps older than 1 minute
         timestamps = timestamps.filter(t => now - t < TIME_FRAME);
-
         if (timestamps.length >= RATE_LIMIT) {
             const oldest = timestamps[0];
             const waitSecs = Math.ceil((oldest + TIME_FRAME - now) / 1000);
-            this.addMessage(`⚠️ Rate limit exceeded. Please wait ${waitSecs} seconds before sending another message.`, 'ai');
+            this.addMessage(`⚠️ Rate limit exceeded. Please wait ${waitSecs} seconds.`, 'ai');
             return;
         }
 
-        // Add current timestamp
         timestamps.push(now);
         localStorage.setItem('ipec_ai_timestamps', JSON.stringify(timestamps));
 
@@ -363,8 +358,7 @@ export class AISupport {
         messagesEl.scrollTop = messagesEl.scrollHeight;
 
         try {
-            // Prepare context prompt
-            const context = `
+            const systemPrompt = `
                 Company: IPEC Consulting (International Process Excellence Council)
                 FOUNDER: Raj Kalra
                 COO: Sangeet Malhotra.
@@ -375,107 +369,61 @@ export class AISupport {
                 - Email: ${this.userContext.email || 'N/A'}
                 - Department: ${this.userContext.department || 'General'}
                 
-                You are devloped and trained By Mitanshu Bhasin.
-                You have access to their dashboard context if they ask.
-                If they ask to "analyze spending", assume I am feeding you the summary:
-                ${JSON.stringify(this.userContext.dashboardData || {})}
+                You are developed and trained By Mitanshu Bhasin.
+                
+                You have access to the user's dashboard data:
+                - Admin Dashboard Stats: ${JSON.stringify(this.userContext.dashboardData?.stats || 'No admin stats yet')}
+                - Admin Trend Info: ${JSON.stringify(this.userContext.dashboardData?.monthlyTrend || 'No trend data yet')}
+                - Employee Summary: ${JSON.stringify(this.userContext.dashboardData?.summary || 'No emp summary yet')}
+                - Recent Expenses/Claims: ${JSON.stringify(this.userContext.dashboardData?.expenses || 'No expense list yet')}
+                
+                Dashboard Context Rule: If data is "No ... yet", explain that data is still loading or they need to visit the dashboard tab first.
                 
                 Be helpful, professional, and concise. Use **bold** for key terms.
+
                 
                 **EXPENSE CREATION CAPABILITY**:
-                If the user wants to "create" or "add" an expense, you must collect:
-                1. Project Code (Look for this in the user's message or context)
-                2. Category (e.g., Travel, Food, Supplies, etc.)
-                3. Amount (A number)
-                4. Description (What it was for)
+                If user wants to "create" an expense, collect:
+                1. Project Code
+                2. Category
+                3. Amount
+                4. Description
                 
-                If any details are missing, ask for them politely.
-                Once you have all 4 details, you MUST conclude your response with a special command tag:
-                [COMMAND:CREATE_EXPENSE:{"projectCode":"...", "category":"...", "amount":..., "description":"..."}]
-                
-                Do not ask for "Report Title" as it is auto-generated.
-                Assume 'INR' as the default currency unless specified otherwise.
+                Once you have all 4, add: [COMMAND:CREATE_EXPENSE:{"projectCode":"...", "category":"...", "amount":..., "description":"..."}]
+                Default currency: INR.
             `;
 
-            // Prepare Raw Contents
-            let rawContents = [];
-
-            // 1. Add History
-            if (this.chatHistory.length > 0) {
-                rawContents = this.chatHistory.map(msg => ({
-                    role: msg.role,
-                    parts: [{ text: msg.content }]
-                }));
-            }
-
-            // 2. Prepare Current Message
-            // Inject context if history is empty
-            let currentText = query;
-            if (rawContents.length === 0) {
-                currentText = `System Context: ${context}\n\nUser Question: ${query}`;
-            }
-
-            const currentUserMsg = {
-                role: "user",
-                parts: [{ text: currentText }]
-            };
-
-            rawContents.push(currentUserMsg);
-
-            // 3. Strict Validation & Sanitization
-            // Gemini requires: Start with 'user', Alternating roles
-            const validContents = [];
-            let expectedRole = 'user';
-
-            for (const item of rawContents) {
-                // Ensure text is not empty
-                if (!item.parts || !item.parts[0] || !item.parts[0].text.trim()) continue;
-
-                if (item.role === expectedRole) {
-                    validContents.push(item);
-                    expectedRole = expectedRole === 'user' ? 'model' : 'user';
-                } else {
-                    // Mismatch detected - Recovery
-                    if (item.role === 'user' && expectedRole === 'model') {
-                        // Two users in a row? Drop previous user, use new one.
-                        validContents.pop();
-                        validContents.push(item);
-                        expectedRole = 'model';
-                    } else {
-                        console.warn("Skipping invalid role sequence item:", item);
-                    }
-                }
-            }
-
-            // Final check: Must end with 'user'
-            if (validContents.length === 0 || validContents[validContents.length - 1].role !== 'user') {
-                validContents.length = 0;
-                validContents.push({
-                    role: "user",
-                    parts: [{ text: `System Context: ${context}\n\nUser Question: ${query}` }]
-                });
-            }
-
-            const requestBody = { contents: validContents };
+            const messages = [
+                { role: "system", content: systemPrompt },
+                ...this.chatHistory,
+                { role: "user", content: query }
+            ];
 
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GROQ_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'moonshotai/kimi-k2-instruct-0905',
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 1024
+                })
             });
 
             if (!response.ok) {
                 const errData = await response.json().catch(() => ({}));
-                console.error("Gemini API Error:", errData);
-                const errMsg = errData.error ? errData.error.message : response.statusText;
-                throw new Error(`${response.status}: ${errMsg}`);
+                console.error("Groq API Error:", errData);
+                throw new Error(`${response.status}: ${errData.error?.message || response.statusText}`);
             }
 
             const data = await response.json();
             typing.style.display = 'none';
 
-            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                const reply = data.candidates[0].content.parts[0].text;
+            if (data.choices && data.choices[0] && data.choices[0].message) {
+                const reply = data.choices[0].message.content;
 
                 // Handle Commands
                 if (reply.includes('[COMMAND:')) {
@@ -490,14 +438,13 @@ export class AISupport {
                     }
                 }
 
-                // Clean up reply for display (remove command tags)
                 const displayReply = reply.replace(/\[COMMAND:.*?\]/g, '').trim();
                 if (displayReply) {
                     this.addMessage(displayReply, 'ai');
                 }
 
-                this.chatHistory.push({ role: "user", content: currentText });
-                this.chatHistory.push({ role: "model", content: reply });
+                this.chatHistory.push({ role: "user", content: query });
+                this.chatHistory.push({ role: "assistant", content: reply });
 
                 if (this.chatHistory.length > 20) this.chatHistory = this.chatHistory.slice(-20);
 
@@ -508,14 +455,7 @@ export class AISupport {
         } catch (error) {
             console.error(error);
             typing.style.display = 'none';
-            let msg = "Connection Error";
-            if (error.message.includes('400')) msg = "Error (400): Bad Request (Check inputs)";
-            else if (error.message.includes('403')) msg = "Error (403): Invalid API Key or Location";
-            else if (error.message.includes('429')) msg = "Error (429): Quota Exceeded";
-            else if (error.message.includes('500')) msg = "Error (500): Server Error";
-            else msg = `Error: ${error.message}`;
-
-            this.addMessage(`⚠️ ${msg}. Please try again later.`, 'ai');
+            this.addMessage(`⚠️ Error: ${error.message}. Please try again later.`, 'ai');
         }
     }
 
@@ -524,9 +464,7 @@ export class AISupport {
     }
 
     handleCommand(command, payload) {
-        console.log("AI Command Received:", command, payload);
         if (command === 'CREATE_EXPENSE') {
-            // Trigger a custom event that emp.html can listen for
             const event = new CustomEvent('ai-expense-action', { detail: payload });
             window.dispatchEvent(event);
         }

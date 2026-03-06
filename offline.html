@@ -169,6 +169,18 @@
             setTimeout(() => window.location.reload(), 2000);
         });
     </script>
+    <!-- AI Support Chat -->
+    <script type="module">
+        import { AISupport } from './js/ai-support.js';
+        setTimeout(() => {
+            new AISupport({
+                name: 'Visitor',
+                role: 'Offline Guest',
+                department: 'Technical Support'
+            });
+        }, 5000);
+    </script>
 </body>
+
 
 </html>

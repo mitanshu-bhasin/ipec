@@ -55,6 +55,9 @@ let userToDelete = null;
 let activeListeners = []; // Store active listeners to unsubscribe
 let approvalSearchTerm = '';
 let aiAssistant = null;
+let lastDashboardContext = null;
+let overviewSortBy = 'date';
+let auditSearchTerm = '';
 
 const roleRank = {
     'ADMIN': 7,
@@ -124,8 +127,8 @@ async function loadCompanyBranding() {
 
 onAuthStateChanged(auth, async (user) => {
 
-    // Initialize AI Assistant
-    if (user && typeof AISupport !== 'undefined' && !aiAssistant) { aiAssistant = new AISupport(user); }
+    // AI initialization is now handled with a delay below
+
     if (user) {
         try {
             // Fetch full user profile
@@ -191,15 +194,26 @@ onAuthStateChanged(auth, async (user) => {
 
                 currentUser = user;
 
-                // Initialize AI
-                if (!aiAssistant) {
-                    try {
+                // Initialize AI with 5-second delay to ensure all data is ready
+                setTimeout(() => {
+                    if (aiAssistant) {
+                        aiAssistant.updateContext(userData);
+                        // Update greeting if it was already created with 'User'
+                        const greetingEl = document.querySelector('.ai-message.ai strong');
+                        if (greetingEl && (greetingEl.textContent === 'User' || !greetingEl.textContent)) {
+                            greetingEl.textContent = userData.name || userData.displayName || 'User';
+                        }
+                    } else if (typeof AISupport !== 'undefined') {
                         aiAssistant = new AISupport(userData);
                         window.aiAssistant = aiAssistant;
-                    } catch (e) {
-                        console.error("AI Error:", e);
                     }
-                }
+                    // After initialization/update, push any cached dashboard data
+                    if (aiAssistant && lastDashboardContext) {
+                        aiAssistant.updateContext({ dashboardData: lastDashboardContext });
+                    }
+                }, 5000);
+
+
 
                 // --- FCM LIVE NOTIFICATIONS PUSH ---
                 if (messaging) {
@@ -811,11 +825,41 @@ async function renderOverview() {
     content.innerHTML = '<div class="flex flex-col space-y-4 p-6 w-full"><div class="h-10 w-full skeleton rounded-lg"></div><div class="h-16 w-full skeleton rounded-xl"></div><div class="h-16 w-full skeleton rounded-xl"></div></div>';
 
     try {
-        const expensesSnap = await getDocs(collection(db, "expenses"));
-        const usersSnap = await getDocs(collection(db, "users"));
+        const [expensesSnap, usersSnap, projectsSnap] = await Promise.all([
+            getDocs(collection(db, "expenses")),
+            getDocs(collection(db, "users")),
+            getDocs(collection(db, "projects"))
+        ]);
 
-        const expenses = expensesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        let expenses = expensesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
         const users = usersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const projects = projectsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const projectsMap = Object.fromEntries(projects.map(p => [p.code, p.name]));
+
+        // Aggregation: Project Wise
+        const projectStats = {};
+        expenses.forEach(e => {
+            const code = e.projectCode || 'N/A';
+            if (!projectStats[code]) projectStats[code] = { total: 0, count: 0, pending: 0, paid: 0 };
+            const amount = parseFloat(e.totalAmount) || 0;
+            projectStats[code].total += amount;
+            projectStats[code].count++;
+            if (e.status === 'PAID') projectStats[code].paid += amount;
+            else if (!['REJECTED'].includes(e.status)) projectStats[code].pending += amount;
+        });
+
+        // Sorting Logic for Overview Activity Feed
+        if (overviewSortBy === 'project') {
+            expenses.sort((a, b) => (a.projectCode || '').localeCompare(b.projectCode || ''));
+        } else if (overviewSortBy === 'amount') {
+            expenses.sort((a, b) => (parseFloat(b.totalAmount) || 0) - (parseFloat(a.totalAmount) || 0));
+        } else {
+            expenses.sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : (a.createdAt ? new Date(a.createdAt) : new Date(0));
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : (b.createdAt ? new Date(b.createdAt) : new Date(0));
+                return dateB - dateA;
+            });
+        }
 
         const totalPaid = expenses.filter(e => e.status === 'PAID').reduce((sum, e) => sum + (parseFloat(e.totalAmount) || 0), 0);
         const pending = expenses.filter(e => !['PAID', 'REJECTED'].includes(e.status)).length;
@@ -823,7 +867,6 @@ async function renderOverview() {
         const totalUsers = users.length;
         const totalExpenses = expenses.length;
 
-        // Monthly data for chart
         const monthlyData = {};
         expenses.forEach(e => {
             if (e.createdAt?.toDate) {
@@ -832,14 +875,13 @@ async function renderOverview() {
             }
         });
 
-        if (aiAssistant) {
-            aiAssistant.updateContext({
-                dashboardData: {
-                    stats: { totalPaid, pending, rejected, totalUsers, totalExpenses },
-                    monthlyTrend: monthlyData
-                }
-            });
-        }
+        lastDashboardContext = {
+            stats: { totalPaid, pending, rejected, totalUsers, totalExpenses },
+            projectStats,
+            monthlyTrend: monthlyData
+        };
+
+        if (aiAssistant) aiAssistant.updateContext({ dashboardData: lastDashboardContext });
 
         content.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 fade-in">
@@ -849,7 +891,7 @@ async function renderOverview() {
                             <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">₹${totalPaid.toLocaleString()}</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full transition-transform group-hover:scale-110"></div>
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-50 rounded-full transition-transform group-hover:scale-110"></div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider relative">Pending Action</p>
                             <p class="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-2 font-mono relative">${pending}</p>
                         </div>
@@ -865,9 +907,48 @@ async function renderOverview() {
                         </div>
                     </div>
 
+                    <!-- Project Analytics Section -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 mb-8 fade-in">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"><i class="fa-solid fa-folder-tree text-green-500"></i> Project-wise Expenditure</h3>
+                            <button onclick="renderReports()" class="text-[10px] font-bold text-green-600 hover:underline">View Detailed Reports</button>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="lg:col-span-2 overflow-x-auto">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="text-slate-400 uppercase font-bold border-b border-slate-100 dark:border-slate-800">
+                                        <tr>
+                                            <th class="pb-3 px-2">Project</th>
+                                            <th class="pb-3 px-2 text-right">Total Spent</th>
+                                            <th class="pb-3 px-2 text-right">Paid</th>
+                                            <th class="pb-3 px-2 text-right">Pending</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50 dark:divide-slate-900/50">
+                                        ${Object.entries(projectStats).sort((a, b) => b[1].total - a[1].total).map(([code, stats]) => `
+                                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-900 transition">
+                                                <td class="py-3 px-2">
+                                                    <div class="font-bold text-slate-700 dark:text-slate-200">${code}</div>
+                                                    <div class="text-[10px] text-slate-400">${projectsMap[code] || 'Unregistered Project'}</div>
+                                                </td>
+                                                <td class="py-3 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-200">₹${stats.total.toLocaleString()}</td>
+                                                <td class="py-3 px-2 text-right text-green-600 font-mono">₹${stats.paid.toLocaleString()}</td>
+                                                <td class="py-3 px-2 text-right text-orange-500 font-mono">₹${stats.pending.toLocaleString()}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="h-64 flex flex-col justify-center items-center">
+                                <canvas id="projectChart"></canvas>
+                                <p class="text-[10px] text-slate-400 mt-2 italic text-center">Breakdown by Project Amount</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 fade-in">
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4">Expense Trend (Last 6 Months)</h3>
+                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4">Expense Trend (Monthly)</h3>
                              <canvas id="overviewChart"></canvas>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
@@ -878,48 +959,20 @@ async function renderOverview() {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-green-500"></i> Quick Stats</h3>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Total Expenses</span>
-                                    <span class="text-sm font-bold text-slate-800 dark:text-slate-100">${totalExpenses}</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Avg. Expense Amount</span>
-                                    <span class="text-sm font-bold text-slate-800 dark:text-slate-100">₹${(totalPaid / (expenses.filter(e => e.status === 'PAID').length || 1)).toFixed(2)}</span>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Approval Rate</span>
-                                    <span class="text-sm font-bold text-slate-800 dark:text-slate-100">${((totalExpenses - rejected) / totalExpenses * 100 || 0).toFixed(1)}%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2"><i class="fa-solid fa-clock text-green-500"></i> Recent Activity</h3>
-                            <div class="space-y-3 max-h-60 overflow-y-auto">
-                                ${expenses.slice(0, 5).map(e => `
-                                    <div class="flex items-center gap-3 p-2 hover:bg-slate-50 dark:bg-slate-900 rounded-lg transition">
-                                        <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                                            <i class="fa-solid fa-receipt text-xs text-slate-500 dark:text-slate-400"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">${e.title}</p>
-                                            <p class="text-[10px] text-slate-400">${new Date(e.createdAt?.toDate()).toLocaleDateString()}</p>
-                                        </div>
-                                        <span class="badge ${getStatusBadgeClass(e.status).split(' ')[0]}">${e.status.replace('_', ' ')}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
-                        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2"><i class="fa-solid fa-rss text-green-500"></i> Live Activity Feed</h3>
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"><i class="fa-solid fa-rss text-green-500"></i> Live Activity Feed</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Sort By:</span>
+                                <select onchange="window.toggleOverviewSort(this.value)" class="text-[10px] font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 outline-none text-slate-600 dark:text-slate-300">
+                                    <option value="date" ${overviewSortBy === 'date' ? 'selected' : ''}>Recent Date</option>
+                                    <option value="project" ${overviewSortBy === 'project' ? 'selected' : ''}>Project Code</option>
+                                    <option value="amount" ${overviewSortBy === 'amount' ? 'selected' : ''}>Amount (High-Low)</option>
+                                </select>
+                            </div>
+                        </div>
                             ${expenses.slice(0, 50).map((e, i) => `
-                                <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:bg-slate-900 transition border-b border-slate-50 last:border-0 ${i % 2 === 0 ? 'bg-slate-50 dark:bg-slate-900/50' : ''} ${i >= 3 ? 'hidden extra-activity' : ''}">
+                                <div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:bg-slate-900 transition border-b border-slate-50 last:border-0 ${i % 2 === 0 ? 'bg-slate-50 dark:bg-slate-900/50' : ''} ${i >= 5 ? 'hidden extra-activity' : ''}">
                                     <div class="flex items-center gap-4">
                                         <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400 shadow-sm">
                                             ${e.currency || 'INR'}
@@ -929,7 +982,6 @@ async function renderOverview() {
                                             <div class="flex gap-2 text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
                                                 <span>${new Date(e.createdAt?.toDate()).toLocaleDateString()}</span>
                                                 <span class="bg-slate-200 px-1.5 rounded text-slate-600 dark:text-slate-300 font-mono">${e.projectCode || 'N/A'}</span>
-                                                ${e.preApproved ? '<span class="text-green-600"><i class="fa-solid fa-check-circle"></i> Pre-Aprvd</span>' : ''}
                                             </div>
                                         </div>
                                     </div>
@@ -939,12 +991,12 @@ async function renderOverview() {
                                     </div>
                                 </div>
                             `).join('')}
+                            ${expenses.length > 5 ? `
+                                <div class="text-center pt-3 border-t border-slate-50 dark:border-slate-800 mt-1">
+                                    <button onclick="document.querySelectorAll('.extra-activity').forEach(el => el.classList.remove('hidden')); this.parentElement.remove();" class="text-xs font-bold text-green-600 hover:text-brand-800 transition py-1 px-3 rounded hover:bg-green-50">View All Activity <i class="fa-solid fa-chevron-down ml-1"></i></button>
+                                </div>
+                            ` : ''}
                         </div>
-                        ${expenses.length > 3 ? `
-                            <div class="text-center pt-3 border-t border-slate-50 dark:border-slate-800 mt-1">
-                                <button onclick="document.querySelectorAll('.extra-activity').forEach(el => el.classList.remove('hidden')); this.parentElement.remove();" class="text-xs font-bold text-green-600 hover:text-brand-800 transition py-1 px-3 rounded hover:bg-green-50">View All Activity <i class="fa-solid fa-chevron-down ml-1"></i></button>
-                            </div>
-                        ` : ''}
                     </div>
                 `;
 
@@ -952,10 +1004,10 @@ async function renderOverview() {
         setTimeout(() => {
             const ctx1 = document.getElementById('overviewChart');
             const ctx2 = document.getElementById('statusChart');
+            const ctx3 = document.getElementById('projectChart');
 
             if (ctx1 && ctx2) {
-                // Prepare data for trend chart
-                const months = Object.keys(monthlyData).reverse(); // Assuming simple sort for demo, improving requires proper date sort
+                const months = Object.keys(monthlyData).reverse();
                 const counts = Object.values(monthlyData).reverse();
 
                 new Chart(ctx1, {
@@ -965,8 +1017,8 @@ async function renderOverview() {
                         datasets: [{
                             label: 'Expenses',
                             data: counts,
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
                             fill: true,
                             tension: 0.4
                         }]
@@ -984,19 +1036,40 @@ async function renderOverview() {
                                 expenses.filter(e => !['PAID', 'REJECTED'].includes(e.status)).length,
                                 rejected
                             ],
-                            backgroundColor: ['#10b981', '#fbbf24', '#ef4444'],
+                            backgroundColor: ['#10b981', '#3b82f6', '#ef4444'],
                             borderWidth: 0
                         }]
                     },
-                    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+                    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+
+            if (ctx3) {
+                const sortedProjects = Object.entries(projectStats).sort((a, b) => b[1].total - a[1].total).slice(0, 5);
+                new Chart(ctx3, {
+                    type: 'pie',
+                    data: {
+                        labels: sortedProjects.map(p => p[0]),
+                        datasets: [{
+                            data: sortedProjects.map(p => p[1].total),
+                            backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { display: false } } }
                 });
             }
         }, 100);
 
     } catch (e) {
+        console.error("Overview Load Error:", e);
         content.innerHTML = emptyState("Error loading data: " + e.message);
     }
 }
+
+window.toggleOverviewSort = (val) => {
+    overviewSortBy = val;
+    renderOverview();
+};
 
 async function renderReports() {
     document.getElementById('page-title').textContent = "Financial Reports";
@@ -1116,11 +1189,28 @@ async function renderAuditLogs() {
 
         window.currentAuditLogs = filteredLogs; // Store globally for export
 
+        if (auditSearchTerm) {
+            const term = auditSearchTerm.toLowerCase();
+            filteredLogs = filteredLogs.filter(log =>
+                (log.by || '').toLowerCase().includes(term) ||
+                (log.action || '').toLowerCase().includes(term) ||
+                (log.expenseTitle || '').toLowerCase().includes(term) ||
+                (log.comment || '').toLowerCase().includes(term) ||
+                (log.role || '').toLowerCase().includes(term)
+            );
+        }
+
         content.innerHTML = `
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 fade-in">
                         <div class="p-6 border-b border-slate-100 dark:border-slate-800">
-                            <div class="flex justify-between items-center audit-header-flex">
-                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">System Activity Log</h3>
+                            <div class="flex justify-between items-center audit-header-flex gap-4">
+                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 min-w-fit">System Activity Log</h3>
+                                <div class="flex-1 max-w-sm">
+                                    <div class="relative">
+                                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                        <input type="text" placeholder="Search logs..." value="${auditSearchTerm}" oninput="window.handleAuditSearch(this.value)" class="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500/20 text-slate-600 dark:text-slate-300">
+                                    </div>
+                                </div>
                                 <div class="flex gap-2">
                                     <button onclick="downloadAuditCSV()" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded transition font-bold flex items-center gap-2">
                                         <i class="fa-solid fa-download"></i> Export CSV
@@ -1172,6 +1262,11 @@ async function renderAuditLogs() {
         content.innerHTML = emptyState("Error loading audit logs: " + e.message);
     }
 }
+
+window.handleAuditSearch = (val) => {
+    auditSearchTerm = val;
+    renderAuditLogs();
+};
 
 
 

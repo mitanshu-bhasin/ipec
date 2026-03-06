@@ -24,13 +24,13 @@
     <meta property="og:description"
         content="IPEC Employee Portal by IPEC Consulting & Sangeet Malhotra. Submit expense claims and track reimbursements efficiently and securely.">
     <meta property="og:url" content="https://ipecconsulting.netlify.app/emp.html">
-    <meta property="og:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
+    <meta property="og:image" content="https://ipecconsulting.netlify.app/assets/images/ipec.jpg">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="IPEC Employee Portal">
     <meta name="twitter:description" content="Manage your corporate expenses efficiently.">
-    <meta name="twitter:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
+    <meta name="twitter:image" content="https://ipecconsulting.netlify.app/assets/images/ipec.jpg">
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -259,8 +259,8 @@
                 <div class="text-center mb-8">
                     <div id="login-logo-container"
                         class="w-20 h-20 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200 overflow-hidden">
-                        <img id="login-logo-img" class="w-full h-full object-contain hidden" src="ipec_logo.jpg"
-                            alt="Company Logo">
+                        <img id="login-logo-img" class="w-full h-full object-contain hidden"
+                            src="assets/images/ipec.jpg" alt="Company Logo">
                         <i id="login-logo-fallback" class="fa-solid fa-seedling text-3xl text-white"></i>
                     </div>
                     <h1 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="login-company-name">IPEC
@@ -4233,41 +4233,24 @@
         class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-green-600 text-white rounded-full shadow-lg shadow-emerald-300 flex items-center justify-center z-40 transition transform active:scale-95 hover:bg-green-700">
         <i class="fa-solid fa-plus text-xl"></i>
     </button>
-    <!-- AI Chat Widget Initialization -->
+    <!-- AI Support Chat (Handled by emp-logic.js with 5s delay) -->
     <script type="module">
-        import { AISupport } from './js/ai-support.js';
+        window.addEventListener('ai-expense-action', (e) => {
+            if (window.createExpenseFromAI) {
+                window.createExpenseFromAI(e.detail);
+            }
+        });
 
-        window.addEventListener('load', () => {
-            // Retrieve current user info for AI Context
-            let user = { name: 'Employee', role: 'USER' };
-            try {
-                // Try getting from userData if available globally, else local storage
-                if (window.userData) {
-                    user = window.userData;
-                } else {
-                    const stored = localStorage.getItem('user_profile');
-                    if (stored) user = JSON.parse(stored);
-                }
-            } catch (e) { console.error(e); }
-
-            // Initialize AI Support (Bottom-Left via ai-support.js CSS)
-            window.aiAssistant = new AISupport(user);
-
-            // Listen for AI Expense Actions
-            window.addEventListener('ai-expense-action', (e) => {
-                if (window.createExpenseFromAI) {
-                    window.createExpenseFromAI(e.detail);
-                }
-            });
-
-            // Register Service Worker
-            if ('serviceWorker' in navigator) {
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('Service Worker Registered'))
                     .catch(err => console.error('Service Worker Error', err));
-            }
-        });
+            });
+        }
     </script>
+
     <!-- Google Translate Script -->
     <div id="google_translate_element" class="hidden"></div>
     <script type="text/javascript">

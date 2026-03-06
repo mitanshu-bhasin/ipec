@@ -16,7 +16,7 @@
     <meta property="og:description"
         content="Streamline corporate expenses with IPEC Expense Manager by IPEC Consulting & Sangeet Malhotra. Secure, fast, transparent.">
     <meta property="og:url" content="https://ipecconsulting.netlify.app/">
-    <meta property="og:image" content="https://ipecconsulting.netlify.app/ipec.jpg">
+    <meta property="og:image" content="https://ipecconsulting.netlify.app/assets/images/ipec.jpg">
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#10b981">
@@ -751,15 +751,17 @@
 
         // Initialize Chatbot for Visitors
         const initChatbot = () => {
-            // Create a guest context
-            const guestContext = {
-                name: 'Visitor',
-                role: 'Guest',
-                email: 'guest@ipec.org',
-                department: 'General Inquiry'
-            };
+            setTimeout(() => {
+                // Create a guest context
+                const guestContext = {
+                    name: 'Visitor',
+                    role: 'Guest',
+                    email: 'guest@ipec.org',
+                    department: 'General Inquiry'
+                };
 
-            new AISupport(guestContext);
+                new AISupport(guestContext);
+            }, 5000);
         };
 
         if (document.readyState === 'loading') {
@@ -768,6 +770,7 @@
             initChatbot();
         }
     </script>
+
 
     <!-- Google Translate Script -->
     <div id="google_translate_element" class="hidden"></div>

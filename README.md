@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ipec.jpg" alt="IPEC Consulting Logo" width="120" />
+  <img src="assets/images/ipec.jpg" alt="IPEC Consulting Logo" width="120" />
 </p>
 
 <h1 align="center">IPEC Expense Manager</h1>
@@ -103,7 +103,6 @@
 ├── assets/
 │   └── images/              # All image assets
 │       ├── ipec.jpg         # Brand logo (PWA icon, apple-touch-icon)
-│       ├── ipec_logo.jpeg   # Secondary logo
 │       ├── cropped-ipec-logo-32x32.png  # Favicon
 │       └── s1.png, s2.png, s3.png       # PWA screenshots
 │
