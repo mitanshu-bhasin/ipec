@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "868468480650",
+    "project_id": "expense-manager-ec149",
+    "storage_bucket": "expense-manager-ec149.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868468480650:android:d3e5a04e2b8a651f2feb73",
+        "android_client_info": {
+          "package_name": "com.mitanshu.ipec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868468480650-vlieajr08tchsvbkjl343f90mjumn07a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mitanshu.ipec",
+            "certificate_hash": "2076e0459a9cab282b54d19a56a49441ac7c019c"
+          }
+        },
+        {
+          "client_id": "868468480650-g5epbbdedo7tu6oslhs2k7mgbf41fl1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9Ah1kGwlOcl_gZpmCa8rgOak836Y1Zko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868468480650-g5epbbdedo7tu6oslhs2k7mgbf41fl1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
