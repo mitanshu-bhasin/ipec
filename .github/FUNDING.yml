@@ -1,0 +1,7 @@
+# GitHub Funding Configuration
+
+# Choose which platforms you want to display for donations
+github: [mitanshu-bhasin] # Aapka GitHub username
+ko_fi: mitanshubhasin    # Agar aapka Ko-fi account hai
+buy_me_a_coffee: mitanshu # Buy Me a Coffee username
+custom: ["https://ipecconsulting.netlify.app/"] # Direct donation link
